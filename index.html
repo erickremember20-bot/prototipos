@@ -105,7 +105,17 @@
     --grey-100: #B6B6B6;
     --grey-200: #939393;
   }
-  body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  /* Duplica em CSS puro o que o Tailwind já aplica via class="bg-canvas
+     font-sans text-grey-50 antialiased" na tag <body>: necessário porque a
+     versão publicada como Artifact não pode trazer uma tag <body> própria
+     (o publicador injeta a sua), então essas classes ficariam órfãs. */
+  body {
+    background-color: var(--canvas);
+    color: #FAFAFA;
+    font-family: 'Barlow', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
 
   /* Trava o scroll do body enquanto um drawer está aberto */
   body.is-locked { overflow: hidden; }
