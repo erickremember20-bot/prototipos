@@ -15,7 +15,7 @@ Exportar leva menos de um minuto.
 |---|---|---|
 | [`canaltech_white` — 2:691](https://www.figma.com/design/otFCFq9vy3mUvwLcb11hwf/Motorola_Fifa_Mobile?node-id=2-691) | `canaltech-white.svg` | SVG |
 | [`motorola_white` — 2:678](https://www.figma.com/design/otFCFq9vy3mUvwLcb11hwf/Motorola_Fifa_Mobile?node-id=2-678) | `motorola-white.svg` | SVG |
-| [`kv_motorola_02` — 2:844](https://www.figma.com/design/otFCFq9vy3mUvwLcb11hwf/Motorola_Fifa_Mobile?node-id=2-844) | `kv-edge-70-fusion.png` | PNG @2x |
+| [`kv_motorola_02` — 2:844](https://www.figma.com/design/otFCFq9vy3mUvwLcb11hwf/Motorola_Fifa_Mobile?node-id=2-844) | `kv-edge-70-fusion.jpg` | JPEG, ~984×552 |
 
 Com o nó selecionado: painel **Export** (canto inferior direito) → escolha o
 formato → **Export**. Para o KV, use **2x** — ele é exibido em 328 × 184, então
@@ -34,7 +34,7 @@ Saída esperada:
 ```
 · asset embutido: assets/canaltech-white.svg
 · asset embutido: assets/motorola-white.svg
-· asset embutido: assets/kv-edge-70-fusion.png
+· asset embutido: assets/kv-edge-70-fusion.jpg
   3/3 assets do Figma embutidos (canaltech, motorola, kv)
 ```
 

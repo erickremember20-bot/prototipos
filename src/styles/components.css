@@ -60,6 +60,12 @@
   display: none;
 }
 
+/* `hidden` precisa vencer os display: flex/block dos fallbacks */
+.kv__fallback[hidden],
+.logo-fallback[hidden] {
+  display: none;
+}
+
 /* Placeholder do key visual (nó 16:34), na composição do asset original:
    céu lavanda, texto à esquerda, gramado com a linha do círculo central. */
 .kv__fallback {

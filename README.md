@@ -135,7 +135,7 @@ Os assets **foram localizados** no arquivo, no frame `2:651` ("Assets"):
 |---|---|---|
 | `canaltech-white.svg` | `2:691` (`canaltech_white 1`) | 114.286 × 24 |
 | `motorola-white.svg` | `2:678` (`motorola_white 1`) | 102.564 × 20 |
-| `kv-edge-70-fusion.png` | `2:844` (`kv_motorola_02 1`) | 328 × 184 |
+| `kv-edge-70-fusion.jpg` | `2:844` (`kv_motorola_02 1`) | 328 × 184 |
 
 O que **não** foi possível fazer é baixar os bytes: o host `www.figma.com` está
 bloqueado pela política de egresso deste ambiente (403 no CONNECT do proxy), e
@@ -156,7 +156,7 @@ passa a usar os originais — continuando 100% offline, sem editar código:
 ```
 · asset embutido: assets/canaltech-white.svg
 · asset embutido: assets/motorola-white.svg
-· asset embutido: assets/kv-edge-70-fusion.png
+· asset embutido: assets/kv-edge-70-fusion.jpg
   3/3 assets do Figma embutidos
 ```
 

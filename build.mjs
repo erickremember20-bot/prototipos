@@ -59,7 +59,7 @@ function flatten(source, file) {
 const ASSETS = {
   canaltech: { file: 'assets/canaltech-white.svg', mime: 'image/svg+xml' },
   motorola: { file: 'assets/motorola-white.svg', mime: 'image/svg+xml' },
-  kv: { file: 'assets/kv-edge-70-fusion.png', mime: 'image/png' },
+  kv: { file: 'assets/kv-edge-70-fusion.jpg', mime: 'image/jpeg' },
 };
 
 const embedded = {};

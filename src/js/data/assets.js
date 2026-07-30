@@ -12,7 +12,7 @@
  * │ 1. Exporte do Figma para a pasta `assets/`:                         │
  * │      16:3   canaltech_white  →  assets/canaltech-white.svg   114×24 │
  * │      16:20  motorola_white   →  assets/motorola-white.svg    103×20 │
- * │      16:34  KV Edge 70       →  assets/kv-edge-70-fusion.png 328×184│
+ * │      16:34  KV Edge 70       →  assets/kv-edge-70-fusion.jpg  328×184│
  * │ 2. Troque `enabled` para true abaixo.                               │
  * │ 3. Rode `node build.mjs` para regerar o arquivo único.              │
  * └─────────────────────────────────────────────────────────────────────┘
@@ -29,7 +29,7 @@ export const figmaAssets = {
   files: {
     canaltech: 'canaltech-white.svg',
     motorola: 'motorola-white.svg',
-    kv: 'kv-edge-70-fusion.png',
+    kv: 'kv-edge-70-fusion.jpg',
   },
 };
 
