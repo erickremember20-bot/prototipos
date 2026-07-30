@@ -1,125 +1,178 @@
-# Canaltech x Motorola | FIFA — Edição Copa do Mundo
+# Motorola x Canaltech — Edição Copa do Mundo
 
-Protótipo interativo da landing page de co-branding, implementado a partir do
-arquivo do Figma via MCP.
+Protótipo interativo da landing page de campanha, implementado a partir do
+Figma via MCP.
 
 | | |
 |---|---|
-| **Entregável** | `index.html` (arquivo único, sem build) |
-| **Stack** | Tailwind CSS via CDN + JavaScript vanilla |
-| **Figma File Key** | `wq58RvFpU9sQ70LpQxux3F` |
-| **Nós de origem** | `66:87` Landing_Page · `66:278` Drawer Sucesso · `66:308` Regras |
-| **Responsivo** | 360px → desktop |
-
-Basta abrir `index.html` no navegador. Não há dependências de build.
+| **Figma** | `otFCFq9vy3mUvwLcb11hwf` — página *Campanha — Telas Mobile* |
+| **Telas** | `12:43` Lead Capture Form · `12:44` Regras da Promoção · `12:45` Sucesso / Voucher |
+| **Stack** | HTML5 + CSS3 + JavaScript ES6 — sem framework, sem dependência, sem build obrigatório |
+| **Entregável** | `dist/motorola-copa-landing-page.html` (arquivo único, roda offline) |
+| **Responsivo** | 360px (frame do Figma) → desktop |
 
 ---
 
-## ⚠️ Assets de marca pendentes
+## Como rodar
 
-O ambiente onde este protótipo foi gerado tem **acesso de rede aos hosts da Figma
-bloqueado por política** (HTTP 403 no CONNECT para `www.figma.com`,
-`figma.com`, `api.figma.com` e `s3-alpha-sig.figma.com`), portanto não foi
-possível baixar os bytes dos assets exportados.
+**Arquivo único** — é só abrir, funciona direto do disco e sem internet:
 
-Três assets **não substituíveis** precisam ser exportados do Figma para a pasta
-`assets/`:
+```
+dist/motorola-copa-landing-page.html
+```
 
-| Arquivo esperado | Nó no Figma | Dimensões |
-|---|---|---|
-| `assets/canaltech-logo.svg` | `66:90` (canaltech_white) | 104 × 22 |
-| `assets/motorola-logo.svg` | `66:106` (motorola_white) | 104 × 20 |
-| `assets/kv-motorola-edge-70-fusion.png` | `66:116` (kv_motorola_02) | 328 × 185 |
+**Versão modular** (fonte) — usa ES modules, então precisa de um servidor:
 
-Enquanto eles não existirem, a página **não quebra**: cada `<img>` tem um
-`onerror` que aplica um fallback (wordmark em texto para os logos, gradiente
-com o nome do produto para o key visual). Ao adicionar os arquivos, os assets
-reais passam a ser usados automaticamente, sem alteração de código.
+```bash
+python3 -m http.server 8000   # → http://localhost:8000
+```
 
-Os **ícones** (UserCheck, Envelope, Trophy, Copy, Checks, CaretRight, X,
-Warning, Check, Link) estão inline como sprite SVG no topo do arquivo,
-reproduzindo os glifos da família Phosphor Icons usada no design, com as
-dimensões de caixa e de glifo definidas no Figma.
+**Regerar o arquivo único** depois de editar `src/`:
+
+```bash
+node build.mjs
+```
+
+---
+
+## Estrutura
+
+```
+src/
+├── styles/
+│   ├── fonts.css        Barlow 400/500/600/700 embutida em base64
+│   ├── tokens.css       variáveis do Figma → custom properties
+│   ├── base.css         reset + shell da página
+│   └── components.css   um bloco por símbolo do Figma
+└── js/
+    ├── lib/             dom · mask (CPF) · validators
+    ├── data/            content (toda a cópia) · assets
+    ├── icons.js         ícones Phosphor inline
+    ├── components/      Button · Input · Checkbox · Brand
+    │                    Modal · ModalRules · ModalSuccess · Form
+    └── app.js           monta a tela 01 e conecta os modais
+
+build.mjs                gera dist/motorola-copa-landing-page.html
+```
+
+---
+
+## Comportamento implementado
+
+### Tela 01 — Lead Capture Form
+
+- **Nome completo** — obrigatório, mínimo de 3 caracteres.
+- **E-mail** — validação de formato `user@domain.com`.
+- **CPF** — máscara `000.000.000-00` aplicada durante a digitação (preservando
+  a posição do cursor) e validação dos 11 dígitos **com dígitos verificadores**,
+  rejeitando sequências repetidas.
+- **Checkbox 1 (Regulamento)** — obrigatório para liberar o envio.
+- **Checkbox 2 (ofertas)** — opcional.
+- **CTA** — verde-oliva opaco (`green-900`, opacidade 55%) enquanto houver
+  pendência; verde neon (`green-500`) quando tudo estiver válido.
+- **Envio** — 500ms de loading com spinner e então a tela 03.
+- **Feedback de erro** — ao tentar enviar com dados incompletos, cada campo
+  inválido vai para o estado `Error` (borda vermelha, chip de label vermelho,
+  ícone de alerta e mensagem auxiliar); o foco vai para o primeiro deles.
+
+> **Nota de implementação — por que `aria-disabled` e não `disabled`**
+> O briefing pede o CTA inativo *e* feedback de erro "caso o usuário tente
+> clicar com dados incompletos". Um botão com o atributo `disabled` não emite
+> clique nenhum, o que tornaria esse feedback inalcançável. O CTA usa
+> `aria-disabled="true"`: mantém a aparência inativa e o anúncio correto para
+> leitores de tela, mas ainda entrega o clique que acende os erros.
+
+### Tela 02 — Regras da Promoção
+
+- Abre pelo link *"Consulte o regulamento completo."* no rodapé.
+- Overlay escuro com `backdrop-filter: blur(6px)`.
+- Fecha pelo `X`, pela tecla `ESC` ou por clique fora do modal.
+- *"Ler Regulamento Completo em PDF"* abre em nova aba (`noopener,noreferrer`).
+- Foco preso dentro do modal enquanto aberto e devolvido ao gatilho ao fechar.
+
+### Tela 03 — Sucesso / Voucher
+
+- Disparada automaticamente após o envio válido.
+- Cupom `CANALTECH20` e número da sorte `789456`.
+- **Copiar** — clique no cupom chama `navigator.clipboard.writeText`, troca o
+  ícone de cópia pelo check duplo e a mensagem vira **"Código copiado com
+  sucesso! 🎉"** em verde neon. Volta ao estado inicial após 2,5s para permitir
+  copiar de novo. Há fallback via `execCommand` para quando a página é aberta
+  em `file://`, onde `navigator.clipboard` não existe.
+- *"RESGATAR DESCONTO"* abre o e-commerce da Motorola em nova aba.
+- O `X` fecha e **reseta o formulário** da tela 01.
 
 ---
 
 ## Design tokens
 
-Os valores aplicados são os das **variáveis reais do Figma**, que divergem
-levemente dos hexadecimais aproximados do briefing:
+Valores extraídos das variáveis do Figma (`get_variable_defs`):
 
-| Papel | Briefing | Figma (aplicado) |
+| Papel | Token | Valor |
 |---|---|---|
-| Canvas | `grey-900` `#141414` | `grey-500` `#141414` |
-| Surface (menu bar, footer) | `#1F1F1F` | `grey-900` `#080808` |
-| Brand primary / campanha | `green-500` `#AAFF00` | `green-500` `#ABFE02` |
-| Brand secondary | `purple-500` `#6200EE` | `purple-500` `#581FFF` |
-| Feedback de erro | `red-500` `#E53935` | `red-500` `#ED2424` |
-| Texto secundário | `grey-400` `#A0A0A0` | `grey-100` `#B6B6B6` |
+| Canvas / header / rodapé | `grey-900` | `#080808` |
+| Seções (hero, form) | `grey-600` | `#121212` |
+| Superfície dos modais | `grey-500` | `#141414` |
+| Verde neon (ação principal) | `green-500` | `#abfe02` |
+| Verde pressionado / borda | `green-700` | `#79b401` |
+| Verde desabilitado | `green-900` | `#486b01` |
+| Roxo elétrico | `purple-500` | `#581fff` |
+| Roxo pressionado | `purple-700` | `#3e16b5` |
+| Erro | `red-500` | `#ed2424` |
+| Texto secundário | `grey-100` | `#b6b6b6` |
 
-Tipografia: **Barlow** 400 / 600 / 700 (Google Fonts). Escala do Figma —
-`h1` 24/1.2 Bold · `h2` 20/1.2 Bold · `h3` 16/1.2 SemiBold ·
-`body` 14/1.5 Regular · `small` 12/1.5 Regular.
-
-Raios: input `12px` · botões `9999px` (pill) · cards dos drawers `24px` ·
-topo dos bottom sheets `32px`.
-
-### Divergências conscientes do Figma
-
-1. **Rótulo do input em repouso** — o Figma usa `grey-400` `#434343` sobre
-   `#141414` (≈ 2,2:1, reprova no WCAG AA). Aplicado `grey-200` `#939393`
-   (≈ 5,3:1). O rótulo flutuante mantém o `#B6B6B6` do design.
-2. **Card do cupom no estado `Copied`** — o Figma mantém o roxo e troca apenas
-   o ícone para `✓✓`. O briefing pede explicitamente "verde de confirmação",
-   então foi aplicado `green-900` no card + `green-500` no bloco do código.
-3. **Card do cupom: legenda no estado `Copied`** — mantida em branco (e não em
-   verde) para preservar contraste sobre o card verde.
-4. **Botão Primary `Disabled`** — `green-500` a 40% de opacidade, conforme o
-   Figma. Componentes inativos são isentos do critério 1.4.3 do WCAG.
+Tipografia **Barlow** — h1 24/1.2 Bold · h2 20/1.2 Bold · h3 16/1.2 SemiBold ·
+body 14/1.5 · small 12/1.5. A fonte vai embutida em base64, então o protótipo
+não depende do Google Fonts em tempo de execução.
 
 ---
 
-## Regras de negócio implementadas
+## ⚠️ Assets de marca pendentes
 
-O CTA principal (`QUERO MEU DESCONTO AGORA`) inicia **`DISABLED`** e só é
-habilitado por `validateForm()` quando **todas** as condições são satisfeitas:
+O host `www.figma.com` está **bloqueado pela política de egresso** deste
+ambiente (403 no CONNECT), então os bytes dos assets exportados não puderam ser
+baixados — a API do MCP devolve URLs nesse host, inclusive para screenshots.
 
-- **Nome Completo** — mínimo 3 caracteres **e** pelo menos duas palavras.
-- **CPF** — exatamente 11 dígitos, com máscara `000.000.000-00` em tempo real.
-- **E-mail** — formato com `@` e domínio válido.
-- **Opt-in obrigatório** — `checked == true`.
-- O opt-in de ofertas é **opcional** e não participa da regra.
+Três assets precisam ser exportados manualmente para `assets/`:
 
-`CONFIG.STRICT_CPF` (padrão `false`) liga a validação dos dígitos
-verificadores do CPF, para homologação com dados reais.
+| Arquivo | Nó | Dimensões |
+|---|---|---|
+| `canaltech-white.svg` | `16:3` | 114.286 × 24 |
+| `motorola-white.svg` | `16:20` | 102.564 × 20 |
+| `kv-edge-70-fusion.png` | `16:34` | 328 × 184 |
 
-**Fluxo:** submit → `Loading` de 1s (cliques múltiplos bloqueados) → abre o
-Drawer de Sucesso → clique no cupom copia `CANALTECH20` via
-`document.execCommand('copy')` e alterna o card para `Copied` por 2,5s →
-`RESGATAR DESCONTO >` abre a loja Motorola em nova aba + toast.
+Enquanto isso, cada um é substituído por um **fallback desenhado em SVG/CSS na
+caixa exata do design** — a página não quebra e não dispara requisição nenhuma.
+Para passar a usar os originais: exporte os arquivos, troque `enabled` para
+`true` em `src/js/data/assets.js` e rode `node build.mjs`.
 
-Número da sorte: bilhete estático `789456` 🏆 com "Guardamos seu número para o
-sorteio".
+Os **ícones** (user-check, envelope, trophy, alert, copy, close, check-double,
+link, chevron-right, check) foram redesenhados à mão reproduzindo o traço
+Phosphor usado no design. Cada um é renderizado na caixa externa definida no
+Figma, com o `viewBox` respeitando a proporção do glifo medida pelos insets de
+cada nó — as medidas estão documentadas no topo de `src/js/icons.js`.
 
 ---
 
-## Acessibilidade
+## Ajustes conscientes em relação ao Figma
 
-- Floating label é um `<label>` real (nome acessível preservado, WCAG 3.3.2);
-  a flutuação é 100% CSS via `:placeholder-shown`.
-- `aria-invalid` + `role="alert"` no helper text; foco move para o primeiro
-  campo inválido no submit (WCAG 3.3.1).
-- Drawers: `role="dialog"`, `aria-modal`, foco movido para dentro, **focus
-  trap** no `Tab`, `Esc` e clique no backdrop fecham, foco devolvido ao gatilho.
-- `aria-live` anuncia a cópia do cupom e o processamento do formulário.
-- Foco visível em todos os controles; `prefers-reduced-motion` respeitado.
-- Alvos de toque ≥ 24px (WCAG 2.5.8) e ≥ 44px nas linhas de opt-in.
+1. **Tracking de −0,01em** na linha "1 MOTOROLA EDGE 70 FUSION +" e no título
+   "Regras da Promoção (Resumo)". Ambos medem 327–329px contra os 328px
+   disponíveis no frame de 360px; sem esse ajuste mínimo eles quebram em duas
+   linhas, o que não acontece no design.
+2. **Chip de label flutuante** aparece só com foco ou valor preenchido. No
+   Figma o estado `Default` não tem chip e o `Filled` tem — a transição entre
+   os dois é a interpretação em movimento desses dois quadros estáticos.
+3. **O `×` do header** (nó `16:18`, nomeado "Icon — fechar") fica *entre* os
+   dois logos, então foi tratado como separador de co-branding — decorativo,
+   não um botão de fechar.
 
 ---
 
 ## Verificação
 
-Suíte de 51 asserções em Chromium (Playwright) cobrindo máscara de CPF, as
-quatro combinações de validação, os 4 estados do Input Field, habilitação do
-CTA, loading, ambos os drawers, focus trap, microinteração de cópia, toast e
-ausência de overflow horizontal a 360px — **51/51 aprovadas**.
+O protótipo foi exercitado em Chromium (Playwright) — 38 checagens cobrindo
+estados do CTA, máscara e validação de CPF, os quatro estados do input,
+abertura e fechamento dos três caminhos de cada modal, cópia real para a área
+de transferência, reset do formulário e ausência de scroll horizontal em 360px
+e 1280px. Todas passaram, sem erros de console.

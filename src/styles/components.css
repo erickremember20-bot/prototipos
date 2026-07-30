@@ -1,0 +1,881 @@
+/* ==================================================================
+   COMPONENTES — cada bloco corresponde a um símbolo do Figma
+   ================================================================== */
+
+/* ---------- Header (16:2) --------------------------------------- */
+.header {
+  background: var(--surface-canvas);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px var(--gutter);
+  overflow: hidden;
+}
+
+/* O "×" entre as marcas é o separador de co-branding, não um botão */
+.header__x {
+  color: var(--grey-50);
+  flex-shrink: 0;
+}
+
+/* ---------- Marcas / KV ----------------------------------------- */
+.brand {
+  display: block;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.brand__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: left center;
+}
+
+/* O fallback fica visível até o export real do Figma ser adicionado */
+.brand__img[hidden] {
+  display: none;
+}
+
+.kv {
+  width: 100%;
+  height: 184px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.kv__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.kv__img[hidden] {
+  display: none;
+}
+
+/* Placeholder do key visual: campo + luz de estádio, na moldura do design */
+/* `hidden` precisa vencer os display: flex/block dos fallbacks */
+.kv__fallback[hidden],
+.logo-fallback[hidden] {
+  display: none;
+}
+
+.kv__fallback {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(90% 120% at 50% 115%, rgba(171, 254, 2, 0.35) 0%, transparent 55%),
+    linear-gradient(160deg, #5b2ee0 0%, #2d1173 55%, #141414 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 14px;
+}
+
+.kv__fallback::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -46px;
+  width: 92px;
+  height: 92px;
+  transform: translateX(-50%);
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+}
+
+.kv__title {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--grey-50);
+}
+
+.kv__sub {
+  font-size: 11px;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 62%;
+  margin-top: 3px;
+}
+
+.kv__badge {
+  align-self: flex-start;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--grey-500);
+  background: var(--green-500);
+  border-radius: var(--radius-pill);
+  padding: 4px 10px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Hero (16:31) ---------------------------------------- */
+.hero {
+  background: var(--surface-section);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px var(--gutter) 16px;
+  overflow: hidden;
+}
+
+.hero__headline {
+  text-align: center;
+  width: 100%;
+  color: var(--grey-50);
+}
+
+.hero__headline em {
+  display: block;
+  font-style: normal;
+  color: var(--green-500);
+  /* A linha de destaque mede 329px contra 328px disponíveis em 360px de tela.
+     Um toque de tracking negativo a mantém em uma linha, como no Figma. */
+  letter-spacing: -0.01em;
+}
+
+.hero__subtitle {
+  text-align: center;
+  width: 100%;
+  color: var(--text-muted);
+}
+
+/* ---------- Input field (35:33) --------------------------------- */
+.field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  width: 100%;
+}
+
+.field__box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  border: 1.5px solid var(--border-input);
+  border-radius: var(--radius-input);
+  transition: border-color var(--ease), box-shadow var(--ease);
+}
+
+.field__input {
+  flex: 1 0 0;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--grey-50);
+}
+
+.field__input::placeholder {
+  color: var(--text-placeholder);
+  opacity: 1;
+}
+
+/* Chip de label flutuante — só aparece com foco/valor */
+.field__label {
+  position: absolute;
+  top: -9.5px;
+  left: 8.5px;
+  padding: 0 4px;
+  background: var(--surface-section);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--text-muted);
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity var(--ease), transform var(--ease), color var(--ease);
+  pointer-events: none;
+}
+
+.field.is-filled .field__label,
+.field.is-focused .field__label,
+.field.is-error .field__label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* State=Filled */
+.field.is-filled .field__box {
+  border-color: var(--border-input-filled);
+}
+
+/* State=Focused */
+.field.is-focused .field__box {
+  border-color: var(--purple-500);
+  box-shadow: var(--glow-focus);
+}
+
+/* State=Error */
+.field.is-error .field__box {
+  border-color: var(--red-500);
+  box-shadow: none;
+}
+
+.field.is-error .field__label {
+  color: var(--red-500);
+}
+
+.field__alert {
+  flex-shrink: 0;
+  color: var(--red-500);
+  display: none;
+}
+
+.field.is-error .field__alert {
+  display: block;
+}
+
+.field__helper {
+  width: 100%;
+  text-align: right;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--red-500);
+  min-height: 0;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity var(--ease), max-height var(--ease);
+}
+
+.field.is-error .field__helper {
+  opacity: 1;
+  max-height: 34px;
+}
+
+/* ---------- Checkbox (34:23) ------------------------------------ */
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+  width: 100%;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.checkbox__native {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.checkbox__box {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--grey-300);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--grey-500);
+  transition: background-color var(--ease), border-color var(--ease);
+}
+
+.checkbox__box svg {
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity var(--ease), transform var(--ease);
+}
+
+.checkbox__label {
+  flex: 1 0 0;
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text-muted);
+  transition: color var(--ease);
+}
+
+/* Checked=True */
+.checkbox__native:checked + .checkbox__box {
+  background: var(--green-500);
+  border-color: var(--green-500);
+}
+
+.checkbox__native:checked + .checkbox__box svg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.checkbox__native:checked ~ .checkbox__label {
+  color: var(--green-500);
+}
+
+.checkbox__native:focus-visible + .checkbox__box {
+  outline: 2px solid var(--purple-300);
+  outline-offset: 2px;
+}
+
+/* Erro no consentimento obrigatório */
+.checkbox.is-error .checkbox__box {
+  border-color: var(--red-500);
+}
+
+.checkbox.is-error .checkbox__label {
+  color: var(--red-500);
+}
+
+/* ---------- Button (33:108) ------------------------------------- */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: var(--radius-pill);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  transition: background var(--ease), box-shadow var(--ease), opacity var(--ease), transform var(--ease);
+}
+
+.btn:active:not(:disabled):not([aria-disabled="true"]) {
+  transform: scale(0.98);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--purple-300);
+  outline-offset: 3px;
+}
+
+/* Type=Primary Neon */
+.btn--primary {
+  background: var(--green-500);
+  color: var(--grey-500);
+  box-shadow: var(--glow-neon);
+}
+
+.btn--primary:hover:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--green-300);
+}
+
+.btn--primary:active:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--green-700);
+  box-shadow: none;
+}
+
+.btn--primary:disabled,
+.btn--primary[aria-disabled="true"] {
+  background: var(--green-900);
+  opacity: 0.55;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Type=Secondary Glow */
+.btn--glow {
+  background: var(--grad-cta-glow);
+  color: var(--grey-500);
+  box-shadow: var(--glow-neon-strong);
+}
+
+.btn--glow:active:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--grad-cta-glow-pressed);
+  box-shadow: none;
+}
+
+.btn--glow:disabled,
+.btn--glow[aria-disabled="true"] {
+  background: var(--green-900);
+  opacity: 0.5;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Type=Tertiary Purple */
+.btn--purple {
+  background: var(--purple-500);
+  color: var(--grey-50);
+  box-shadow: var(--glow-purple);
+}
+
+.btn--purple:active:not(:disabled):not([aria-disabled="true"]) {
+  background: var(--purple-700);
+  box-shadow: none;
+}
+
+.btn--purple:disabled,
+.btn--purple[aria-disabled="true"] {
+  background: var(--purple-700);
+  color: var(--grey-200);
+  opacity: 0.5;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Spinner do estado de loading do submit */
+.btn__spinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(20, 20, 20, 0.3);
+  border-top-color: var(--grey-500);
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- Form (16:44) ---------------------------------------- */
+.form {
+  background: var(--surface-section);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 16px var(--gutter) 24px;
+}
+
+.form__consents {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ---------- Como participar (16:66) ----------------------------- */
+.steps-section {
+  background: var(--grad-steps);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 28px var(--gutter) 32px;
+  overflow: hidden;
+}
+
+.steps-section__title {
+  text-align: center;
+  width: 100%;
+  color: var(--grey-50);
+}
+
+.steps {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.step {
+  flex: 1 0 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.step__tile {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  background: var(--grad-tile);
+  box-shadow: var(--glow-tile);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--grey-50);
+}
+
+.step__label {
+  width: 100%;
+  text-align: center;
+  color: var(--grey-50);
+}
+
+/* ---------- Footer legal (16:87) -------------------------------- */
+.footer-legal {
+  background: var(--surface-canvas);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 20px var(--gutter) 24px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.footer-legal__text {
+  width: 100%;
+  color: var(--text-muted);
+}
+
+.footer-legal__link {
+  width: 100%;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--green-500);
+  text-decoration: underline;
+  text-underline-position: from-font;
+  transition: color var(--ease);
+}
+
+.footer-legal__link:hover {
+  color: var(--green-300);
+}
+
+/* ==================================================================
+   MODAIS — overlay compartilhado + telas 02 e 03
+   ================================================================== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Sem padding no mobile: o modal ocupa os mesmos 360px do frame do Figma,
+     senão o conteúdo cai para 296px e os títulos quebram fora do previsto. */
+  padding: 0;
+  background: rgba(4, 4, 4, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--ease), visibility var(--ease);
+  overflow-y: auto;
+}
+
+.overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.overlay__panel {
+  width: 100%;
+  max-width: var(--shell-width);
+  border-radius: var(--radius-modal);
+  max-height: 100vh;
+  overflow-y: auto;
+  transform: translateY(16px) scale(0.98);
+  transition: transform var(--ease);
+  -webkit-overflow-scrolling: touch;
+}
+
+.overlay.is-open .overlay__panel {
+  transform: translateY(0) scale(1);
+}
+
+@media (min-width: 600px) {
+  .overlay {
+    padding: 16px;
+  }
+
+  .overlay__panel {
+    max-width: 420px;
+    max-height: calc(100vh - 32px);
+  }
+}
+
+.modal__topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.modal__close {
+  color: var(--grey-50);
+  flex-shrink: 0;
+  border-radius: 50%;
+  transition: opacity var(--ease), transform var(--ease);
+}
+
+.modal__close:hover {
+  opacity: 0.7;
+}
+
+.modal__close:active {
+  transform: scale(0.92);
+}
+
+.modal__close:focus-visible {
+  outline: 2px solid var(--purple-300);
+  outline-offset: 3px;
+}
+
+/* ---------- 02 — Regras da Promoção (12:44) --------------------- */
+.rules {
+  background: var(--surface-modal);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px var(--gutter) 24px;
+  border-radius: var(--radius-modal);
+}
+
+.rules__header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.rules__title {
+  color: var(--green-500);
+  width: 100%;
+  /* Mede 327px contra os 328px do frame — tracking mínimo garante a linha única. */
+  letter-spacing: -0.01em;
+}
+
+.rules__subtitle {
+  color: var(--grey-50);
+  width: 100%;
+}
+
+.rules__divider {
+  height: 1px;
+  width: 100%;
+  background: var(--grey-400);
+  flex-shrink: 0;
+}
+
+.rules__list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+/* cmp / rule-block (17:4) */
+.rule {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+}
+
+.rule__title {
+  color: var(--green-500);
+  width: 100%;
+}
+
+.rule__body {
+  color: var(--grey-50);
+  width: 100%;
+}
+
+/* ---------- 03 — Sucesso / Voucher (12:45) ---------------------- */
+.success {
+  background: var(--surface-canvas);
+  border-radius: var(--radius-modal);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.success__content {
+  background: var(--surface-modal);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 16px var(--gutter) 24px;
+}
+
+.success__title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  text-align: center;
+}
+
+.success__eyebrow {
+  color: var(--green-500);
+}
+
+.success__headline {
+  color: var(--grey-50);
+}
+
+.success__support {
+  color: var(--text-muted);
+}
+
+.success__info {
+  width: 100%;
+  text-align: center;
+  color: var(--green-300);
+}
+
+.success__footer {
+  background: var(--surface-canvas);
+  padding: 18px var(--gutter) 22px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.success__footer p {
+  width: 100%;
+  color: var(--grey-50);
+}
+
+/* cmp / voucher-card (18:73) */
+.voucher {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 16px;
+  border-radius: var(--radius-card);
+  border: 1px solid transparent;
+}
+
+.voucher--cupom {
+  background: var(--grad-card-cupom);
+  border-color: var(--purple-300);
+}
+
+.voucher--sorte {
+  background: var(--grad-card-sorte);
+  border-color: var(--green-700);
+}
+
+.voucher__badge {
+  background: var(--surface-modal);
+  border-radius: var(--radius-pill);
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.26px;
+  color: var(--grey-50);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.voucher__badge em {
+  font-style: normal;
+  color: var(--green-500);
+}
+
+.voucher__helper {
+  width: 100%;
+  text-align: center;
+  color: var(--grey-50);
+  transition: color var(--ease);
+}
+
+.voucher__helper.is-copied {
+  color: var(--green-500);
+  font-weight: 600;
+}
+
+/* Valor do número da sorte (18:66) */
+.voucher__value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 24px;
+  border-radius: 12px;
+  background: rgba(14, 14, 14, 0.45);
+  overflow: hidden;
+}
+
+.voucher__number {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--green-500);
+  white-space: nowrap;
+}
+
+.voucher__trophy {
+  color: var(--green-500);
+  flex-shrink: 0;
+}
+
+/* cmp / coupon-tag (34:14) */
+.coupon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  background: var(--purple-500);
+  color: var(--grey-50);
+  transition: background var(--ease), transform var(--ease);
+}
+
+.coupon:hover {
+  background: #6b34ff;
+}
+
+.coupon:active {
+  transform: scale(0.98);
+}
+
+.coupon:focus-visible {
+  outline: 2px solid var(--grey-50);
+  outline-offset: 3px;
+}
+
+/* State=Pressed — confirmação de cópia */
+.coupon.is-copied {
+  background: var(--purple-700);
+}
+
+.coupon__code {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.18px;
+  white-space: nowrap;
+}
+
+.coupon__icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.coupon__icon svg {
+  animation: pop var(--ease);
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

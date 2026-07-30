@@ -1,0 +1,138 @@
+/* ------------------------------------------------------------------
+   Reset enxuto + shell da página
+   ------------------------------------------------------------------ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--surface-canvas);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+/* Fundo do "palco" fora do shell em telas largas */
+@media (min-width: 600px) {
+  body {
+    background:
+      radial-gradient(120% 80% at 50% 0%, rgba(88, 31, 255, 0.18) 0%, transparent 60%),
+      var(--surface-canvas);
+    padding: 24px 16px;
+  }
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+input {
+  font: inherit;
+  color: inherit;
+}
+
+/* Sem margens do UA: todo o espaçamento vem dos `gap` definidos no Figma */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+svg {
+  display: block;
+}
+
+/* O shell reproduz o frame de 360px do Figma e cresce até 420px no desktop */
+.shell {
+  width: 100%;
+  max-width: var(--shell-width);
+  background: var(--surface-canvas);
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 600px) {
+  .shell {
+    max-width: 420px;
+    border-radius: var(--radius-modal);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* Tipografia utilitária alinhada aos estilos do Figma */
+.t-h1 {
+  font-size: var(--h1-size);
+  font-weight: 700;
+  line-height: var(--heading-leading);
+}
+
+.t-h2 {
+  font-size: var(--h2-size);
+  font-weight: 700;
+  line-height: var(--heading-leading);
+}
+
+.t-h3 {
+  font-size: var(--h3-size);
+  font-weight: 600;
+  line-height: var(--heading-leading);
+}
+
+.t-body {
+  font-size: var(--body-size);
+  font-weight: 400;
+  line-height: var(--body-leading);
+}
+
+.t-small {
+  font-size: var(--small-size);
+  font-weight: 400;
+  line-height: var(--body-leading);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

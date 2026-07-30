@@ -1,0 +1,75 @@
+/* ------------------------------------------------------------------
+   Design tokens — espelham 1:1 as variáveis do Figma
+   Arquivo: otFCFq9vy3mUvwLcb11hwf  ·  Página "Campanha — Telas Mobile"
+   ------------------------------------------------------------------ */
+:root {
+  /* Neutros */
+  --grey-50: #ffffff;
+  --grey-100: #b6b6b6;
+  --grey-200: #939393;
+  --grey-300: #626262;
+  --grey-400: #434343;
+  --grey-500: #141414;
+  --grey-600: #121212;
+  --grey-900: #080808;
+
+  /* Verde neon — ação principal da campanha */
+  --green-300: #c7fe55;
+  --green-500: #abfe02;
+  --green-700: #79b401;
+  --green-900: #486b01;
+
+  /* Roxo elétrico — ação secundária / destaque */
+  --purple-300: #8f69ff;
+  --purple-500: #581fff;
+  --purple-700: #3e16b5;
+
+  /* Feedback */
+  --red-500: #ed2424;
+
+  /* Papéis semânticos */
+  --surface-canvas: var(--grey-900);
+  --surface-section: var(--grey-600);
+  --surface-modal: var(--grey-500);
+  --border-input: var(--grey-400);
+  --border-input-filled: var(--grey-300);
+  --text-primary: var(--grey-50);
+  --text-muted: var(--grey-100);
+  --text-placeholder: var(--grey-300);
+
+  /* Gradientes do design */
+  --grad-steps: linear-gradient(180deg, rgba(37, 13, 107, 0.65) 0%, #121212 100%);
+  --grad-tile: linear-gradient(135deg, rgb(121, 76, 255) 0%, rgb(80, 28, 232) 71.429%);
+  --grad-card-cupom: linear-gradient(90deg, #3e16b5 0%, rgba(37, 13, 107, 0.35) 100%);
+  --grad-card-sorte: linear-gradient(90deg, rgba(72, 107, 1, 0.85) 0%, #141414 100%);
+  --grad-cta-glow: linear-gradient(90deg, #bcfe35 0%, #79b401 100%);
+  --grad-cta-glow-pressed: linear-gradient(90deg, #79b401 0%, #486b01 100%);
+
+  /* Sombras / glows */
+  --glow-tile: 0 0 22px 0 rgba(88, 31, 255, 0.55);
+  --glow-neon: 0 0 9px rgba(171, 254, 2, 0.35);
+  --glow-neon-strong: 0 0 10px rgba(171, 254, 2, 0.45);
+  --glow-purple: 0 0 10px rgba(88, 31, 255, 0.5);
+  --glow-focus: 0 0 7px rgba(88, 31, 255, 0.45);
+
+  /* Tipografia — escala Barlow do Figma */
+  --font-family: "Barlow", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --h1-size: 24px;
+  --h2-size: 20px;
+  --h3-size: 16px;
+  --body-size: 14px;
+  --small-size: 12px;
+  --heading-leading: 1.2;
+  --body-leading: 1.5;
+
+  /* Layout */
+  --shell-width: 360px;
+  --gutter: 16px;
+  --radius-input: 8px;
+  --radius-card: 16px;
+  --radius-modal: 24px;
+  --radius-pill: 100px;
+
+  /* Movimento */
+  --ease: 0.2s ease-in-out;
+}

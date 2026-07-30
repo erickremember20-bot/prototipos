@@ -1,0 +1,91 @@
+/**
+ * Build de arquivo único.
+ *
+ * Concatena CSS e os módulos ES em um HTML autocontido que roda direto do
+ * disco (file://) e sob CSP restritiva — sem CDN, sem fontes remotas, sem
+ * requisições externas. Uso: `node build.mjs`
+ */
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const root = dirname(fileURLToPath(import.meta.url));
+const read = (file) => readFileSync(resolve(root, file), 'utf8');
+
+const STYLES = [
+  'src/styles/fonts.css',
+  'src/styles/tokens.css',
+  'src/styles/base.css',
+  'src/styles/components.css',
+];
+
+// Ordem de dependência — os módulos são concatenados dentro de um único IIFE.
+const MODULES = [
+  'src/js/lib/dom.js',
+  'src/js/lib/mask.js',
+  'src/js/lib/validators.js',
+  'src/js/data/content.js',
+  'src/js/data/assets.js',
+  'src/js/icons.js',
+  'src/js/components/Button.js',
+  'src/js/components/Input.js',
+  'src/js/components/Checkbox.js',
+  'src/js/components/Brand.js',
+  'src/js/components/Modal.js',
+  'src/js/components/ModalRules.js',
+  'src/js/components/ModalSuccess.js',
+  'src/js/components/Form.js',
+  'src/js/app.js',
+];
+
+/** Remove import/export para que os módulos compartilhem um escopo só. */
+function flatten(source, file) {
+  const stripped = source
+    .replace(/^\s*import[\s\S]*?from\s*['"][^'"]+['"];?\s*$/gm, '')
+    .replace(/^\s*export\s+(?=(const|let|var|function|class|async))/gm, '')
+    .replace(/^\s*export\s*\{[^}]*\};?\s*$/gm, '');
+
+  return `/* ---- ${file} ---- */\n${stripped.trim()}\n`;
+}
+
+const css = STYLES.map((file) => `/* ==== ${file} ==== */\n${read(file)}`).join('\n');
+const js = MODULES.map((file) => flatten(read(file), file)).join('\n');
+
+const html = `<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#080808" />
+    <meta
+      name="description"
+      content="Motorola x Canaltech — Edição Copa do Mundo. Garanta 20% OFF e concorra a 1 Motorola Edge 70 Fusion+."
+    />
+    <title>Motorola x Canaltech — Edição Copa do Mundo</title>
+    <!--
+      Protótipo interativo — arquivo único, autocontido (fonte Barlow embutida).
+      Gerado por build.mjs a partir de src/. Não edite este arquivo à mão.
+
+      Figma: otFCFq9vy3mUvwLcb11hwf — 12:43 Form · 12:44 Regras · 12:45 Sucesso
+    -->
+    <style>
+${css}
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+(function () {
+  'use strict';
+${js}
+})();
+    </script>
+  </body>
+</html>
+`;
+
+mkdirSync(resolve(root, 'dist'), { recursive: true });
+const out = resolve(root, 'dist/motorola-copa-landing-page.html');
+writeFileSync(out, html, 'utf8');
+
+console.log(`✓ ${out} — ${(Buffer.byteLength(html) / 1024).toFixed(1)} KB`);

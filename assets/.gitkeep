@@ -1,4 +1,6 @@
-Exporte aqui os 3 assets de marca do Figma (ver README.md):
-  canaltech-logo.svg                  (nó 66:90,  104x22)
-  motorola-logo.svg                   (nó 66:106, 104x20)
-  kv-motorola-edge-70-fusion.png      (nó 66:116, 328x185)
+Exporte aqui os 3 assets de marca do Figma (arquivo otFCFq9vy3mUvwLcb11hwf).
+Depois, ligue `enabled: true` em src/js/data/assets.js e rode `node build.mjs`.
+
+  canaltech-white.svg        (nó 16:3,  114.286 x 24)
+  motorola-white.svg         (nó 16:20, 102.564 x 20)
+  kv-edge-70-fusion.png      (nó 16:34, 328 x 184)
