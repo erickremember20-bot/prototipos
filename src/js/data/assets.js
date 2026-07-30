@@ -21,6 +21,8 @@
  * roda sem erro de console e sem rede, inclusive aberto direto do disco.
  */
 export const figmaAssets = {
+  // Vale só para a versão modular (index.html + servidor local).
+  // O build de arquivo único detecta os arquivos sozinho — veja abaixo.
   enabled: false,
   base: 'assets/',
   files: {
@@ -30,8 +32,19 @@ export const figmaAssets = {
   },
 };
 
-/** Caminho do asset, ou null quando os originais ainda não estão disponíveis. */
+/**
+ * Caminho do asset, ou null quando os originais ainda não estão disponíveis.
+ *
+ * O `build.mjs` procura os arquivos em `assets/` na hora de gerar o bundle e,
+ * se encontrar, embute cada um como data URI em `globalThis.__FIGMA_ASSETS__`.
+ * Ou seja: basta exportar os arquivos do Figma e rodar `node build.mjs` — o
+ * arquivo único passa a usar os originais, ainda 100% offline e sem editar
+ * uma linha de código.
+ */
 export function assetPath(key) {
+  const embedded = globalThis.__FIGMA_ASSETS__?.[key];
+  if (embedded) return embedded;
+
   if (!figmaAssets.enabled) return null;
   return figmaAssets.base + figmaAssets.files[key];
 }

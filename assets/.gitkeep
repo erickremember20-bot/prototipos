@@ -1,6 +1,9 @@
-Exporte aqui os 3 assets de marca do Figma (arquivo otFCFq9vy3mUvwLcb11hwf).
-Depois, ligue `enabled: true` em src/js/data/assets.js e rode `node build.mjs`.
+Exporte aqui os assets do Figma (arquivo otFCFq9vy3mUvwLcb11hwf, frame "Assets" 2:651).
+Depois rode `node build.mjs` — o build detecta e embute cada um automaticamente.
 
-  canaltech-white.svg        (nó 16:3,  114.286 x 24)
-  motorola-white.svg         (nó 16:20, 102.564 x 20)
-  kv-edge-70-fusion.png      (nó 16:34, 328 x 184)
+  canaltech-white.svg     nó 2:691 (canaltech_white 1)   → usar em 114.286 x 24
+  motorola-white.svg      nó 2:678 (motorola_white 1)    → usar em 102.564 x 20
+  kv-edge-70-fusion.png   nó 2:844 (kv_motorola_02 1)    → usar em 328 x 184
+
+Bônus disponível no mesmo frame, caso queira o lockup com o emblema oficial:
+  nó 2:708 (motorola_fifa_white 1, 200 x 142)

@@ -129,22 +129,45 @@ não depende do Google Fonts em tempo de execução.
 
 ## ⚠️ Assets de marca pendentes
 
-O host `www.figma.com` está **bloqueado pela política de egresso** deste
-ambiente (403 no CONNECT), então os bytes dos assets exportados não puderam ser
-baixados — a API do MCP devolve URLs nesse host, inclusive para screenshots.
+Os assets **foram localizados** no arquivo, no frame `2:651` ("Assets"):
 
-Três assets precisam ser exportados manualmente para `assets/`:
-
-| Arquivo | Nó | Dimensões |
+| Arquivo esperado em `assets/` | Nó no Figma | Usado em |
 |---|---|---|
-| `canaltech-white.svg` | `16:3` | 114.286 × 24 |
-| `motorola-white.svg` | `16:20` | 102.564 × 20 |
-| `kv-edge-70-fusion.png` | `16:34` | 328 × 184 |
+| `canaltech-white.svg` | `2:691` (`canaltech_white 1`) | 114.286 × 24 |
+| `motorola-white.svg` | `2:678` (`motorola_white 1`) | 102.564 × 20 |
+| `kv-edge-70-fusion.png` | `2:844` (`kv_motorola_02 1`) | 328 × 184 |
 
-Enquanto isso, cada um é substituído por um **fallback desenhado em SVG/CSS na
-caixa exata do design** — a página não quebra e não dispara requisição nenhuma.
-Para passar a usar os originais: exporte os arquivos, troque `enabled` para
-`true` em `src/js/data/assets.js` e rode `node build.mjs`.
+O que **não** foi possível fazer é baixar os bytes: o host `www.figma.com` está
+bloqueado pela política de egresso deste ambiente (403 no CONNECT do proxy), e
+é o único host que serve os assets do MCP — vale para `download_assets`, para
+`get_screenshot` e para as URLs dentro do `get_design_context`. Os nós vetoriais
+também voltam como URL, sem `path` inline, então não há como reconstruí-los.
+
+**Para colocar os originais — um passo:**
+
+```bash
+# exporte os 3 arquivos do Figma para assets/ com os nomes da tabela acima
+node build.mjs
+```
+
+O build procura cada arquivo em `assets/`, embute como data URI e o protótipo
+passa a usar os originais — continuando 100% offline, sem editar código:
+
+```
+· asset embutido: assets/canaltech-white.svg
+· asset embutido: assets/motorola-white.svg
+· asset embutido: assets/kv-edge-70-fusion.png
+  3/3 assets do Figma embutidos
+```
+
+Enquanto os arquivos não existirem, cada um é substituído por um **fallback
+desenhado em SVG/CSS na caixa exata do design** — o do key visual reproduz a
+composição do original (céu lavanda, bloco de texto à esquerda com o lockup
+motorola | FIFA e o gramado com a linha do círculo central). A página não
+quebra e não dispara requisição nenhuma.
+
+> No mesmo frame há também `2:708` (`motorola_fifa_white 1`, 200 × 142), o
+> lockup com o emblema oficial, caso queira usá-lo no lugar do KV.
 
 Os **ícones** (user-check, envelope, trophy, alert, copy, close, check-double,
 link, chevron-right, check) foram redesenhados à mão reproduzindo o traço

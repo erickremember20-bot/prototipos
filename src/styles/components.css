@@ -60,64 +60,79 @@
   display: none;
 }
 
-/* Placeholder do key visual: campo + luz de estádio, na moldura do design */
-/* `hidden` precisa vencer os display: flex/block dos fallbacks */
-.kv__fallback[hidden],
-.logo-fallback[hidden] {
-  display: none;
-}
-
+/* Placeholder do key visual (nó 16:34), na composição do asset original:
+   céu lavanda, texto à esquerda, gramado com a linha do círculo central. */
 .kv__fallback {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(90% 120% at 50% 115%, rgba(171, 254, 2, 0.35) 0%, transparent 55%),
-    linear-gradient(160deg, #5b2ee0 0%, #2d1173 55%, #141414 100%);
+  background: linear-gradient(180deg, #d2d1dc 0%, #bfbfd0 58%, #b3b4c6 100%);
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 14px;
+  align-items: flex-start;
+  overflow: hidden;
 }
 
-.kv__fallback::after {
+/* Gramado + linha do círculo central */
+.kv__pitch {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 32%;
+  background: linear-gradient(180deg, #63b352 0%, #3f8f36 100%);
+}
+
+.kv__pitch::before {
   content: "";
   position: absolute;
   left: 50%;
-  bottom: -46px;
-  width: 92px;
-  height: 92px;
-  transform: translateX(-50%);
-  border: 2px solid rgba(255, 255, 255, 0.35);
+  top: 22%;
+  width: 118px;
+  height: 118px;
+  transform: translateX(-30%);
+  border: 2px solid rgba(255, 255, 255, 0.85);
   border-radius: 50%;
 }
 
+.kv__copy {
+  position: relative;
+  z-index: 1;
+  padding: 16px 0 0 14px;
+  max-width: 61%;
+}
+
 .kv__title {
-  font-size: 17px;
-  font-weight: 700;
-  line-height: 1.15;
-  color: var(--grey-50);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.1;
+  color: #1b1b26;
+  letter-spacing: -0.01em;
 }
 
 .kv__sub {
-  font-size: 11px;
-  line-height: 1.35;
-  color: rgba(255, 255, 255, 0.82);
-  max-width: 62%;
-  margin-top: 3px;
+  font-size: 9.5px;
+  line-height: 1.3;
+  color: #33333f;
+  margin-top: 4px;
 }
 
-.kv__badge {
-  align-self: flex-start;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
-  color: var(--grey-500);
-  background: var(--green-500);
-  border-radius: var(--radius-pill);
-  padding: 4px 10px;
-  position: relative;
-  z-index: 1;
+.kv__lockup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.kv__rule {
+  width: 1px;
+  height: 22px;
+  background: rgba(27, 27, 38, 0.35);
+}
+
+.kv__partner {
+  font-size: 7px;
+  line-height: 1.3;
+  color: #33333f;
+  margin-top: 5px;
 }
 
 /* ---------- Hero (16:31) ---------------------------------------- */

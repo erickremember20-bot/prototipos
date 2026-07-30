@@ -5,7 +5,7 @@
  * disco (file://) e sob CSP restritiva — sem CDN, sem fontes remotas, sem
  * requisições externas. Uso: `node build.mjs`
  */
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -48,8 +48,39 @@ function flatten(source, file) {
   return `/* ---- ${file} ---- */\n${stripped.trim()}\n`;
 }
 
+/**
+ * Assets de marca exportados do Figma.
+ *
+ * Se os arquivos existirem em `assets/`, cada um é embutido no bundle como
+ * data URI — o arquivo único continua offline e passa a usar os originais
+ * automaticamente, sem editar código. Se não existirem, a página usa os
+ * fallbacks em SVG/CSS e não dispara requisição nenhuma.
+ */
+const ASSETS = {
+  canaltech: { file: 'assets/canaltech-white.svg', mime: 'image/svg+xml' },
+  motorola: { file: 'assets/motorola-white.svg', mime: 'image/svg+xml' },
+  kv: { file: 'assets/kv-edge-70-fusion.png', mime: 'image/png' },
+};
+
+const embedded = {};
+for (const [key, { file, mime }] of Object.entries(ASSETS)) {
+  const path = resolve(root, file);
+  if (!existsSync(path)) continue;
+  embedded[key] = `data:${mime};base64,${readFileSync(path).toString('base64')}`;
+  console.log(`  · asset embutido: ${file}`);
+}
+
+const found = Object.keys(embedded);
+console.log(
+  found.length
+    ? `  ${found.length}/3 assets do Figma embutidos (${found.join(', ')})`
+    : '  nenhum asset em assets/ — usando os fallbacks em SVG/CSS',
+);
+
+const assetsGlobal = `globalThis.__FIGMA_ASSETS__ = ${JSON.stringify(embedded)};`;
+
 const css = STYLES.map((file) => `/* ==== ${file} ==== */\n${read(file)}`).join('\n');
-const js = MODULES.map((file) => flatten(read(file), file)).join('\n');
+const js = `${assetsGlobal}\n\n${MODULES.map((file) => flatten(read(file), file)).join('\n')}`;
 
 const html = `<!doctype html>
 <html lang="pt-BR">
@@ -88,4 +119,25 @@ mkdirSync(resolve(root, 'dist'), { recursive: true });
 const out = resolve(root, 'dist/motorola-copa-landing-page.html');
 writeFileSync(out, html, 'utf8');
 
+/**
+ * Variante para publicação como Artifact: mesmo conteúdo, mas sem
+ * <html>/<head>/<body> — esse envelope é fornecido no momento do deploy.
+ */
+const fragment = `<title>Motorola x Canaltech — Edição Copa do Mundo</title>
+<style>
+${css}
+</style>
+<div id="app"></div>
+<script>
+(function () {
+  'use strict';
+${js}
+})();
+</script>
+`;
+
+const outFragment = resolve(root, 'dist/artifact.html');
+writeFileSync(outFragment, fragment, 'utf8');
+
 console.log(`✓ ${out} — ${(Buffer.byteLength(html) / 1024).toFixed(1)} KB`);
+console.log(`✓ ${outFragment} — ${(Buffer.byteLength(fragment) / 1024).toFixed(1)} KB`);
