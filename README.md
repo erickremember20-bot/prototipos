@@ -127,44 +127,36 @@ não depende do Google Fonts em tempo de execução.
 
 ---
 
-## ⚠️ Assets de marca pendentes
+## ✅ Assets de marca
 
-Os assets **foram localizados** no arquivo, no frame `2:651` ("Assets"):
+Os três assets de marca estão embutidos no protótipo — vieram do frame `2:651`
+("Assets") do mesmo arquivo do Figma e foram integrados via upload direto no
+repositório (o host `www.figma.com` é bloqueado pela política de egresso do
+ambiente onde este protótipo foi gerado, então o MCP não conseguiu baixar os
+bytes diretamente):
 
-| Arquivo esperado em `assets/` | Nó no Figma | Usado em |
+| Arquivo em `assets/` | Nó no Figma | Usado em |
 |---|---|---|
 | `canaltech-white.svg` | `2:691` (`canaltech_white 1`) | 114.286 × 24 |
 | `motorola-white.svg` | `2:678` (`motorola_white 1`) | 102.564 × 20 |
-| `kv-edge-70-fusion.jpg` | `2:844` (`kv_motorola_02 1`) | 328 × 184 |
+| `kv-edge-70-fusion.jpg` | `2:844` (`kv_motorola_02 1`) | 984 × 552 (recomprimido de 1920×1080) |
 
-O que **não** foi possível fazer é baixar os bytes: o host `www.figma.com` está
-bloqueado pela política de egresso deste ambiente (403 no CONNECT do proxy), e
-é o único host que serve os assets do MCP — vale para `download_assets`, para
-`get_screenshot` e para as URLs dentro do `get_design_context`. Os nós vetoriais
-também voltam como URL, sem `path` inline, então não há como reconstruí-los.
-
-**Para colocar os originais — um passo:**
-
-```bash
-# exporte os 3 arquivos do Figma para assets/ com os nomes da tabela acima
-node build.mjs
-```
-
-O build procura cada arquivo em `assets/`, embute como data URI e o protótipo
-passa a usar os originais — continuando 100% offline, sem editar código:
+`node build.mjs` detecta os três, embute cada um como data URI e o arquivo
+único continua 100% offline:
 
 ```
 · asset embutido: assets/canaltech-white.svg
 · asset embutido: assets/motorola-white.svg
 · asset embutido: assets/kv-edge-70-fusion.jpg
-  3/3 assets do Figma embutidos
+  3/3 assets do Figma embutidos (canaltech, motorola, kv)
 ```
 
-Enquanto os arquivos não existirem, cada um é substituído por um **fallback
-desenhado em SVG/CSS na caixa exata do design** — o do key visual reproduz a
-composição do original (céu lavanda, bloco de texto à esquerda com o lockup
-motorola | FIFA e o gramado com a linha do círculo central). A página não
-quebra e não dispara requisição nenhuma.
+Se algum dia um desses arquivos for removido de `assets/`, a página não
+quebra: cada um tem um fallback desenhado em SVG/CSS na caixa exata do design
+(o do key visual reproduz a composição do original — céu lavanda, texto à
+esquerda com o lockup motorola | FIFA, gramado com a linha do círculo
+central), e nenhuma requisição é disparada. Veja `assets/COMO-EXPORTAR.md`
+para reexportar do Figma, nó por nó.
 
 > No mesmo frame há também `2:708` (`motorola_fifa_white 1`, 200 × 142), o
 > lockup com o emblema oficial, caso queira usá-lo no lugar do KV.
