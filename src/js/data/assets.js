@@ -21,9 +21,10 @@
  * roda sem erro de console e sem rede, inclusive aberto direto do disco.
  */
 export const figmaAssets = {
-  // Vale só para a versão modular (index.html + servidor local).
-  // O build de arquivo único detecta os arquivos sozinho — veja abaixo.
-  enabled: false,
+  // Vale só para a versão modular (index.html + servidor local): os arquivos
+  // são carregados de `assets/` assim que existirem — basta exportar e dar
+  // refresh. O build de arquivo único detecta e embute sozinho (veja abaixo).
+  enabled: true,
   base: 'assets/',
   files: {
     canaltech: 'canaltech-white.svg',
@@ -44,6 +45,10 @@ export const figmaAssets = {
 export function assetPath(key) {
   const embedded = globalThis.__FIGMA_ASSETS__?.[key];
   if (embedded) return embedded;
+
+  // No arquivo único não existe pasta `assets/` ao lado: se o asset não foi
+  // embutido no build, vai direto para o fallback em vez de pedir um 404.
+  if (globalThis.__FIGMA_ASSETS_EMBEDDED_ONLY__) return null;
 
   if (!figmaAssets.enabled) return null;
   return figmaAssets.base + figmaAssets.files[key];

@@ -77,7 +77,9 @@ console.log(
     : '  nenhum asset em assets/ — usando os fallbacks em SVG/CSS',
 );
 
-const assetsGlobal = `globalThis.__FIGMA_ASSETS__ = ${JSON.stringify(embedded)};`;
+const assetsGlobal =
+  `globalThis.__FIGMA_ASSETS__ = ${JSON.stringify(embedded)};\n` +
+  'globalThis.__FIGMA_ASSETS_EMBEDDED_ONLY__ = true;';
 
 const css = STYLES.map((file) => `/* ==== ${file} ==== */\n${read(file)}`).join('\n');
 const js = `${assetsGlobal}\n\n${MODULES.map((file) => flatten(read(file), file)).join('\n')}`;
