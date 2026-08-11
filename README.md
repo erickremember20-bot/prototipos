@@ -1,4 +1,124 @@
-# Canaltech x Motorola | FIFA — Edição Copa do Mundo
+# Protótipos de landing page — Canaltech Ofertas
+
+Dois protótipos independentes, cada um em **arquivo único**, sem etapa de build
+para editar e sem dependência de assets externos em runtime.
+
+| # | Protótipo | Fonte | Build autocontido |
+|---|---|---|---|
+| 1 | **CT em Campo** — Canaltech Ofertas × Netshoes (wireframe monocromático) | `ct-em-campo.html` | `ct-em-campo.artifact.html` |
+| 2 | **Canaltech × Motorola \| FIFA** — Edição Copa do Mundo | `index.html` | `artifact.html` |
+
+---
+
+## 1. CT em Campo — Canaltech Ofertas × Netshoes
+
+Landing page VIP de produto único (oferta liberada para a comunidade), construída
+como **wireframe monocromático de alta fidelidade**: o objetivo é validar
+arquitetura de conversão, hierarquia e responsividade **sem** cor de marca.
+
+| | |
+|---|---|
+| **Entregável** | `ct-em-campo.html` (arquivo único, sem build) |
+| **Stack** | Tailwind CSS via CDN + JavaScript vanilla |
+| **Responsivo** | 360px → 1280px+ |
+| **Assets externos** | nenhum (imagens em SVG inline, tipografia da stack do sistema) |
+
+Basta abrir `ct-em-campo.html` no navegador. A única dependência de rede é o CDN
+do Tailwind; para uso offline (ou publicação como Artifact, cuja CSP bloqueia
+hosts externos), use `ct-em-campo.artifact.html`, que embute o CSS compilado.
+
+### Paleta (escala única, estritamente monocromática)
+
+| Papel | Token | Hex |
+|---|---|---|
+| Superfície principal / texto invertido | `white` | `#FFFFFF` |
+| Fundo da página e de blocos internos | `mist` | `#F3F4F6` |
+| Bordas e divisores | `line` | `#E5E7EB` |
+| Texto terciário, unidades, dots | `ink-400` | `#9CA3AF` |
+| Texto secundário e corpo | `ink-600` | `#4B5563` |
+| Texto primário, faixa VIP, CTA | `ink-900` | `#111827` |
+
+Raio padrão `rounded-xl` (12px) nos cards e controles, `rounded-2xl` no
+container da página. Tipografia: stack sans-serif do sistema — escolha
+deliberada para manter o arquivo 100% autocontido, sem webfont remota.
+
+### Arquitetura de conversão
+
+1. **Header clean** — co-branding apenas. Sem busca global, sem navegação e sem
+   categorias: nenhuma rota de fuga na página de oferta.
+2. **Faixa VIP** — barra escura de topo: `OFERTA VIP DA COMUNIDADE LIBERADA — 20% OFF EXCLUSIVO`.
+3. **Hero + buying box** — 2 colunas no desktop (`620px` de galeria + bloco de
+   compra), empilhado abaixo de `lg`. Ancoragem de preço (`De R$ 664,99` riscado
+   → `R$ 531,99` + "Menor Preço do Brasil"), countdown, cupom e CTA.
+4. **Selo editorial "Seleção CT em Campo"** — curadoria estática com 3 atributos
+   (desempenho, tecnologia, padrão FIFA Quality Pro).
+5. **Retenção de lead** — banner da comunidade no WhatsApp.
+6. **Sticky CTA bar** — apenas `<768px`, com preço e CTA repetidos.
+
+### Interações implementadas
+
+| Recurso | Comportamento |
+|---|---|
+| **Countdown** | Regressivo real com tick de 1s a partir de `02d 14h 30m`; ao zerar, congela em `00` e troca o rótulo para "Esta oferta foi encerrada". |
+| **Galeria** | 5 vistas em SVG inline. Troca por thumbnail, setas, dots, `←`/`→` no teclado e swipe horizontal no touch. Navegação circular. |
+| **Cupom** | Clique copia `canaltech20` (Clipboard API com fallback `execCommand`) e devolve feedback por 2,4s. |
+| **Sticky bar** | Revelada quando o CTA principal sai por cima da viewport, com `transform` animado. |
+| **CTAs** | Protótipo sem destino real: disparam um toast com `aria-live`. |
+
+O key visual (estádio com refletores + bola em wireframe) é **gerado em SVG no
+próprio arquivo** — não há imagem para baixar, então a página nunca abre
+quebrada e funciona offline.
+
+#### Decisões de implementação
+
+1. **Sticky bar sem `IntersectionObserver`.** O IO só notifica *mudanças* de
+   estado de interseção; um salto de "abaixo da dobra" direto para "acima da
+   viewport" (âncora, `scrollTo`, restauração de scroll) não dispara callback
+   algum e deixaria a barra presa escondida. A visibilidade é lida do
+   `getBoundingClientRect()` em um handler de scroll com `requestAnimationFrame`.
+2. **`De R$ 664,99` riscado + `por`.** O mockup de referência repete o valor
+   cheio nos dois lados ("De R$ 664,99 por ~~R$ 664,99~~"); aqui o riscado é
+   aplicado uma única vez, sobre o preço original, que é o comportamento correto
+   de ancoragem.
+3. **Legenda "CT EM CAMPO" fora do escudo.** No mockup ela aparece dentro da
+   ponta do escudo, onde a silhueta é estreita demais para o texto sem cortar —
+   foi movida para logo abaixo do selo.
+4. **Countdown não é anunciado a cada segundo.** O bloco visual é `aria-live="off"`;
+   um resumo textual paralelo é atualizado só quando o minuto muda.
+
+### Acessibilidade
+
+- Link "pular para a oferta" como primeiro alvo de tabulação.
+- Galeria com `role="group"`/`aria-roledescription`, thumbnails em `role="tab"`
+  com `aria-selected`/`aria-current` e setas de teclado no palco.
+- SVGs das miniaturas marcados como decorativos: o nome acessível vem do texto
+  `sr-only` do botão (sem anúncio duplicado).
+- Sticky bar sai da ordem de tabulação (`tabindex="-1"` + `aria-hidden`) enquanto
+  está escondida.
+- Foco visível em todos os controles e `prefers-reduced-motion` respeitado.
+
+### Verificação
+
+Suíte de **42 asserções** em Chromium (Playwright) rodando em 4 viewports
+(360×640, 375×667, 768×1024, 1280×900): ausência de erros de JS, ausência de
+overflow horizontal, tick do countdown, valores iniciais, troca de imagem por
+thumbnail/seta, sincronia dos dots, estado da sticky bar no topo e após o
+scroll, cópia do cupom e feedback dos CTAs — **42/42 aprovadas**.
+
+### Regerar o build autocontido
+
+```bash
+node tools/build-artifact.mjs ct-em-campo.html ct-em-campo.artifact.html
+```
+
+O script lê o `tailwind.config` inline do arquivo de origem (fonte única de
+verdade dos tokens), compila o CSS com o Tailwind CLI varrendo o próprio HTML e
+emite o arquivo sem `<!DOCTYPE>`/`<html>`/`<head>`/`<body>`, como o publicador de
+Artifacts espera.
+
+---
+
+## 2. Canaltech x Motorola | FIFA — Edição Copa do Mundo
 
 Protótipo interativo da landing page de co-branding, implementado a partir do
 arquivo do Figma via MCP.
@@ -15,7 +135,7 @@ Basta abrir `index.html` no navegador. Não há dependências de build.
 
 ---
 
-## ⚠️ Assets de marca pendentes
+### ⚠️ Assets de marca pendentes
 
 O ambiente onde este protótipo foi gerado tem **acesso de rede aos hosts da Figma
 bloqueado por política** (HTTP 403 no CONNECT para `www.figma.com`,
@@ -43,7 +163,7 @@ dimensões de caixa e de glifo definidas no Figma.
 
 ---
 
-## Design tokens
+### Design tokens
 
 Os valores aplicados são os das **variáveis reais do Figma**, que divergem
 levemente dos hexadecimais aproximados do briefing:
@@ -64,7 +184,7 @@ Tipografia: **Barlow** 400 / 600 / 700 (Google Fonts). Escala do Figma —
 Raios: input `12px` · botões `9999px` (pill) · cards dos drawers `24px` ·
 topo dos bottom sheets `32px`.
 
-### Divergências conscientes do Figma
+#### Divergências conscientes do Figma
 
 1. **Rótulo do input em repouso** — o Figma usa `grey-400` `#434343` sobre
    `#141414` (≈ 2,2:1, reprova no WCAG AA). Aplicado `grey-200` `#939393`
@@ -79,7 +199,7 @@ topo dos bottom sheets `32px`.
 
 ---
 
-## Regras de negócio implementadas
+### Regras de negócio implementadas
 
 O CTA principal (`QUERO MEU DESCONTO AGORA`) inicia **`DISABLED`** e só é
 habilitado por `validateForm()` quando **todas** as condições são satisfeitas:
@@ -103,7 +223,7 @@ sorteio".
 
 ---
 
-## Acessibilidade
+### Acessibilidade
 
 - Floating label é um `<label>` real (nome acessível preservado, WCAG 3.3.2);
   a flutuação é 100% CSS via `:placeholder-shown`.
@@ -117,7 +237,7 @@ sorteio".
 
 ---
 
-## Verificação
+### Verificação
 
 Suíte de 51 asserções em Chromium (Playwright) cobrindo máscara de CPF, as
 quatro combinações de validação, os 4 estados do Input Field, habilitação do
