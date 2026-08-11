@@ -31,6 +31,35 @@ Três formatos do mesmo protótipo, todos gerados a partir de `ct-em-campo.html`
 | `ct-em-campo.standalone.html` | **Download / uso offline** — documento completo com o CSS compilado embutido. Abre com dois cliques, sem rede. |
 | `ct-em-campo.artifact.html` | **Publicação como Artifact** — sem esqueleto de documento (o publicador injeta o dele) e sem host externo, que a CSP bloqueia. |
 
+### Arquivo do Figma (design ↔ código)
+
+O protótipo foi espelhado no Figma para edição pelo time:
+
+| | |
+|---|---|
+| **File key** | `FtcQy17MpdYvRHuysCVNJj` (CT_em_Campo) |
+| **Página** | `Landing VIP — Wireframe` (`8:2`) |
+| **Telas** | `Desktop — 1400` (`11:20`) · `Mobile — 360` (`17:64`) |
+| **Componentes** | seção `Componentes & Tokens — CT em Campo` (`21:124`) |
+
+As telas usam **variáveis** (coleção `CT — Wireframe`: 6 cores, 3 raios, 7 espaçamentos),
+**17 estilos de texto** e **7 componentes** (`cta/primary`, `feature/item`,
+`gallery/thumb`, `badge/curadoria`, `logo/ct-icon`, `logo/netshoes`,
+`kv/product-shot`). Nenhum valor hexadecimal solto: cores e espaçamentos estão
+ligados às variáveis, então trocar um token propaga para as duas telas.
+
+O logo CT em Campo, a bola e o logo Netshoes são os **vetores originais do
+arquivo**, clonados e recoloridos para a escala monocromática — não são redesenhos.
+
+Duas divergências conscientes em relação ao HTML:
+
+1. **Tipografia** — o HTML usa a stack sans-serif do sistema (para ficar
+   autocontido). No Figma isso está como **Inter**, equivalente mais próximo
+   disponível.
+2. **Sticky bar do mobile** — no HTML ela é revelada por scroll; no Figma está
+   ancorada no rodapé da tela (`constraints` vertical `MAX`), que é como se
+   representa um elemento fixo em um frame de scroll.
+
 ### Paleta (escala única, estritamente monocromática)
 
 | Papel | Token | Hex |
