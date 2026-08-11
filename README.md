@@ -5,7 +5,7 @@ para editar e sem dependência de assets externos em runtime.
 
 | # | Protótipo | Fonte | Build autocontido |
 |---|---|---|---|
-| 1 | **CT em Campo** — Canaltech Ofertas × Netshoes (wireframe monocromático) | `ct-em-campo.html` | `ct-em-campo.artifact.html` |
+| 1 | **CT em Campo** — Canaltech Ofertas × Netshoes (wireframe monocromático) | `ct-em-campo.html` | `ct-em-campo.standalone.html` · `ct-em-campo.artifact.html` |
 | 2 | **Canaltech × Motorola \| FIFA** — Edição Copa do Mundo | `index.html` | `artifact.html` |
 
 ---
@@ -23,9 +23,13 @@ arquitetura de conversão, hierarquia e responsividade **sem** cor de marca.
 | **Responsivo** | 360px → 1280px+ |
 | **Assets externos** | nenhum (imagens em SVG inline, tipografia da stack do sistema) |
 
-Basta abrir `ct-em-campo.html` no navegador. A única dependência de rede é o CDN
-do Tailwind; para uso offline (ou publicação como Artifact, cuja CSP bloqueia
-hosts externos), use `ct-em-campo.artifact.html`, que embute o CSS compilado.
+Três formatos do mesmo protótipo, todos gerados a partir de `ct-em-campo.html`:
+
+| Arquivo | Quando usar |
+|---|---|
+| `ct-em-campo.html` | **Fonte** — o arquivo que se edita. Tailwind via CDN, então precisa de rede para renderizar. |
+| `ct-em-campo.standalone.html` | **Download / uso offline** — documento completo com o CSS compilado embutido. Abre com dois cliques, sem rede. |
+| `ct-em-campo.artifact.html` | **Publicação como Artifact** — sem esqueleto de documento (o publicador injeta o dele) e sem host externo, que a CSP bloqueia. |
 
 ### Paleta (escala única, estritamente monocromática)
 
@@ -105,16 +109,21 @@ overflow horizontal, tick do countdown, valores iniciais, troca de imagem por
 thumbnail/seta, sincronia dos dots, estado da sticky bar no topo e após o
 scroll, cópia do cupom e feedback dos CTAs — **42/42 aprovadas**.
 
-### Regerar o build autocontido
+### Regerar os builds autocontidos
 
 ```bash
-node tools/build-artifact.mjs ct-em-campo.html ct-em-campo.artifact.html
+node tools/build-artifact.mjs --standalone ct-em-campo.html ct-em-campo.standalone.html
+node tools/build-artifact.mjs             ct-em-campo.html ct-em-campo.artifact.html
 ```
 
 O script lê o `tailwind.config` inline do arquivo de origem (fonte única de
-verdade dos tokens), compila o CSS com o Tailwind CLI varrendo o próprio HTML e
-emite o arquivo sem `<!DOCTYPE>`/`<html>`/`<head>`/`<body>`, como o publicador de
-Artifacts espera.
+verdade dos tokens) e compila o CSS com o Tailwind CLI varrendo o próprio HTML —
+inclusive as classes que só aparecem dentro das strings do JavaScript.
+
+Com `--standalone` o esqueleto do documento é preservado (incluindo o
+`<meta charset>`), gerando um arquivo que abre direto do disco. Sem a flag, o
+esqueleto é removido: é o formato que o publicador de Artifacts espera, já que
+ele injeta o próprio `<!doctype>`, `<head>` e `<body>`.
 
 ---
 

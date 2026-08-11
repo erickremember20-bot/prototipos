@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#111827" />
+<meta name="description" content="CT em Campo — Canaltech Ofertas x Netshoes. Oferta VIP da comunidade: Adidas Trionda Copa do Mundo 2026 Pro com 20% OFF exclusivo." />
+<title>CT em Campo | Canaltech Ofertas x Netshoes — Oferta VIP</title>
+
+<!--
+  ============================================================================
+  LANDING PAGE VIP — "CT em Campo" (Canaltech Ofertas x Netshoes)
+  ----------------------------------------------------------------------------
+  Protótipo funcional de alta fidelidade em WIREFRAME MONOCROMÁTICO.
+  Paleta ESTRITA (sem cores de marca):
+    #FFFFFF · #F3F4F6 · #E5E7EB · #9CA3AF · #4B5563 · #111827
+  O foco é UX funcional, hierarquia, fluxo de layout, responsividade e
+  arquitetura de conversão — não a identidade visual das marcas.
+
+  Stack: arquivo único, Tailwind CSS via CDN + JavaScript vanilla (zero build).
+  Sem dependências externas de imagem ou fonte: todo o key visual (estádio +
+  bola) é SVG inline gerado em runtime, e a tipografia usa a stack do sistema.
+  Responsivo: 375px (mobile) · 768px (tablet) · 1280px+ (desktop).
+
+  Interações reais:
+    1. Countdown regressivo com tick de 1s (dias/horas/minutos/segundos).
+    2. Galeria com thumbnails, setas, dots, teclado e swipe (touch).
+    3. Cupom pré-aplicado com copiar-para-a-área-de-transferência.
+    4. Barra CTA fixa no mobile (<768px), revelada ao rolar além do CTA principal.
+  ============================================================================
+-->
+
+<style>
+*,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/*! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com*/*,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}.pointer-events-none{pointer-events:none}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.inset-x-0{left:0;right:0}.bottom-0{bottom:0}.bottom-24{bottom:6rem}.bottom-3{bottom:.75rem}.left-1\/2{left:50%}.left-2{left:.5rem}.right-2{right:.5rem}.top-1\/2{top:50%}.z-40{z-index:40}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.mt-0\.5{margin-top:.125rem}.mt-1{margin-top:.25rem}.mt-1\.5{margin-top:.375rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.block{display:block}.inline{display:inline}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.hidden{display:none}.aspect-\[4\/3\]{aspect-ratio:4/3}.h-1\.5{height:.375rem}.h-10{height:2.5rem}.h-12{height:3rem}.h-16{height:4rem}.h-3\.5{height:.875rem}.h-4{height:1rem}.h-5{height:1.25rem}.h-6{height:1.5rem}.h-8{height:2rem}.h-9{height:2.25rem}.h-\[15px\]{height:15px}.h-\[18px\]{height:18px}.h-\[62px\]{height:62px}.h-full{height:100%}.w-1\.5{width:.375rem}.w-12{width:3rem}.w-16{width:4rem}.w-3\.5{width:.875rem}.w-4{width:1rem}.w-5{width:1.25rem}.w-6{width:1.5rem}.w-8{width:2rem}.w-9{width:2.25rem}.w-\[15px\]{width:15px}.w-\[18px\]{width:18px}.w-\[52px\]{width:52px}.w-full{width:100%}.min-w-0{min-width:0}.max-w-\[1160px\]{max-width:1160px}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.-translate-x-1\/2{--tw-translate-x:-50%}.-translate-x-1\/2,.-translate-y-1\/2{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.-translate-y-1\/2{--tw-translate-y:-50%}.translate-y-2{--tw-translate-y:0.5rem}.translate-y-2,.translate-y-full{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.translate-y-full{--tw-translate-y:100%}.transform{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.resize{resize:both}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.place-items-center{place-items:center}.items-center{align-items:center}.justify-center{justify-content:center}.gap-1\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-2\.5{gap:.625rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.gap-5{gap:1.25rem}.gap-6{gap:1.5rem}.gap-x-2{-moz-column-gap:.5rem;column-gap:.5rem}.gap-y-1{row-gap:.25rem}.overflow-hidden{overflow:hidden}.overflow-x-auto{overflow-x:auto}.scroll-smooth{scroll-behavior:smooth}.whitespace-nowrap{white-space:nowrap}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-2{border-width:2px}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-dashed{border-style:dashed}.border-ink-400{--tw-border-opacity:1;border-color:rgb(156 163 175/var(--tw-border-opacity,1))}.border-line{--tw-border-opacity:1;border-color:rgb(229 231 235/var(--tw-border-opacity,1))}.border-white\/10{border-color:hsla(0,0%,100%,.1)}.bg-ink-900{--tw-bg-opacity:1;background-color:rgb(17 24 39/var(--tw-bg-opacity,1))}.bg-mist{--tw-bg-opacity:1;background-color:rgb(243 244 246/var(--tw-bg-opacity,1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255/var(--tw-bg-opacity,1))}.bg-white\/50{background-color:hsla(0,0%,100%,.5)}.bg-white\/90{background-color:hsla(0,0%,100%,.9)}.p-3{padding:.75rem}.p-4{padding:1rem}.px-0\.5{padding-left:.125rem;padding-right:.125rem}.px-1{padding-left:.25rem;padding-right:.25rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.py-2\.5{padding-top:.625rem;padding-bottom:.625rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-3\.5{padding-top:.875rem;padding-bottom:.875rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-5{padding-top:1.25rem;padding-bottom:1.25rem}.pb-24{padding-bottom:6rem}.pb-4{padding-bottom:1rem}.pb-6{padding-bottom:1.5rem}.text-center{text-align:center}.font-mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace}.font-sans{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif}.text-\[0\.6em\]{font-size:.6em}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.text-\[12px\]{font-size:12px}.text-\[13px\]{font-size:13px}.text-\[14px\]{font-size:14px}.text-\[15px\]{font-size:15px}.text-\[19px\]{font-size:19px}.text-\[22px\]{font-size:22px}.text-\[24px\]{font-size:24px}.text-\[40px\]{font-size:40px}.text-\[9px\]{font-size:9px}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xs{font-size:.75rem;line-height:1rem}.font-bold{font-weight:700}.font-extrabold{font-weight:800}.font-medium{font-weight:500}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.italic{font-style:italic}.leading-\[1\.15\]{line-height:1.15}.leading-none{line-height:1}.leading-relaxed{line-height:1.625}.leading-snug{line-height:1.375}.leading-tight{line-height:1.25}.tracking-\[0\.02em\]{letter-spacing:.02em}.tracking-\[0\.04em\]{letter-spacing:.04em}.tracking-\[0\.05em\]{letter-spacing:.05em}.tracking-\[0\.06em\]{letter-spacing:.06em}.tracking-\[0\.08em\]{letter-spacing:.08em}.tracking-\[0\.14em\]{letter-spacing:.14em}.tracking-\[0\.42em\]{letter-spacing:.42em}.tracking-tight{letter-spacing:-.025em}.text-ink-400{--tw-text-opacity:1;color:rgb(156 163 175/var(--tw-text-opacity,1))}.text-ink-600{--tw-text-opacity:1;color:rgb(75 85 99/var(--tw-text-opacity,1))}.text-ink-900{--tw-text-opacity:1;color:rgb(17 24 39/var(--tw-text-opacity,1))}.text-line{--tw-text-opacity:1;color:rgb(229 231 235/var(--tw-text-opacity,1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.text-white\/60{color:hsla(0,0%,100%,.6)}.underline{text-decoration-line:underline}.decoration-white\/40{text-decoration-color:hsla(0,0%,100%,.4)}.underline-offset-4{text-underline-offset:4px}.antialiased{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.opacity-0{opacity:0}.shadow-card{--tw-shadow:0 1px 2px rgba(17,24,39,.04),0 8px 24px -12px rgba(17,24,39,.12);--tw-shadow-colored:0 1px 2px var(--tw-shadow-color),0 8px 24px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.outline{outline-style:solid}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.backdrop-blur{--tw-backdrop-blur:blur(8px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.duration-200{transition-duration:.2s}.duration-300{transition-duration:.3s}.will-change-transform{will-change:transform}.hover\:border-ink-400:hover{--tw-border-opacity:1;border-color:rgb(156 163 175/var(--tw-border-opacity,1))}.hover\:border-ink-900:hover{--tw-border-opacity:1;border-color:rgb(17 24 39/var(--tw-border-opacity,1))}.hover\:bg-black:hover{--tw-bg-opacity:1;background-color:rgb(0 0 0/var(--tw-bg-opacity,1))}.hover\:bg-mist:hover{--tw-bg-opacity:1;background-color:rgb(243 244 246/var(--tw-bg-opacity,1))}.hover\:bg-white:hover{--tw-bg-opacity:1;background-color:rgb(255 255 255/var(--tw-bg-opacity,1))}.hover\:text-ink-900:hover{--tw-text-opacity:1;color:rgb(17 24 39/var(--tw-text-opacity,1))}.focus\:not-sr-only:focus{position:static;width:auto;height:auto;padding:0;margin:0;overflow:visible;clip:auto;white-space:normal}.focus\:absolute:focus{position:absolute}.focus\:z-50:focus{z-index:50}.focus\:m-3:focus{margin:.75rem}.focus\:rounded-lg:focus{border-radius:.5rem}.focus\:bg-ink-900:focus{--tw-bg-opacity:1;background-color:rgb(17 24 39/var(--tw-bg-opacity,1))}.focus\:px-4:focus{padding-left:1rem;padding-right:1rem}.focus\:py-2:focus{padding-top:.5rem;padding-bottom:.5rem}.focus\:text-sm:focus{font-size:.875rem;line-height:1.25rem}.focus\:font-semibold:focus{font-weight:600}.focus\:text-white:focus{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.active\:scale-\[\.99\]:active{--tw-scale-x:.99;--tw-scale-y:.99;transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.aria-\[current\=true\]\:w-4[aria-current=true]{width:1rem}.aria-\[current\=true\]\:border-ink-900[aria-current=true]{--tw-border-opacity:1;border-color:rgb(17 24 39/var(--tw-border-opacity,1))}.aria-\[current\=true\]\:bg-white[aria-current=true]{--tw-bg-opacity:1;background-color:rgb(255 255 255/var(--tw-bg-opacity,1))}@media (min-width:400px){.min-\[400px\]\:text-\[13px\]{font-size:13px}}@media (min-width:640px){.sm\:block{display:block}.sm\:flex{display:flex}.sm\:inline-flex{display:inline-flex}.sm\:hidden{display:none}.sm\:aspect-\[16\/10\]{aspect-ratio:16/10}.sm\:h-14{height:3.5rem}.sm\:h-7{height:1.75rem}.sm\:h-\[70px\]{height:70px}.sm\:w-14{width:3.5rem}.sm\:w-7{width:1.75rem}.sm\:w-\[59px\]{width:59px}.sm\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.sm\:p-5{padding:1.25rem}.sm\:p-6{padding:1.5rem}.sm\:px-1{padding-left:.25rem;padding-right:.25rem}.sm\:px-6{padding-left:1.5rem;padding-right:1.5rem}.sm\:text-\[13px\]{font-size:13px}.sm\:text-\[15px\]{font-size:15px}.sm\:text-\[19px\]{font-size:19px}.sm\:text-\[26px\]{font-size:26px}.sm\:text-\[28px\]{font-size:28px}.sm\:text-\[44px\]{font-size:44px}.sm\:text-base{font-size:1rem;line-height:1.5rem}.sm\:text-sm{font-size:.875rem;line-height:1.25rem}}@media (min-width:768px){.md\:bottom-6{bottom:1.5rem}.md\:my-6{margin-top:1.5rem;margin-bottom:1.5rem}.md\:hidden{display:none}.md\:overflow-hidden{overflow:hidden}.md\:rounded-2xl{border-radius:1rem}.md\:border{border-width:1px}.md\:border-line{--tw-border-opacity:1;border-color:rgb(229 231 235/var(--tw-border-opacity,1))}.md\:pb-0{padding-bottom:0}.md\:shadow-card{--tw-shadow:0 1px 2px rgba(17,24,39,.04),0 8px 24px -12px rgba(17,24,39,.12);--tw-shadow-colored:0 1px 2px var(--tw-shadow-color),0 8px 24px -12px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}}@media (min-width:1024px){.lg\:block{display:block}.lg\:hidden{display:none}.lg\:aspect-\[4\/3\]{aspect-ratio:4/3}.lg\:h-\[68px\]{height:68px}.lg\:h-\[80px\]{height:80px}.lg\:w-\[67px\]{width:67px}.lg\:w-\[68px\]{width:68px}.lg\:grid-cols-\[auto_minmax\(0\2c 290px\)_minmax\(0\2c 1fr\)\]{grid-template-columns:auto minmax(0,290px) minmax(0,1fr)}.lg\:grid-cols-\[minmax\(0\2c 620px\)_minmax\(0\2c 1fr\)\]{grid-template-columns:minmax(0,620px) minmax(0,1fr)}.lg\:items-center{align-items:center}.lg\:gap-10{gap:2.5rem}.lg\:gap-5{gap:1.25rem}.lg\:gap-6{gap:1.5rem}.lg\:border-l{border-left-width:1px}.lg\:border-line{--tw-border-opacity:1;border-color:rgb(229 231 235/var(--tw-border-opacity,1))}.lg\:p-8{padding:2rem}.lg\:px-8{padding-left:2rem;padding-right:2rem}.lg\:pl-6{padding-left:1.5rem}.lg\:text-\[28px\]{font-size:28px}}
+</style>
+<style>
+  /* Números do countdown e dos preços sempre alinhados (sem "pulo" de largura) */
+  .tnum { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' 1; }
+
+  /* Esconde a scrollbar da régua de thumbnails mantendo o scroll funcional */
+  .no-bar { scrollbar-width: none; -ms-overflow-style: none; }
+  .no-bar::-webkit-scrollbar { display: none; }
+
+  /* Foco visível consistente em toda a página (WCAG 2.4.7) */
+  :where(a, button, [tabindex]):focus-visible {
+    outline: 2px solid #111827;
+    outline-offset: 2px;
+    border-radius: .5rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+
+<body class="bg-mist font-sans text-ink-900 antialiased">
+
+<!-- Link de salto: primeiro alvo de tabulação, some quando não focado -->
+<a href="#buy-box"
+   class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-3 focus:rounded-lg focus:bg-ink-900 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white">
+  Pular para a oferta
+</a>
+
+<!-- ==========================================================================
+     WRAPPER DA PÁGINA
+     Mobile: full-bleed. md+: "cartão" branco centralizado com borda e sombra,
+     reproduzindo o enquadramento do mockup de referência.
+     pb-24 no mobile reserva o espaço da sticky bar fixa.
+     ========================================================================== -->
+<div class="mx-auto w-full max-w-[1160px] bg-white pb-24 md:my-6 md:overflow-hidden md:rounded-2xl md:border md:border-line md:pb-0 md:shadow-card">
+
+  <!-- =======================================================================
+       1. HEADER CLEAN (ZERO VAZAMENTO)
+       Sem busca global, sem navegação, sem categorias: apenas o co-branding.
+       ======================================================================= -->
+  <header class="flex items-center gap-3 border-b border-line px-4 py-4 sm:px-6">
+
+    <!-- Marca CT (exibida no mobile, como no painel de referência) -->
+    <span class="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-ink-900 text-[11px] font-extrabold tracking-tight text-white sm:hidden"
+          aria-hidden="true">CT</span>
+
+    <!-- Wordmark mobile -->
+    <span class="text-[15px] font-bold tracking-tight sm:hidden">CT em Campo</span>
+
+    <!-- Wordmark desktop -->
+    <span class="hidden leading-none sm:block">
+      <span class="block text-[19px] font-extrabold tracking-tight text-ink-900">canaltech</span>
+      <span class="mt-1 block text-[10px] font-semibold tracking-[0.42em] text-ink-400">OFERTAS</span>
+    </span>
+
+    <span class="text-sm font-medium text-ink-400" aria-hidden="true">×</span>
+
+    <span class="text-[15px] font-extrabold italic tracking-tight text-ink-600 sm:text-[19px]">NETSHOES</span>
+
+    <span class="sr-only">Parceria Canaltech Ofertas e Netshoes</span>
+  </header>
+
+  <!-- =======================================================================
+       2. FAIXA VIP (COMUNIDADE LIBERADA)
+       ======================================================================= -->
+  <div class="flex items-center justify-center gap-2 bg-ink-900 px-4 py-3 text-center text-white">
+    <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 1 1 8 0v3"></path>
+    </svg>
+    <p class="text-[11px] font-bold uppercase leading-snug tracking-[0.06em] sm:text-[13px]">
+      Oferta VIP da comunidade liberada —
+      <span class="underline decoration-white/40 underline-offset-4">20% OFF</span> exclusivo
+    </p>
+  </div>
+
+  <!-- =======================================================================
+       3. HERO DO PRODUTO + BUYING BOX
+       Desktop: 2 colunas (galeria fluida | bloco de compra 400px).
+       Mobile/tablet: empilhado.
+       ======================================================================= -->
+  <main>
+    <section class="grid gap-6 p-4 sm:p-6 lg:grid-cols-[minmax(0,620px)_minmax(0,1fr)] lg:gap-10 lg:p-8">
+
+      <!-- ---------- COLUNA ESQUERDA: GALERIA ---------- -->
+      <div>
+        <!-- Palco da imagem principal -->
+        <div id="stage"
+             class="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-line bg-mist sm:aspect-[16/10] lg:aspect-[4/3]"
+             role="group" aria-roledescription="carrossel" aria-label="Galeria de imagens do produto">
+
+          <!-- Slides (SVG inline) injetados por renderGallery() -->
+          <div id="slides" class="h-full w-full"></div>
+
+          <!-- Setas sobre a imagem (mobile/tablet) -->
+          <button type="button" data-nav="prev"
+                  class="absolute left-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-line bg-white/90 text-ink-900 shadow-card backdrop-blur transition hover:bg-white lg:hidden">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+            <span class="sr-only">Imagem anterior</span>
+          </button>
+          <button type="button" data-nav="next"
+                  class="absolute right-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-line bg-white/90 text-ink-900 shadow-card backdrop-blur transition hover:bg-white lg:hidden">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+            <span class="sr-only">Próxima imagem</span>
+          </button>
+
+          <!-- Dots (mobile) -->
+          <div id="dots" class="absolute inset-x-0 bottom-3 flex items-center justify-center gap-1.5 sm:hidden"></div>
+        </div>
+
+        <!-- Régua de thumbnails + setas (desktop/tablet) -->
+        <div class="mt-3 hidden items-center gap-2 sm:flex">
+          <button type="button" data-nav="prev"
+                  class="grid h-10 w-8 shrink-0 place-items-center rounded-lg border border-line text-ink-600 transition hover:border-ink-900 hover:text-ink-900">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+            <span class="sr-only">Imagem anterior</span>
+          </button>
+
+          <div id="thumbs" class="no-bar flex flex-1 gap-2 overflow-x-auto scroll-smooth" role="tablist" aria-label="Miniaturas do produto"></div>
+
+          <button type="button" data-nav="next"
+                  class="grid h-10 w-8 shrink-0 place-items-center rounded-lg border border-line text-ink-600 transition hover:border-ink-900 hover:text-ink-900">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+            <span class="sr-only">Próxima imagem</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ---------- COLUNA DIREITA: BUYING BOX ---------- -->
+      <div id="buy-box" class="flex flex-col gap-4">
+
+        <h1 class="text-[22px] font-bold leading-[1.15] tracking-tight sm:text-[26px] lg:text-[28px]">
+          Adidas Trionda<br class="hidden lg:block" />
+          Copa do Mundo 2026 Pro
+        </h1>
+
+        <!-- Ancoragem de preço -->
+        <div>
+          <p class="text-sm text-ink-600">
+            De <s class="text-ink-400">R$ 664,99</s> por
+          </p>
+          <p class="tnum mt-0.5 text-[40px] font-extrabold leading-none tracking-tight sm:text-[44px]">
+            R$ 531,99
+          </p>
+          <p class="mt-1.5 text-xs font-medium text-ink-600">(Menor Preço do Brasil)</p>
+        </div>
+
+        <!-- Countdown em tempo real -->
+        <div class="rounded-xl border border-line bg-mist p-3 text-center" role="timer" aria-live="off">
+          <p class="flex items-center justify-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-600">
+            <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path>
+            </svg>
+            <span id="cd-label">Esta oferta expira em:</span>
+          </p>
+          <p id="cd-value" class="tnum mt-1.5 whitespace-nowrap text-[24px] font-bold leading-none tracking-tight sm:text-[28px]">
+            <span data-cd="d">02</span><span class="text-[0.6em] text-ink-400">d</span>
+            <span class="px-0.5 text-ink-400 sm:px-1">:</span>
+            <span data-cd="h">14</span><span class="text-[0.6em] text-ink-400">h</span>
+            <span class="px-0.5 text-ink-400 sm:px-1">:</span>
+            <span data-cd="m">30</span><span class="text-[0.6em] text-ink-400">m</span>
+            <span class="px-0.5 text-ink-400 sm:px-1">:</span>
+            <span data-cd="s">00</span><span class="text-[0.6em] text-ink-400">s</span>
+          </p>
+          <!-- Resumo textual para leitores de tela, atualizado a cada minuto -->
+          <p id="cd-sr" class="sr-only" aria-live="polite"></p>
+        </div>
+
+        <!-- Cupom pré-aplicado (clique para copiar) -->
+        <button type="button" id="coupon"
+                class="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-ink-400 px-3 py-3 text-center transition hover:border-ink-900 hover:bg-mist">
+          <svg class="h-4 w-4 shrink-0 text-ink-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0l-7.2-7.2A2 2 0 0 1 2.8 12V4.8A2 2 0 0 1 4.8 2.8H12a2 2 0 0 1 1.4.6l7.2 7.2a2 2 0 0 1 0 2.8Z"></path>
+            <circle cx="7.5" cy="7.5" r="1.2" fill="currentColor" stroke="none"></circle>
+          </svg>
+          <span id="coupon-text" class="text-[13px] font-semibold leading-tight sm:text-sm">
+            Cupom <span class="font-mono">"canaltech20"</span> Pré-Aplicado
+          </span>
+          <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"></path></svg>
+        </button>
+
+        <!-- CTA principal -->
+        <a href="#" id="cta-main"
+           class="flex w-full items-center justify-center gap-2.5 rounded-xl bg-ink-900 px-4 py-4 text-[15px] font-bold uppercase tracking-[0.04em] text-white transition hover:bg-black active:scale-[.99] sm:text-base">
+          <svg class="h-[18px] w-[18px] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 1 1 8 0v3"></path>
+          </svg>
+          Garantir a minha bola
+        </a>
+
+        <!-- Selos de confiança -->
+        <p class="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-xs text-ink-600">
+          <span class="inline-flex items-center gap-1.5">
+            <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3 5 6v5.5c0 4.2 2.9 7.6 7 9.5 4.1-1.9 7-5.3 7-9.5V6l-7-3Z"></path><path d="m9 12 2 2 4-4"></path>
+            </svg>
+            Compra 100% segura
+          </span>
+          <span class="text-line" aria-hidden="true">|</span>
+          <span>Estoque limitado</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         4. SELO EDITORIAL ESTÁTICO — "SELEÇÃO CT EM CAMPO"
+         ===================================================================== -->
+    <section class="px-4 pb-4 sm:px-6 lg:px-8" aria-labelledby="selecao-title">
+      <div class="rounded-xl border border-line p-4 sm:p-5">
+        <div class="grid gap-5 lg:grid-cols-[auto_minmax(0,290px)_minmax(0,1fr)] lg:items-center lg:gap-6">
+
+          <!-- Escudo de curadoria -->
+          <div class="flex items-center gap-4 lg:block">
+            <div class="shrink-0 text-center">
+              <svg class="h-[62px] w-[52px] sm:h-[70px] sm:w-[59px] lg:h-[80px] lg:w-[67px]" viewBox="0 0 72 86" fill="none" aria-hidden="true">
+                <path d="M36 2 4 12v34c0 17.2 13.2 31.4 32 38 18.8-6.6 32-20.8 32-38V12L36 2Z" fill="#111827"/>
+                <path d="M36 8.5 10 16.6v29.6c0 14.3 10.9 26.2 26 32 15.1-5.8 26-17.7 26-32V16.6L36 8.5Z" fill="none" stroke="#FFFFFF" stroke-opacity=".45" stroke-width="1.5"/>
+                <text x="36" y="40" text-anchor="middle" fill="#FFFFFF" font-family="ui-sans-serif,system-ui,Arial" font-size="23" font-weight="800" letter-spacing="-0.5">CT</text>
+                <rect x="15" y="47" width="42" height="12.5" rx="2.5" fill="#FFFFFF"/>
+                <text x="36" y="56" text-anchor="middle" fill="#111827" font-family="ui-sans-serif,system-ui,Arial" font-size="7.5" font-weight="800" letter-spacing="0.5">SELEÇÃO</text>
+                <path d="M27 66h18" stroke="#FFFFFF" stroke-opacity=".5" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+              <p class="mt-1 text-[9px] font-extrabold uppercase leading-none tracking-[0.14em] text-ink-600">CT em Campo</p>
+            </div>
+
+            <!-- No mobile o título acompanha o escudo; no desktop vai na coluna 2 -->
+            <div class="lg:hidden">
+              <h2 class="flex items-center gap-1.5 text-[15px] font-bold tracking-tight sm:text-base">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9L12 2.6Z"/></svg>
+                Seleção CT em Campo
+              </h2>
+              <p class="mt-1 text-[13px] leading-snug text-ink-600">
+                <span class="font-semibold text-ink-900">Curadoria Canaltech:</span>
+                testada e aprovada com padrão <span class="font-semibold text-ink-900">FIFA Quality Pro</span>.
+              </p>
+            </div>
+          </div>
+
+          <!-- Título + subtítulo (desktop) -->
+          <div class="hidden lg:block">
+            <h2 id="selecao-title" class="flex items-center gap-2 text-[19px] font-bold uppercase tracking-tight">
+              <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9L12 2.6Z"/></svg>
+              Seleção CT em Campo
+            </h2>
+            <p class="mt-2 text-[13px] leading-relaxed text-ink-600">
+              <span class="font-semibold text-ink-900">Curadoria Canaltech:</span> testada e aprovada
+              com padrão <span class="font-semibold text-ink-900">FIFA Quality Pro</span>.
+            </p>
+          </div>
+
+          <!-- 3 colunas de atributos -->
+          <ul class="grid gap-4 sm:grid-cols-3 lg:gap-5 lg:border-l lg:border-line lg:pl-6">
+            <li class="flex gap-2">
+              <svg class="mt-0.5 h-[15px] w-[15px] shrink-0 text-ink-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="1.6"></circle><path d="m7.8 12.4 2.8 2.8 5.6-5.8"></path></svg>
+              <div>
+                <h3 class="text-[11px] font-bold uppercase leading-tight tracking-[0.05em]">Desempenho profissional</h3>
+                <p class="mt-1 text-[12px] leading-snug text-ink-600">Construção termosselada para máxima precisão e controle em campo.</p>
+              </div>
+            </li>
+            <li class="flex gap-2">
+              <svg class="mt-0.5 h-[15px] w-[15px] shrink-0 text-ink-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="1.6"></circle><path d="m7.8 12.4 2.8 2.8 5.6-5.8"></path></svg>
+              <div>
+                <h3 class="text-[11px] font-bold uppercase leading-tight tracking-[0.05em]">Tecnologia de ponta</h3>
+                <p class="mt-1 text-[12px] leading-snug text-ink-600">Painéis com relevo 3D e textura inovadora para melhor aerodinâmica.</p>
+              </div>
+            </li>
+            <li class="flex gap-2">
+              <svg class="mt-0.5 h-[15px] w-[15px] shrink-0 text-ink-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="1.6"></circle><path d="m7.8 12.4 2.8 2.8 5.6-5.8"></path></svg>
+              <div>
+                <h3 class="text-[11px] font-bold uppercase leading-tight tracking-[0.05em]">Padrão FIFA Quality Pro</h3>
+                <p class="mt-1 text-[12px] leading-snug text-ink-600">Aprovada nos mais altos testes de qualidade e desempenho da FIFA.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         5. RETENÇÃO DE LEAD — COMUNIDADE NO WHATSAPP
+         ===================================================================== -->
+    <section class="px-4 pb-6 sm:px-6 lg:px-8">
+      <a href="#" id="cta-whats"
+         class="flex items-center gap-4 rounded-xl border border-line p-4 transition hover:border-ink-900 hover:bg-mist sm:p-5">
+        <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-line bg-mist text-ink-900 sm:h-14 sm:w-14" aria-hidden="true">
+          <svg class="h-6 w-6 sm:h-7 sm:w-7" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.6-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3c-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.7 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.2-.3-.3-.6-.4Z"/>
+          </svg>
+        </span>
+
+        <span class="min-w-0 flex-1">
+          <span class="block text-[14px] font-bold leading-tight sm:text-[15px]">Receba mais ofertas VIP no WhatsApp</span>
+          <span class="mt-1 block text-[12px] leading-snug text-ink-600 sm:text-[13px]">
+            Entre para a comunidade CT em Campo e receba ofertas exclusivas antes de todo mundo.
+          </span>
+        </span>
+
+        <!-- Botão no desktop · chevron no mobile -->
+        <span class="hidden shrink-0 items-center gap-2 rounded-xl bg-ink-900 px-4 py-3 text-[13px] font-bold uppercase tracking-[0.04em] text-white sm:inline-flex">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Z"/></svg>
+          Quero receber ofertas
+        </span>
+        <svg class="h-5 w-5 shrink-0 text-ink-400 sm:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+        <span class="sr-only sm:hidden">Quero receber ofertas</span>
+      </a>
+    </section>
+  </main>
+
+  <footer class="border-t border-line px-4 py-5 text-center text-[11px] leading-relaxed text-ink-400 sm:px-6">
+    Protótipo de layout — wireframe monocromático. Preços, prazos e cupom são fictícios
+    e servem apenas para demonstração da arquitetura de conversão.
+  </footer>
+</div>
+
+<!-- ==========================================================================
+     6. STICKY CTA BAR — SOMENTE MOBILE (<768px)
+     Revelada quando o CTA principal sai do topo da viewport.
+     ========================================================================== -->
+<div id="sticky-bar"
+     class="fixed inset-x-0 bottom-0 z-40 translate-y-full border-t border-white/10 bg-ink-900 px-3 py-2.5 text-white transition-transform duration-300 will-change-transform md:hidden">
+  <div class="flex items-center gap-3">
+    <div class="shrink-0">
+      <p class="tnum text-[19px] font-extrabold leading-none">R$ 531,99</p>
+      <p class="mt-1 text-[10px] leading-none text-white/60">no cupom canaltech20</p>
+    </div>
+    <a href="#" id="cta-sticky"
+       class="flex flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-white px-3 py-3.5 text-[12px] font-bold uppercase tracking-[0.02em] text-ink-900 transition active:scale-[.99] min-[400px]:text-[13px]">
+      <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 1 1 8 0v3"></path>
+      </svg>
+      Garantir minha bola
+    </a>
+  </div>
+</div>
+
+<!-- Toast de feedback (aria-live) -->
+<div id="toast"
+     class="pointer-events-none fixed bottom-24 left-1/2 z-50 -translate-x-1/2 translate-y-2 rounded-full bg-ink-900 px-4 py-2.5 text-[13px] font-semibold text-white opacity-0 shadow-card transition-all duration-200 md:bottom-6"
+     role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ======================================================================
+     GALERIA — key visual 100% SVG (estádio monocromático + bola wireframe)
+     Nenhum arquivo externo: o protótipo abre offline e não quebra sem assets.
+     ====================================================================== */
+
+  var SLIDES = [
+    { label: 'Vista frontal',            kind: 'ball', rot: 0   },
+    { label: 'Vista em perspectiva',     kind: 'ball', rot: 34  },
+    { label: 'Vista lateral',            kind: 'ball', rot: 68  },
+    { label: 'Detalhe dos painéis 3D',   kind: 'ball', rot: 112 },
+    { label: 'Embalagem do produto',     kind: 'box',  rot: 0   }
+  ];
+
+  /* Cena do estádio: refletores, feixes de luz e gramado — apenas cinzas. */
+  function stadium(uid, w, h) {
+    return ''
+      + '<defs>'
+      +   '<linearGradient id="sky' + uid + '" x1="0" y1="0" x2="0" y2="1">'
+      +     '<stop offset="0" stop-color="#4B5563"/><stop offset="1" stop-color="#111827"/>'
+      +   '</linearGradient>'
+      +   '<linearGradient id="turf' + uid + '" x1="0" y1="0" x2="0" y2="1">'
+      +     '<stop offset="0" stop-color="#9CA3AF" stop-opacity=".55"/>'
+      +     '<stop offset="1" stop-color="#111827" stop-opacity=".9"/>'
+      +   '</linearGradient>'
+      +   '<radialGradient id="ball' + uid + '" cx=".35" cy=".3" r=".85">'
+      +     '<stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#E5E7EB"/>'
+      +     '<stop offset="1" stop-color="#9CA3AF"/>'
+      +   '</radialGradient>'
+      +   '<filter id="glow' + uid + '" x="-70%" y="-70%" width="240%" height="240%">'
+      +     '<feGaussianBlur stdDeviation="9"/>'
+      +   '</filter>'
+      + '</defs>'
+      + '<rect width="' + w + '" height="' + h + '" fill="url(#sky' + uid + ')"/>'
+      /* feixes de luz dos refletores */
+      + '<g fill="#FFFFFF" opacity=".10">'
+      +   '<polygon points="54,14 120,300 -30,300"/>'
+      +   '<polygon points="346,14 430,300 280,300"/>'
+      +   '<polygon points="200,0 300,300 100,300" opacity=".5"/>'
+      + '</g>'
+      /* refletores */
+      + '<g fill="#FFFFFF">'
+      +   '<circle cx="54" cy="16" r="7" filter="url(#glow' + uid + ')" opacity=".8"/>'
+      +   '<circle cx="346" cy="16" r="7" filter="url(#glow' + uid + ')" opacity=".8"/>'
+      +   '<circle cx="54" cy="16" r="3.2"/><circle cx="346" cy="16" r="3.2"/>'
+      + '</g>'
+      /* gramado + linhas do campo */
+      + '<rect y="212" width="' + w + '" height="' + (h - 212) + '" fill="url(#turf' + uid + ')"/>'
+      + '<g fill="none" stroke="#FFFFFF" stroke-opacity=".22" stroke-width="1.5">'
+      +   '<path d="M0 232H400"/>'
+      +   '<ellipse cx="200" cy="268" rx="132" ry="26"/>'
+      + '</g>';
+  }
+
+  /* Bola "Trionda": esfera wireframe + costuras triradiais com relevo 3D. */
+  function ballArt(uid, rot) {
+    return ''
+      /* sombra projetada no gramado */
+      + '<ellipse cx="200" cy="238" rx="86" ry="15" fill="#111827" opacity=".45"/>'
+      + '<g transform="translate(200,150) rotate(' + rot + ')">'
+      +   '<circle r="86" fill="url(#ball' + uid + ')" stroke="#111827" stroke-width="2"/>'
+      /* meridianos/paralelos: leitura imediata de esfera em wireframe */
+      +   '<g fill="none" stroke="#4B5563" stroke-width="1.4" opacity=".65">'
+      +     '<ellipse rx="86" ry="30"/><ellipse rx="30" ry="86"/><ellipse rx="60" ry="86"/>'
+      +   '</g>'
+      /* costuras triradiais (3 painéis) */
+      +   '<g fill="none" stroke="#111827" stroke-width="3.4" stroke-linecap="round">'
+      +     '<path d="M0 0C10 30 6 60 0 86"/>'
+      +     '<path d="M0 0C-28 -8-56 -30-74.5 -43"/>'
+      +     '<path d="M0 0C28 -8 56 -30 74.5 -43"/>'
+      +   '</g>'
+      /* relevo 3D dos painéis (textura) */
+      +   '<g fill="none" stroke="#4B5563" stroke-width="1.6" stroke-linecap="round" opacity=".8">'
+      +     '<path d="M-14 22C-34 30-52 44-64 60"/>'
+      +     '<path d="M14 22C34 30 52 44 64 60"/>'
+      +     '<path d="M-4 -26C-26 -30-48 -40-64 -52"/>'
+      +     '<path d="M4 -26C26 -30 48 -40 64 -52"/>'
+      +     '<path d="M-22 46C-38 52-52 62-62 74"/>'
+      +     '<path d="M22 46C38 52 52 62 62 74"/>'
+      +   '</g>'
+      /* brilho especular */
+      +   '<ellipse cx="-32" cy="-40" rx="19" ry="11" fill="#FFFFFF" opacity=".45" transform="rotate(-28 -32 -40)"/>'
+      + '</g>';
+  }
+
+  /* Embalagem: caixa isométrica em wireframe. */
+  function boxArt(uid) {
+    return ''
+      + '<ellipse cx="200" cy="240" rx="84" ry="14" fill="#111827" opacity=".45"/>'
+      + '<g transform="translate(200,150)">'
+      +   '<polygon points="-74,-52 0,-84 74,-52 0,-20" fill="#FFFFFF" stroke="#111827" stroke-width="2"/>'
+      +   '<polygon points="-74,-52 0,-20 0,74 -74,42" fill="#E5E7EB" stroke="#111827" stroke-width="2"/>'
+      +   '<polygon points="74,-52 0,-20 0,74 74,42" fill="#9CA3AF" stroke="#111827" stroke-width="2"/>'
+      +   '<g fill="none" stroke="#111827" stroke-width="1.6" opacity=".55">'
+      +     '<path d="M-58 -20 -58 46"/><path d="M58 -20 58 46"/><path d="M0 -20 0 74"/>'
+      +   '</g>'
+      +   '<circle cx="-37" cy="8" r="16" fill="#FFFFFF" stroke="#111827" stroke-width="2"/>'
+      +   '<path d="M-37 -8C-31 -1-31 1-37 8M-37 -8C-43 -1-43 1-37 8" fill="none" stroke="#111827" stroke-width="1.6"/>'
+      +   '<rect x="24" y="0" width="26" height="16" rx="2" fill="#FFFFFF" stroke="#111827" stroke-width="1.6" transform="skewY(23)"/>'
+      + '</g>';
+  }
+
+  /* decorative = true nas miniaturas: o nome acessível vem do texto sr-only do
+     botão, evitando que o leitor de tela anuncie o rótulo duas vezes. */
+  function svgFor(i, decorative) {
+    var s = SLIDES[i], uid = (decorative ? 't' : 'u') + i;
+    return '<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" class="h-full w-full" '
+      + (decorative ? 'aria-hidden="true"' : 'role="img" aria-label="' + s.label + ' — Adidas Trionda Copa do Mundo 2026 Pro"')
+      + '>'
+      + stadium(uid, 400, 300)
+      + (s.kind === 'box' ? boxArt(uid) : ballArt(uid, s.rot))
+      + '</svg>';
+  }
+
+  var slidesEl = document.getElementById('slides');
+  var thumbsEl = document.getElementById('thumbs');
+  var dotsEl   = document.getElementById('dots');
+  var current  = 0;
+
+  function renderGallery() {
+    var slidesHtml = '', thumbsHtml = '', dotsHtml = '';
+
+    for (var i = 0; i < SLIDES.length; i++) {
+      slidesHtml += '<div class="absolute inset-0 transition-opacity duration-300" data-slide="' + i + '" '
+                 +  (i === 0 ? '' : 'hidden ') + '>' + svgFor(i) + '</div>';
+
+      thumbsHtml += '<button type="button" role="tab" data-thumb="' + i + '" '
+                 +  'aria-current="' + (i === 0 ? 'true' : 'false') + '" '
+                 +  'aria-selected="' + (i === 0 ? 'true' : 'false') + '" '
+                 +  'class="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 border-line bg-mist transition hover:border-ink-400 aria-[current=true]:border-ink-900 lg:h-[68px] lg:w-[68px]">'
+                 +  svgFor(i, true)
+                 +  '<span class="sr-only">' + SLIDES[i].label + '</span>'
+                 +  '</button>';
+
+      dotsHtml  += '<button type="button" data-thumb="' + i + '" '
+                 +  'aria-current="' + (i === 0 ? 'true' : 'false') + '" '
+                 +  'class="h-1.5 w-1.5 rounded-full bg-white/50 transition-all aria-[current=true]:w-4 aria-[current=true]:bg-white">'
+                 +  '<span class="sr-only">' + SLIDES[i].label + '</span></button>';
+    }
+
+    slidesEl.className = 'relative h-full w-full';
+    slidesEl.innerHTML = slidesHtml;
+    thumbsEl.innerHTML = thumbsHtml;
+    dotsEl.innerHTML   = dotsHtml;
+  }
+
+  function goTo(index) {
+    var n = SLIDES.length;
+    current = ((index % n) + n) % n; /* navegação circular */
+
+    var slides = slidesEl.querySelectorAll('[data-slide]');
+    for (var i = 0; i < slides.length; i++) slides[i].hidden = (i !== current);
+
+    var marks = document.querySelectorAll('[data-thumb]');
+    for (var j = 0; j < marks.length; j++) {
+      var active = Number(marks[j].getAttribute('data-thumb')) === current;
+      marks[j].setAttribute('aria-current', active ? 'true' : 'false');
+      if (marks[j].hasAttribute('aria-selected')) marks[j].setAttribute('aria-selected', active ? 'true' : 'false');
+      if (active && marks[j].parentNode === thumbsEl && marks[j].scrollIntoView) {
+        marks[j].scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      }
+    }
+  }
+
+  renderGallery();
+
+  document.addEventListener('click', function (e) {
+    var thumb = e.target.closest ? e.target.closest('[data-thumb]') : null;
+    if (thumb) { goTo(Number(thumb.getAttribute('data-thumb'))); return; }
+
+    var nav = e.target.closest ? e.target.closest('[data-nav]') : null;
+    if (nav) { goTo(current + (nav.getAttribute('data-nav') === 'next' ? 1 : -1)); }
+  });
+
+  /* Setas do teclado sobre o palco da galeria */
+  var stage = document.getElementById('stage');
+  stage.setAttribute('tabindex', '0');
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); goTo(current + 1); }
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); goTo(current - 1); }
+  });
+
+  /* Swipe horizontal (touch) */
+  var tx = 0, ty = 0;
+  stage.addEventListener('touchstart', function (e) {
+    tx = e.changedTouches[0].clientX; ty = e.changedTouches[0].clientY;
+  }, { passive: true });
+  stage.addEventListener('touchend', function (e) {
+    var dx = e.changedTouches[0].clientX - tx;
+    var dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) goTo(current + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+
+  /* ======================================================================
+     COUNTDOWN — 02d 14h 30m a partir do carregamento, com tick de 1s
+     ====================================================================== */
+  var DEADLINE = Date.now() + ((2 * 24 + 14) * 60 + 30) * 60 * 1000;
+
+  var cd = {
+    d: document.querySelector('[data-cd="d"]'),
+    h: document.querySelector('[data-cd="h"]'),
+    m: document.querySelector('[data-cd="m"]'),
+    s: document.querySelector('[data-cd="s"]')
+  };
+  var cdLabel = document.getElementById('cd-label');
+  var cdSr    = document.getElementById('cd-sr');
+  var lastMin = -1;
+
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+  function tick() {
+    var left = Math.max(0, DEADLINE - Date.now());
+    var total = Math.floor(left / 1000);
+    var d = Math.floor(total / 86400);
+    var h = Math.floor((total % 86400) / 3600);
+    var m = Math.floor((total % 3600) / 60);
+    var s = total % 60;
+
+    cd.d.textContent = pad(d);
+    cd.h.textContent = pad(h);
+    cd.m.textContent = pad(m);
+    cd.s.textContent = pad(s);
+
+    /* Leitores de tela: resumo a cada minuto (nunca a cada segundo) */
+    if (m !== lastMin) {
+      lastMin = m;
+      cdSr.textContent = left === 0
+        ? 'Oferta encerrada.'
+        : 'Oferta expira em ' + d + ' dias, ' + h + ' horas e ' + m + ' minutos.';
+    }
+
+    if (left === 0) {
+      cdLabel.textContent = 'Esta oferta foi encerrada';
+      clearInterval(timer);
+    }
+  }
+
+  tick();
+  var timer = setInterval(tick, 1000);
+
+  /* ======================================================================
+     TOAST
+     ====================================================================== */
+  var toastEl = document.getElementById('toast');
+  var toastTimer;
+
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.remove('opacity-0', 'translate-y-2');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toastEl.classList.add('opacity-0', 'translate-y-2');
+    }, 2400);
+  }
+
+  /* ======================================================================
+     CUPOM PRÉ-APLICADO — clique copia o código
+     ====================================================================== */
+  var coupon = document.getElementById('coupon');
+  var couponText = document.getElementById('coupon-text');
+  var couponHtml = couponText.innerHTML;
+  var couponTimer;
+
+  coupon.addEventListener('click', function () {
+    var code = 'canaltech20';
+    var done = function () {
+      couponText.textContent = 'Cupom "canaltech20" copiado';
+      toast('Cupom copiado — já aplicado no carrinho.');
+      clearTimeout(couponTimer);
+      couponTimer = setTimeout(function () { couponText.innerHTML = couponHtml; }, 2400);
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(code).then(done, done);
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = code; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch (err) {}
+      document.body.removeChild(ta);
+      done();
+    }
+  });
+
+  /* ======================================================================
+     CTAs — protótipo sem destino real
+     ====================================================================== */
+  function stub(id, msg) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('click', function (e) { e.preventDefault(); toast(msg); });
+  }
+  stub('cta-main',   'Redirecionando para o checkout da Netshoes…');
+  stub('cta-sticky', 'Redirecionando para o checkout da Netshoes…');
+  stub('cta-whats',  'Abrindo a comunidade CT em Campo no WhatsApp…');
+
+  /* ======================================================================
+     STICKY CTA BAR (<768px) — aparece quando o CTA principal sai da tela
+     ====================================================================== */
+  var bar = document.getElementById('sticky-bar');
+  var anchor = document.getElementById('cta-main');
+
+  function setBar(show) {
+    bar.classList.toggle('translate-y-full', !show);
+    /* Fora da tela, os controles saem também da ordem de tabulação */
+    bar.setAttribute('aria-hidden', show ? 'false' : 'true');
+    var links = bar.querySelectorAll('a');
+    for (var i = 0; i < links.length; i++) links[i].tabIndex = show ? 0 : -1;
+  }
+  var barShown = null;
+  var queued = false;
+
+  function syncBar() {
+    queued = false;
+    /* Revela assim que o CTA principal sai por cima da viewport.
+       Leitura direta do rect (e não IntersectionObserver): o IO só notifica
+       *mudanças* de estado, então um salto de "abaixo da dobra" para "acima da
+       viewport" — âncora, restauração de scroll, scrollTo — não dispararia
+       callback nenhum e a barra ficaria presa escondida. */
+    var show = anchor.getBoundingClientRect().bottom < 0;
+    if (show !== barShown) { barShown = show; setBar(show); }
+  }
+
+  function onScroll() {
+    if (queued) return;
+    queued = true;
+    window.requestAnimationFrame(syncBar);
+  }
+
+  setBar(false);
+  barShown = false;
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  syncBar();
+})();
+</script>
+</body>
+</html>

@@ -20,9 +20,13 @@ import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-const [src, dest] = process.argv.slice(2);
+const args = process.argv.slice(2);
+const standalone = args.includes('--standalone');
+const [src, dest] = args.filter((a) => !a.startsWith('--'));
 if (!src || !dest) {
-  console.error('uso: node tools/build-artifact.mjs <origem.html> <destino.html>');
+  console.error('uso: node tools/build-artifact.mjs [--standalone] <origem.html> <destino.html>');
+  console.error('  --standalone  preserva <!DOCTYPE>/<html>/<head>/<body> e o <meta charset>,');
+  console.error('                gerando um arquivo que abre direto do disco (file://).');
   process.exit(1);
 }
 
@@ -51,22 +55,27 @@ try {
 
   const css = readFileSync(join(work, 'out.css'), 'utf8');
 
-  /* 3. Monta o arquivo do Artifact. */
-  const out = html
-    /* remove o esqueleto do documento (o publicador injeta o dele) */
-    .replace(/<!DOCTYPE html>\s*/i, '')
-    .replace(/<html[^>]*>\s*/i, '')
-    .replace(/<\/html>\s*$/i, '')
-    .replace(/<head>\s*/i, '')
-    .replace(/<\/head>\s*/i, '')
-    .replace(/<meta charset="UTF-8"[^>]*>\s*/i, '')
-    .replace(/<meta name="viewport"[^>]*>\s*/i, '')
-    /* o <body> vira uma <div> com as mesmas classes */
-    .replace(/<body([^>]*)>/i, '<div$1>')
-    .replace(/<\/body>/i, '</div>')
+  /* 3. Monta o arquivo de saída. */
+  let out = html
     /* troca o CDN + config runtime pelo CSS compilado */
     .replace(/<script src="https:\/\/cdn\.tailwindcss\.com"><\/script>\s*/, '<style>\n' + css + '\n</style>\n')
     .replace(/<script>\s*\/\* -+\n\s*DESIGN TOKENS[\s\S]*?<\/script>\s*/, '');
+
+  if (!standalone) {
+    /* Formato do publicador de Artifacts: sem esqueleto de documento — ele
+       injeta o seu próprio <!doctype>, <head> (com charset) e <body>. */
+    out = out
+      .replace(/<!DOCTYPE html>\s*/i, '')
+      .replace(/<html[^>]*>\s*/i, '')
+      .replace(/<\/html>\s*$/i, '')
+      .replace(/<head>\s*/i, '')
+      .replace(/<\/head>\s*/i, '')
+      .replace(/<meta charset="UTF-8"[^>]*>\s*/i, '')
+      .replace(/<meta name="viewport"[^>]*>\s*/i, '')
+      /* o <body> vira uma <div> com as mesmas classes */
+      .replace(/<body([^>]*)>/i, '<div$1>')
+      .replace(/<\/body>/i, '</div>');
+  }
 
   writeFileSync(dest, out);
   console.log(`${dest} — ${(out.length / 1024).toFixed(1)} KB (CSS ${(css.length / 1024).toFixed(1)} KB)`);
