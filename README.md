@@ -60,6 +60,13 @@ Duas divergências conscientes em relação ao HTML:
    ancorada no rodapé da tela (`constraints` vertical `MAX`), que é como se
    representa um elemento fixo em um frame de scroll.
 
+### Assets
+
+Os vetores da marca estão em `assets/`, exportados direto do Figma via Plugin API
+(logos Canaltech Ofertas, CT, Netshoes, Motorola e os ícones). As **imagens do
+produto ainda faltam** — veja [`assets/README.md`](assets/README.md) para a lista
+exata de nomes e o link de upload.
+
 ### Paleta (escala única, estritamente monocromática)
 
 | Papel | Token | Hex |
