@@ -63,6 +63,21 @@ O CTA principal entra em `disabled` sozinho quando o contador chega a zero.
 | **Galeria** | 4 vistas com miniaturas (≥768px), setas, dots (mobile), `←`/`→` no teclado e swipe no touch. Navegação circular. |
 | **Cupom** | Clique copia `CANALTECH20` (Clipboard API com fallback) e devolve feedback por 2,4s. |
 | **Sticky bar** | Só abaixo de 768px. Aparece quando menos de 60% do CTA principal está à vista — em viewport alto, onde o botão nunca sai da tela, ela permanece oculta de propósito para não duplicar o mesmo CTA na mesma dobra. |
+| **Cadeado** | Clicar no CTA troca o glifo para `LockSimpleOpen` com um pop de escala e volta sozinho em 2,4s — equivalente ao smart animate do Figma. |
+| **Textura** | Os cards Seleção e Comunidade recebem o fill `PATTERN` do Figma (elipse de 69px a 3% = ponto de 2,07px, período 5,96px) como camada branca em `mix-blend-mode: overlay`, a 13% e 3% de opacidade. |
+
+### Publicar de verdade
+
+O objeto `LINKS` no topo do script guarda os dois destinos da campanha:
+
+```js
+var LINKS = { checkout: '', whatsapp: '' };
+```
+
+Com as URLs preenchidas, os CTAs viram links reais (`target="_blank"`, abrem em
+nova aba e funcionam com botão do meio). Vazias, os botões não navegam e apenas
+avisam na tela — para a página não mandar tráfego a lugar nenhum se subir antes
+dos links definitivos.
 
 ### Assets
 

@@ -11,7 +11,8 @@
   ============================================================================
   LANDING VIP — CT OFERTAS (Canaltech Ofertas × Netshoes)
   ----------------------------------------------------------------------------
-  Porte fiel da página "Projeto" do Figma (FtcQy17MpdYvRHuysCVNJj):
+  Campanha temporária. Implementação da página "Projeto" do Figma
+  (FtcQy17MpdYvRHuysCVNJj):
     Desktop — 1400 · Mobile — 360 · frame "Components" (estados)
 
   Tokens, tipografia, espaçamentos e estados vieram da leitura direta dos nós
@@ -157,6 +158,10 @@ a{color:inherit;text-decoration:none}
 .cta--primary[aria-disabled="true"]{background:rgba(84,185,118,.6);color:var(--green-100);
   pointer-events:none}
 
+/* cadeado abrindo no clique — equivalente ao smart animate do Figma */
+.cta .ico-lock{transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+.cta.is-unlocked .ico-lock{--i:var(--u-lockopen);transform:translateY(-1px) scale(1.14)}
+
 .trust{display:flex;align-items:center;justify-content:center;gap:6px;
   font-size:12px;line-height:1.5;color:var(--gray-500)}
 .trust .ico{color:var(--green-500)}
@@ -165,6 +170,20 @@ a{color:inherit;text-decoration:none}
 /* ==========================================================================
    SELEÇÃO CT OFERTAS
    ========================================================================== */
+/* ==========================================================================
+   TEXTURA DE BOLINHAS — fill PATTERN do Figma (fonte: "Ellipse 1", 69px)
+   scalingFactor 0.03 -> ponto de 2,07px · spacing 1,88 -> período de 5,96px
+   Camada branca com blend OVERLAY, na mesma opacidade de cada card.
+   ========================================================================== */
+.dotted{position:relative;isolation:isolate;overflow:hidden}
+.dotted::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:radial-gradient(circle,#fff 1.035px,transparent 1.035px);
+  background-size:5.96px 5.96px;background-position:0 0;
+  mix-blend-mode:overlay}
+.dotted > *{position:relative;z-index:1}
+.curation.dotted::before{opacity:.13}
+.community.dotted::before{opacity:.03}
+
 /* respiro entre os cards de baixo — Figma: mobile gap 16;
    desktop selecao-wrapper pb 16 e comunidade-wrapper pb 24 */
 .sec{margin-bottom:16px}
@@ -222,7 +241,11 @@ a{color:inherit;text-decoration:none}
    RODAPÉ
    ========================================================================== */
 .site-footer{border-top:1px solid var(--gray-200);padding:20px 0 24px}
+.site-footer .wrap{display:flex;flex-direction:column;gap:8px}
 .site-footer p{margin:0;text-align:center;font-size:11px;line-height:1.6;color:var(--gray-300)}
+.site-footer .legal{max-width:78ch;margin-inline:auto}
+.site-footer .legal b{color:var(--gray-400);font-weight:600}
+.site-footer .copyright{color:var(--gray-200)}
 
 /* ==========================================================================
    STICKY CTA BAR — só no mobile
@@ -410,7 +433,7 @@ body{padding-bottom:88px}
 
   <!-- ======================= SELEÇÃO CT OFERTAS ======================= -->
   <section class="wrap sec sec--curation" aria-labelledby="curation-title">
-    <div class="curation">
+    <div class="curation dotted">
       <div class="curation__top">
         <span class="seal">
           <img src="assets/badge_curadoria.svg" alt="" />
@@ -457,7 +480,7 @@ body{padding-bottom:88px}
 
   <!-- ======================= COMUNIDADE ======================= -->
   <section class="wrap sec sec--community">
-    <a class="community" href="#" id="cta-whats">
+    <a class="community dotted" href="#" id="cta-whats">
       <span class="community__icon"><i class="ico ico-whats" aria-hidden="true"></i></span>
       <span class="community__text">
         <strong>Receba mais ofertas VIP no WhatsApp</strong>
@@ -472,8 +495,14 @@ body{padding-bottom:88px}
 
   <footer class="site-footer">
     <div class="wrap">
-      <p>Protótipo de layout. Preços, prazos e cupom são fictícios e servem apenas para
-         demonstração da arquitetura de conversão.</p>
+      <p class="legal">
+        <b>Campanha temporária CT em Campo</b> · Canaltech Ofertas × Netshoes.
+        Oferta por tempo limitado, válida enquanto durar o estoque e sujeita a alteração
+        ou encerramento sem aviso prévio. Preço, prazo de entrega e disponibilidade são
+        confirmados na Netshoes no momento da finalização da compra. O cupom
+        <b>CANALTECH20</b> é aplicado automaticamente no carrinho.
+      </p>
+      <p class="copyright">© 2026 Canaltech · Todos os direitos reservados.</p>
     </div>
   </footer>
 </main>
@@ -638,19 +667,38 @@ body{padding-bottom:88px}
   });
 
   /* ====================================================================
-     CTAs — protótipo sem destino real
+     DESTINOS DA CAMPANHA
+     Preencha as duas URLs para publicar. Enquanto estiverem vazias, os botões
+     não navegam e apenas confirmam a ação na tela — evita mandar tráfego para
+     lugar nenhum se a página subir antes dos links definitivos.
      ==================================================================== */
-  function stub(id, msg) {
+  var LINKS = {
+    checkout: '',   /* produto na Netshoes, já com cupom/parâmetro de afiliado */
+    whatsapp: ''    /* convite do grupo da comunidade Canaltech Ofertas */
+  };
+
+  function ligarCTA(id, url, msg, destranca) {
     var el = document.getElementById(id);
-    if (el) el.addEventListener('click', function (e) {
-      e.preventDefault();
-      if (el.getAttribute('aria-disabled') === 'true') return;
-      toast(msg);
+    if (!el) return;
+    var voltar;
+    if (url) {
+      el.href = url;
+      el.target = '_blank';
+      el.rel = 'noopener';
+    }
+    el.addEventListener('click', function (e) {
+      if (el.getAttribute('aria-disabled') === 'true') { e.preventDefault(); return; }
+      if (destranca) {                       /* troca o glifo do cadeado e volta */
+        el.classList.add('is-unlocked');
+        clearTimeout(voltar);
+        voltar = setTimeout(function () { el.classList.remove('is-unlocked'); }, 2400);
+      }
+      if (!url) { e.preventDefault(); toast(msg); }
     });
   }
-  stub('cta-main', 'Redirecionando para o checkout da Netshoes…');
-  stub('cta-sticky', 'Redirecionando para o checkout da Netshoes…');
-  stub('cta-whats', 'Abrindo a comunidade Canaltech Ofertas no WhatsApp…');
+  ligarCTA('cta-main', LINKS.checkout, 'Link do checkout ainda não configurado.', true);
+  ligarCTA('cta-sticky', LINKS.checkout, 'Link do checkout ainda não configurado.', true);
+  ligarCTA('cta-whats', LINKS.whatsapp, 'Link da comunidade ainda não configurado.');
 
   /* ====================================================================
      STICKY BAR — aparece quando o CTA principal sai por cima da viewport.
