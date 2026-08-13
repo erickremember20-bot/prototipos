@@ -1,65 +1,45 @@
-# Assets — CT em Campo (Canaltech Ofertas × Netshoes)
+# Assets — CT OFERTAS (Canaltech Ofertas × Netshoes)
 
-Origem: arquivo do Figma `FtcQy17MpdYvRHuysCVNJj` (CT_em_Campo).
+Origem: arquivo do Figma `FtcQy17MpdYvRHuysCVNJj`, página `Projeto`.
+**Está tudo aqui** — nada pendente.
 
-Os **vetores já estão aqui** — foram exportados direto do Figma via Plugin API
-(`exportAsync` em `SVG_STRING`), então são os arquivos reais da marca, não redesenhos.
+## Masters (originais, não usados direto na página)
 
-As **imagens rasterizadas não estão** e precisam ser exportadas por você: a política
-de rede desta sessão bloqueia `figma.com` e `static.figma.com` (403 no CONNECT),
-então não há como baixar os bytes daqui.
-
----
-
-## ✅ Já no repositório
-
-| Arquivo | Dimensão | Uso | Observação |
-|---|---|---|---|
-| `logo-ct-ofertas.svg` | 160×48 | Header das telas e dos anúncios | Versão clara (`#F6F6F6`), para fundo azul/escuro |
-| `logo-ct-icon.svg` | 52×32 | Marca compacta, header mobile | Branco + amarelo `#FFF000` |
-| `logo-netshoes.svg` | 160×25 | Logo do parceiro | Versão branca |
-| `logo-canaltech-white.svg` | 200×42 | Wordmark Canaltech | Para fundo escuro |
-| `logo-motorola-white.svg` | 200×39 | Parceiro alternativo | Para a próxima campanha |
-| `icon-lock.svg` | 24×24 | Faixa VIP e CTA | Preenchido, branco |
-| `icon-whatsapp.svg` | 24×24 | Banner da comunidade e CTA | Branco |
-| `icon-cart.svg` | 20×20 | CTA de conversão (card do WhatsApp) | Traço branco |
-
-Todos usam `fill="white"` ou branco-gelo porque são aplicados sobre azul
-`#0039ff`, verde `#009732` ou preto `#141414`. Para fundo claro, troque o `fill`
-por `currentColor` e controle pelo CSS.
-
----
-
-## ⬜ Falta subir — imagens do produto
-
-Exporte do Figma e solte nesta pasta. **Mantenha exatamente estes nomes**, porque
-o HTML vai referenciá-los:
-
-| Nome esperado | O que é no Figma | Formato sugerido |
+| Arquivo | Dimensão | Peso |
 |---|---|---|
-| `trionda-hero.jpg` | `KV_TRIONDA 3` — bola sobre o fundo azul com "TRIONDA PRO" | JPG ou WebP, ≥ 1400px de largura |
-| `trionda-packshot-01.png` | `Ball1` (1088×1088) — packshot frontal | PNG, 1088px |
-| `trionda-packshot-02.png` | `Ball2` (1088×1088) — segunda vista | PNG, 1088px |
-| `trionda-packshot-03.png` | `Ball3` (1088×1088) — terceira vista | PNG, 1088px |
+| `hf_20260812_224345_…png` | 2752 × 1536 | 7,8 MB |
+| `Ball1.png` · `Ball2.png` · `Ball3.png` | 1088 × 1088 | ~1,3 MB cada |
 
-O `trionda-hero` é o key visual do topo (desktop, mobile, feed e story).
-Os três packshots alimentam as miniaturas da galeria e o card do WhatsApp.
+## Derivados de web — é o que a página carrega
 
-**Como subir pelo navegador:**
-<https://github.com/erickremember20-bot/Motorola_01/upload/claude/ct-campo-vip-landing-mu6qxo/assets>
+Gerados a partir dos masters (12 MB → 661 KB no total):
 
-Arraste os arquivos e clique em *Commit changes*. Se preferir outros nomes,
-tudo bem — só avise quais, para o HTML apontar para os certos.
+| Arquivo | Uso |
+|---|---|
+| `web/hero-trionda.jpg` (1600px) | Key visual da galeria, slide 1 |
+| `web/slide-2..4.jpg` (900px) | Packshots, slides 2 a 4 |
+| `web/thumb-1..4.jpg` (240px) | Miniaturas da galeria |
 
----
+Para regerar depois de trocar um master, veja o bloco de otimização no
+histórico do commit que criou esta pasta (Pillow, JPEG progressivo q82/q84).
 
-## Paleta e tipografia (para referência ao montar o HTML)
+## Vetores
 
-Marca: `blue-500 #0039ff` · `green-500 #009732` · `yellow-500 #fff000` ·
-`gray-500 #141414` · `gray-50 #ffffff`
+`logo_ct_ofertas.svg` · `Netshoes_logo.svg` · `badge_curadoria.svg` são usados
+como `<img>`, com as cores próprias.
 
-Tipografia: **Barlow** (ExtraBold / Bold / SemiBold / Regular). Está no Google
-Fonts, então não precisa de arquivo aqui — e para build offline já existe uma
-versão embutida em base64 em `artifact.html`.
+`logo-canaltech-white.svg`, `logo-ct-icon.svg` e `logo-motorola-white.svg` não
+entram nesta página — ficam para a próxima campanha e para o header alternativo.
 
-A escala completa de cor e tipo está documentada no README da raiz.
+## Ícones
+
+`icons.css` embute os ícones Phosphor (`LockSimple`, `Clock`, `Tag`, `Checks`,
+`ShieldCheck`, `Star`, `SealCheck`, `CaretRight`, `whatsapp`) como data URI e os
+aplica por máscara CSS, então a cor vem de `currentColor` — o mesmo ícone serve
+em branco na faixa VIP e em amarelo no selo. Os `.svg` soltos continuam aqui
+como fonte; `cart.svg` e `LockSimpleOpen.svg` são usados só nos anúncios.
+
+## Tipografia
+
+`fonts.css` embute a **Barlow** 400/500/600/700/800 (latin + latin-ext) em
+base64. A página não faz nenhuma requisição externa.

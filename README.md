@@ -1,165 +1,90 @@
 # Protótipos de landing page — Canaltech Ofertas
 
-Dois protótipos independentes, cada um em **arquivo único**, sem etapa de build
-para editar e sem dependência de assets externos em runtime.
+Dois protótipos independentes, sem etapa de build para editar e sem CDN.
 
 | # | Protótipo | Fonte | Build autocontido |
 |---|---|---|---|
-| 1 | **CT em Campo** — Canaltech Ofertas × Netshoes (wireframe monocromático) | `ct-em-campo.html` | `ct-em-campo.standalone.html` · `ct-em-campo.artifact.html` |
+| 1 | **CT OFERTAS** — Canaltech Ofertas × Netshoes (identidade final) | `ct-em-campo.html` + `assets/` | `ct-em-campo.standalone.html` · `ct-em-campo.artifact.html` |
 | 2 | **Canaltech × Motorola \| FIFA** — Edição Copa do Mundo | `index.html` | `artifact.html` |
 
 ---
 
-## 1. CT em Campo — Canaltech Ofertas × Netshoes
+## 1. CT OFERTAS — Canaltech Ofertas × Netshoes
 
-Landing page VIP de produto único (oferta liberada para a comunidade), construída
-como **wireframe monocromático de alta fidelidade**: o objetivo é validar
-arquitetura de conversão, hierarquia e responsividade **sem** cor de marca.
-
-| | |
-|---|---|
-| **Entregável** | `ct-em-campo.html` (arquivo único, sem build) |
-| **Stack** | Tailwind CSS via CDN + JavaScript vanilla |
-| **Responsivo** | 360px → 1280px+ |
-| **Assets externos** | nenhum (imagens em SVG inline, tipografia da stack do sistema) |
-
-Três formatos do mesmo protótipo, todos gerados a partir de `ct-em-campo.html`:
-
-| Arquivo | Quando usar |
-|---|---|
-| `ct-em-campo.html` | **Fonte** — o arquivo que se edita. Tailwind via CDN, então precisa de rede para renderizar. |
-| `ct-em-campo.standalone.html` | **Download / uso offline** — documento completo com o CSS compilado embutido. Abre com dois cliques, sem rede. |
-| `ct-em-campo.artifact.html` | **Publicação como Artifact** — sem esqueleto de documento (o publicador injeta o dele) e sem host externo, que a CSP bloqueia. |
-
-### Arquivo do Figma (design ↔ código)
-
-O protótipo foi espelhado no Figma para edição pelo time:
+Landing page VIP de produto único, porte fiel da página **`Projeto`** do Figma
+(`FtcQy17MpdYvRHuysCVNJj`), nas duas telas desenhadas: `Desktop — 1400` (`23:2608`)
+e `Mobile — 360` (`23:2695`).
 
 | | |
 |---|---|
-| **File key** | `FtcQy17MpdYvRHuysCVNJj` (CT_em_Campo) |
-| **Página** | `Landing VIP — Wireframe` (`8:2`) |
-| **Telas** | `Desktop — 1400` (`11:20`) · `Mobile — 360` (`17:64`) |
-| **Componentes** | seção `Componentes & Tokens — CT em Campo` (`21:124`) |
+| **Fonte** | `ct-em-campo.html` + `assets/` |
+| **Autocontido** | `ct-em-campo.standalone.html` (1,2 MB, abre offline) |
+| **Artifact** | `ct-em-campo.artifact.html` (mesmo conteúdo, sem o esqueleto do documento) |
+| **Stack** | HTML + CSS custom properties + JavaScript vanilla — sem build, sem CDN |
+| **Responsivo** | 360 · 390 · 768 · 1024 · 1400+ |
 
-As telas usam **variáveis** (coleção `CT — Wireframe`: 6 cores, 3 raios, 7 espaçamentos),
-**17 estilos de texto** e **7 componentes** (`cta/primary`, `feature/item`,
-`gallery/thumb`, `badge/curadoria`, `logo/ct-icon`, `logo/netshoes`,
-`kv/product-shot`). Nenhum valor hexadecimal solto: cores e espaçamentos estão
-ligados às variáveis, então trocar um token propaga para as duas telas.
+Tokens, tipografia, espaçamentos, raios e **estados** foram lidos nó a nó pela
+Plugin API do Figma, não estimados da imagem.
 
-O logo CT em Campo, a bola e o logo Netshoes são os **vetores originais do
-arquivo**, clonados e recoloridos para a escala monocromática — não são redesenhos.
+### Design tokens
 
-Duas divergências conscientes em relação ao HTML:
-
-1. **Tipografia** — o HTML usa a stack sans-serif do sistema (para ficar
-   autocontido). No Figma isso está como **Inter**, equivalente mais próximo
-   disponível.
-2. **Sticky bar do mobile** — no HTML ela é revelada por scroll; no Figma está
-   ancorada no rodapé da tela (`constraints` vertical `MAX`), que é como se
-   representa um elemento fixo em um frame de scroll.
-
-### Assets
-
-Os vetores da marca estão em `assets/`, exportados direto do Figma via Plugin API
-(logos Canaltech Ofertas, CT, Netshoes, Motorola e os ícones). As **imagens do
-produto ainda faltam** — veja [`assets/README.md`](assets/README.md) para a lista
-exata de nomes e o link de upload.
-
-### Paleta (escala única, estritamente monocromática)
+Espelham a coleção `Core`/`Brand` do arquivo:
 
 | Papel | Token | Hex |
 |---|---|---|
-| Superfície principal / texto invertido | `white` | `#FFFFFF` |
-| Fundo da página e de blocos internos | `mist` | `#F3F4F6` |
-| Bordas e divisores | `line` | `#E5E7EB` |
-| Texto terciário, unidades, dots | `ink-400` | `#9CA3AF` |
-| Texto secundário e corpo | `ink-600` | `#4B5563` |
-| Texto primário, faixa VIP, CTA | `ink-900` | `#111827` |
+| Header, marca | `--blue-500` | `#0039ff` |
+| Preço, navegação da galeria | `--blue-400` | `#3361ff` |
+| CTA de conversão | `--green-500` | `#009732` |
+| Destaques, selo, contador | `--yellow-500` | `#fff000` |
+| Faixa VIP, countdown | `--gray-500` | `#141414` |
 
-Raio padrão `rounded-xl` (12px) nos cards e controles, `rounded-2xl` no
-container da página. Tipografia: stack sans-serif do sistema — escolha
-deliberada para manter o arquivo 100% autocontido, sem webfont remota.
+Tipografia **Barlow** 400/500/600/700/800, embutida em `assets/fonts.css`
+(base64, sem requisição externa).
 
-### Arquitetura de conversão
+### Componentização e estados
 
-1. **Header clean** — co-branding apenas. Sem busca global, sem navegação e sem
-   categorias: nenhuma rota de fuga na página de oferta.
-2. **Faixa VIP** — barra escura de topo: `OFERTA VIP DA COMUNIDADE LIBERADA — 20% OFF EXCLUSIVO`.
-3. **Hero + buying box** — 2 colunas no desktop (`620px` de galeria + bloco de
-   compra), empilhado abaixo de `lg`. Ancoragem de preço (`De R$ 664,99` riscado
-   → `R$ 531,99` + "Menor Preço do Brasil"), countdown, cupom e CTA.
-4. **Selo editorial "Seleção CT em Campo"** — curadoria estática com 3 atributos
-   (desempenho, tecnologia, padrão FIFA Quality Pro).
-5. **Retenção de lead** — banner da comunidade no WhatsApp.
-6. **Sticky CTA bar** — apenas `<768px`, com preço e CTA repetidos.
+O frame `Components` do Figma define os estados de cada elemento interativo.
+Todos estão implementados:
 
-### Interações implementadas
+| Componente | Default | Hover | Pressed | Disabled |
+|---|---|---|---|---|
+| `.cta--primary` | `#009732` / branco | `#006b24` / `#e6f5eb` | `#003f15` / `#e6f5eb` | `#54b976` a 60% / `#b0dfbf` |
+| `.cta--secondary` | gradiente `#4cc875→#7cff09`, borda `#e6f5eb` | sem borda, brilho +4% | `scale(.985)` | — |
+| `.nav` (galeria) | `#3361ff` | `#0034e8` | `#0028b5` + `scale(.94)` | — |
+| `.community` (card mobile) | gradiente `#006b24→#00892e`, borda `#fff000` | — | gradiente `#004718→#006723`, borda e título `#b5aa00` | — |
+
+O CTA principal entra em `disabled` sozinho quando o contador chega a zero.
+
+### Interatividade
 
 | Recurso | Comportamento |
 |---|---|
-| **Countdown** | Regressivo real com tick de 1s a partir de `02d 14h 30m`; ao zerar, congela em `00` e troca o rótulo para "Esta oferta foi encerrada". |
-| **Galeria** | 5 vistas em SVG inline. Troca por thumbnail, setas, dots, `←`/`→` no teclado e swipe horizontal no touch. Navegação circular. |
-| **Cupom** | Clique copia `canaltech20` (Clipboard API com fallback `execCommand`) e devolve feedback por 2,4s. |
-| **Sticky bar** | Revelada quando o CTA principal sai por cima da viewport, com `transform` animado. |
-| **CTAs** | Protótipo sem destino real: disparam um toast com `aria-live`. |
+| **Countdown** | Regressivo real com tick de 1s a partir de `02d 14h 30m`; ao zerar troca o rótulo e desabilita os CTAs. |
+| **Galeria** | 4 vistas com miniaturas (≥768px), setas, dots (mobile), `←`/`→` no teclado e swipe no touch. Navegação circular. |
+| **Cupom** | Clique copia `CANALTECH20` (Clipboard API com fallback) e devolve feedback por 2,4s. |
+| **Sticky bar** | Só abaixo de 768px. Aparece quando menos de 60% do CTA principal está à vista — em viewport alto, onde o botão nunca sai da tela, ela permanece oculta de propósito para não duplicar o mesmo CTA na mesma dobra. |
 
-O key visual (estádio com refletores + bola em wireframe) é **gerado em SVG no
-próprio arquivo** — não há imagem para baixar, então a página nunca abre
-quebrada e funciona offline.
+### Assets
 
-#### Decisões de implementação
-
-1. **Sticky bar sem `IntersectionObserver`.** O IO só notifica *mudanças* de
-   estado de interseção; um salto de "abaixo da dobra" direto para "acima da
-   viewport" (âncora, `scrollTo`, restauração de scroll) não dispara callback
-   algum e deixaria a barra presa escondida. A visibilidade é lida do
-   `getBoundingClientRect()` em um handler de scroll com `requestAnimationFrame`.
-2. **`De R$ 664,99` riscado + `por`.** O mockup de referência repete o valor
-   cheio nos dois lados ("De R$ 664,99 por ~~R$ 664,99~~"); aqui o riscado é
-   aplicado uma única vez, sobre o preço original, que é o comportamento correto
-   de ancoragem.
-3. **Legenda "CT EM CAMPO" fora do escudo.** No mockup ela aparece dentro da
-   ponta do escudo, onde a silhueta é estreita demais para o texto sem cortar —
-   foi movida para logo abaixo do selo.
-4. **Countdown não é anunciado a cada segundo.** O bloco visual é `aria-live="off"`;
-   um resumo textual paralelo é atualizado só quando o minuto muda.
-
-### Acessibilidade
-
-- Link "pular para a oferta" como primeiro alvo de tabulação.
-- Galeria com `role="group"`/`aria-roledescription`, thumbnails em `role="tab"`
-  com `aria-selected`/`aria-current` e setas de teclado no palco.
-- SVGs das miniaturas marcados como decorativos: o nome acessível vem do texto
-  `sr-only` do botão (sem anúncio duplicado).
-- Sticky bar sai da ordem de tabulação (`tabindex="-1"` + `aria-hidden`) enquanto
-  está escondida.
-- Foco visível em todos os controles e `prefers-reduced-motion` respeitado.
+Imagens originais em `assets/` (masters de 12 MB) e derivados de web em
+`assets/web/` (661 KB no total): hero em JPEG 1600px e três packshots em 900px,
+com miniaturas de 240px. Ícones Phosphor em `assets/icons.css`, embutidos como
+data URI e pintados por `currentColor` via máscara CSS — data URI porque máscara
+com caminho relativo não carrega em `file://`.
 
 ### Verificação
 
-Suíte de **42 asserções** em Chromium (Playwright) rodando em 4 viewports
-(360×640, 375×667, 768×1024, 1280×900): ausência de erros de JS, ausência de
-overflow horizontal, tick do countdown, valores iniciais, troca de imagem por
-thumbnail/seta, sincronia dos dots, estado da sticky bar no topo e após o
-scroll, cópia do cupom e feedback dos CTAs — **42/42 aprovadas**.
+Suíte de **45 asserções** em Chromium (Playwright) contra o build autocontido, em
+360 · 390 · 768 · 1024 · 1400: ausência de erro de JS, ausência de requisição
+externa, ausência de overflow horizontal, carga da Barlow ExtraBold, tick do
+countdown, troca de imagem por miniatura/dot/seta, cópia do cupom e o
+comportamento da sticky bar em cada largura — **45/45**.
 
-### Regerar os builds autocontidos
+### Regerar os builds
 
 ```bash
-node tools/build-artifact.mjs --standalone ct-em-campo.html ct-em-campo.standalone.html
-node tools/build-artifact.mjs             ct-em-campo.html ct-em-campo.artifact.html
+node tools/build-standalone.mjs
 ```
-
-O script lê o `tailwind.config` inline do arquivo de origem (fonte única de
-verdade dos tokens) e compila o CSS com o Tailwind CLI varrendo o próprio HTML —
-inclusive as classes que só aparecem dentro das strings do JavaScript.
-
-Com `--standalone` o esqueleto do documento é preservado (incluindo o
-`<meta charset>`), gerando um arquivo que abre direto do disco. Sem a flag, o
-esqueleto é removido: é o formato que o publicador de Artifacts espera, já que
-ele injeta o próprio `<!doctype>`, `<head>` e `<body>`.
 
 ---
 

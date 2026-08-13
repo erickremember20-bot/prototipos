@@ -1,739 +1,690 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="theme-color" content="#111827" />
+<meta name="theme-color" content="#0039ff" />
 <meta name="description" content="CT em Campo — Canaltech Ofertas x Netshoes. Oferta VIP da comunidade: Adidas Trionda Copa do Mundo 2026 Pro com 20% OFF exclusivo." />
-<title>CT em Campo | Canaltech Ofertas x Netshoes — Oferta VIP</title>
+<title>CT OFERTAS x Netshoes | Adidas Trionda Copa do Mundo 2026 Pro</title>
 
 <!--
   ============================================================================
-  LANDING PAGE VIP — "CT em Campo" (Canaltech Ofertas x Netshoes)
+  LANDING VIP — CT OFERTAS (Canaltech Ofertas × Netshoes)
   ----------------------------------------------------------------------------
-  Protótipo funcional de alta fidelidade em WIREFRAME MONOCROMÁTICO.
-  Paleta ESTRITA (sem cores de marca):
-    #FFFFFF · #F3F4F6 · #E5E7EB · #9CA3AF · #4B5563 · #111827
-  O foco é UX funcional, hierarquia, fluxo de layout, responsividade e
-  arquitetura de conversão — não a identidade visual das marcas.
+  Porte fiel da página "Projeto" do Figma (FtcQy17MpdYvRHuysCVNJj):
+    Desktop — 1400 · Mobile — 360 · frame "Components" (estados)
 
-  Stack: arquivo único, Tailwind CSS via CDN + JavaScript vanilla (zero build).
-  Sem dependências externas de imagem ou fonte: todo o key visual (estádio +
-  bola) é SVG inline gerado em runtime, e a tipografia usa a stack do sistema.
-  Responsivo: 375px (mobile) · 768px (tablet) · 1280px+ (desktop).
+  Tokens, tipografia, espaçamentos e estados vieram da leitura direta dos nós
+  via Plugin API — não de estimativa visual.
 
-  Interações reais:
-    1. Countdown regressivo com tick de 1s (dias/horas/minutos/segundos).
-    2. Galeria com thumbnails, setas, dots, teclado e swipe (touch).
-    3. Cupom pré-aplicado com copiar-para-a-área-de-transferência.
-    4. Barra CTA fixa no mobile (<768px), revelada ao rolar além do CTA principal.
+  Stack: HTML + CSS custom properties + JavaScript vanilla. Sem build, sem CDN.
+  Depende apenas de ./assets (imagens, ícones e a fonte Barlow embutida).
   ============================================================================
 -->
 
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  /* --------------------------------------------------------------------------
-     DESIGN TOKENS — escala monocromática única (wireframe de alta fidelidade)
-     ink-900 texto/superfícies de máximo contraste · ink-600 texto secundário
-     ink-400 texto terciário/placeholder · line bordas · mist fundo da página
-     -------------------------------------------------------------------------- */
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          ink:  { 900: '#111827', 600: '#4B5563', 400: '#9CA3AF' },
-          line: '#E5E7EB',
-          mist: '#F3F4F6',
-        },
-        fontFamily: {
-          sans: ['ui-sans-serif', 'system-ui', '-apple-system', 'Segoe UI',
-                 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
-        },
-        boxShadow: {
-          card: '0 1px 2px rgba(17,24,39,.04), 0 8px 24px -12px rgba(17,24,39,.12)',
-        },
-      },
-    },
-  };
-</script>
-
+<link rel="stylesheet" href="assets/fonts.css" />
+<link rel="stylesheet" href="assets/icons.css" />
 <style>
-  /* Números do countdown e dos preços sempre alinhados (sem "pulo" de largura) */
-  .tnum { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' 1; }
+/* ==========================================================================
+   TOKENS — espelham a coleção Core/Brand do Figma
+   ========================================================================== */
+:root{
+  --blue-500:#0039ff; --blue-400:#3361ff; --blue-600:#0034e8; --blue-700:#0028b5; --blue-800:#001f8c;
+  --green-50:#e6f5eb; --green-100:#b0dfbf; --green-300:#54b976; --green-500:#009732;
+  --green-600:#00892e; --green-700:#006b24; --green-800:#00531c; --green-900:#003f15;
+  --green-press-a:#004718; --green-press-b:#006723;
+  --lime-a:#4cc875; --lime-b:#7cff09;
+  --yellow-500:#fff000; --yellow-700:#b5aa00;
+  --gray-50:#ffffff; --gray-100:#e8e8e8; --gray-200:#b6b6b6;
+  --gray-300:#626262; --gray-400:#434343; --gray-500:#141414;
+  --line:#e5e7eb; --mist:#f3f4f6; --ink-hero:#111827;
 
-  /* Esconde a scrollbar da régua de thumbnails mantendo o scroll funcional */
-  .no-bar { scrollbar-width: none; -ms-overflow-style: none; }
-  .no-bar::-webkit-scrollbar { display: none; }
+  --r-md:8px; --r-lg:12px; --r-xl:16px;
+  --wrap:1160px;
+  --pad-x:16px;
+}
 
-  /* Foco visível consistente em toda a página (WCAG 2.4.7) */
-  :where(a, button, [tabindex]):focus-visible {
-    outline: 2px solid #111827;
-    outline-offset: 2px;
-    border-radius: .5rem;
-  }
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  font-family:'Barlow',ui-sans-serif,system-ui,'Segoe UI',Roboto,Arial,sans-serif;
+  color:var(--gray-500);
+  background:linear-gradient(180deg,var(--gray-100) 0%,var(--gray-50) 100%);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+p{margin:0}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+a{color:inherit;text-decoration:none}
+.wrap{width:min(var(--wrap),100% - (var(--pad-x) * 2));margin-inline:auto}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+:where(a,button,[tabindex]):focus-visible{outline:3px solid var(--blue-400);outline-offset:3px;border-radius:6px}
 
-  @media (prefers-reduced-motion: reduce) {
-    * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
-    html { scroll-behavior: auto; }
-  }
+/* ícone: SVG externo pintado por currentColor via máscara */
+.ico{display:inline-block;width:24px;height:24px;background:currentColor;flex:none;
+  -webkit-mask:var(--i) center/contain no-repeat;mask:var(--i) center/contain no-repeat}
+.ico-20{width:20px;height:20px}
+
+/* ==========================================================================
+   HEADER CO-BRANDED — sem busca, sem navegação, sem categorias
+   ========================================================================== */
+.site-header{background:var(--blue-500)}
+.site-header .wrap{display:flex;align-items:center;justify-content:center;gap:12px;
+  min-height:62px;padding-block:16px}
+.lockup{display:flex;align-items:center;gap:12px}
+.lockup img{height:30px;width:auto}
+.lockup .x{color:var(--yellow-500);font-weight:500;font-size:13px;line-height:1}
+.lockup .netshoes{height:16px}
+
+/* ==========================================================================
+   FAIXA VIP
+   ========================================================================== */
+.vip-bar{background:var(--gray-500);color:var(--gray-50)}
+.vip-bar .wrap{display:flex;align-items:center;justify-content:center;gap:8px;padding-block:12px;text-align:center}
+.vip-bar p{margin:0;font-weight:600;font-size:14px;line-height:1.5}
+.vip-bar b{color:var(--yellow-500);font-weight:inherit}
+
+/* ==========================================================================
+   HERO — galeria + bloco de compra
+   ========================================================================== */
+.hero{display:grid;gap:16px;padding-block:16px}
+
+.stage{position:relative;aspect-ratio:328/256;border-radius:var(--r-lg);overflow:hidden;background:var(--ink-hero)}
+.stage .slide{position:absolute;inset:0;opacity:0;transition:opacity .35s ease}
+.stage .slide[data-active]{opacity:1}
+.stage .slide img{width:100%;height:100%;object-fit:cover}
+.stage .slide--shot{background:var(--mist)}
+.stage .slide--shot img{object-fit:contain}
+
+.dots{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;gap:6px}
+.dots button{width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,.5);transition:width .25s,background .25s}
+.dots button[aria-current="true"]{width:16px;background:var(--gray-50)}
+
+.thumb-strip{display:none;align-items:center;gap:8px;margin-top:12px}
+.nav{width:32px;height:40px;display:grid;place-items:center;border-radius:var(--r-md);
+  background:var(--blue-400);border:1px solid var(--line);color:var(--gray-50);
+  transition:background .15s,transform .1s}
+.nav:hover{background:var(--blue-600)}
+.nav:active{background:var(--blue-700);transform:scale(.94)}
+.nav .ico{width:18px;height:18px}
+.nav.prev .ico{transform:rotate(180deg)}
+.thumbs{display:flex;gap:8px;flex:1}
+.thumb{width:68px;height:68px;border-radius:var(--r-md);overflow:hidden;background:var(--mist);
+  border:2px solid var(--line);transition:border-color .15s,background .15s}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.thumb:hover{border-color:var(--blue-400)}
+.thumb[aria-current="true"]{background:var(--ink-hero);border-color:var(--blue-400)}
+
+/* ---------- bloco de compra ---------- */
+.buy{display:flex;flex-direction:column;gap:16px}
+.buy h1{margin:0;font-size:26px;line-height:1.1;font-weight:700;color:var(--gray-500)}
+.br-desk{display:none}
+.price{display:flex;flex-direction:column;gap:4px}
+.price .from{margin:0;font-size:14px;line-height:1.5;color:var(--gray-400)}
+.price .from s{color:var(--blue-400);font-weight:600;text-decoration-thickness:1px}
+.price .now{margin:0;font-size:40px;line-height:1.1;font-weight:800;color:var(--blue-400);
+  font-variant-numeric:tabular-nums}
+.price .anchor{margin:0;font-size:14px;line-height:1.5;color:var(--gray-400)}
+
+.countdown{border:1px solid var(--gray-400);border-radius:var(--r-lg);
+  background:linear-gradient(90deg,var(--gray-500),var(--gray-400));
+  padding:12px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.countdown .label{display:flex;align-items:center;gap:6px;color:var(--yellow-500);
+  font-weight:700;font-size:14px;line-height:1.5}
+.countdown .value{font-weight:700;font-size:32px;line-height:1.1;color:var(--gray-50);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.countdown .value .u{font-size:26px;color:var(--gray-200)}
+.countdown .value .sep{color:var(--gray-200)}
+
+.coupon{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 16px;border-radius:var(--r-lg);background:var(--green-50);
+  border:2px dashed var(--green-500);color:var(--green-500);
+  font-weight:500;font-size:14px;line-height:1.5;transition:background .15s}
+.coupon:hover{background:#d8eee1}
+.coupon:active{background:var(--green-100)}
+.coupon .code{color:var(--green-900)}
+.coupon .code b{font-weight:700}
+
+/* ---------- CTA primário: estados conforme o frame Components ---------- */
+.cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
+  padding:18px 16px;border-radius:var(--r-lg);font-weight:700;font-size:18px;line-height:1.1;
+  transition:background .15s,color .15s,transform .08s}
+.cta--primary{background:var(--green-500);color:var(--gray-50)}
+.cta--primary:hover{background:var(--green-700);color:var(--green-50)}
+.cta--primary:active{background:var(--green-900);color:var(--green-50);transform:scale(.99)}
+.cta--primary[aria-disabled="true"]{background:rgba(84,185,118,.6);color:var(--green-100);
+  pointer-events:none}
+
+.trust{display:flex;align-items:center;justify-content:center;gap:6px;
+  font-size:12px;line-height:1.5;color:var(--gray-500)}
+.trust .ico{color:var(--green-500)}
+.trust .div{color:var(--gray-400)}
+
+/* ==========================================================================
+   SELEÇÃO CT OFERTAS
+   ========================================================================== */
+.curation{border:2px solid var(--gray-50);border-radius:var(--r-lg);
+  background:linear-gradient(90deg,var(--blue-700),var(--blue-500));
+  color:var(--gray-50);padding:16px;display:flex;flex-direction:column;gap:16px}
+.curation__top{display:flex;align-items:center;gap:16px}
+.seal{display:flex;flex-direction:column;align-items:center;gap:4px;flex:none}
+.seal img{width:72px;height:86px}
+.seal span{font-weight:700;font-size:10px;line-height:1.5}
+.curation__head{display:flex;flex-direction:column;gap:4px}
+.curation__title{display:flex;align-items:center;gap:6px;color:var(--yellow-500);
+  font-weight:700;font-size:16px;line-height:1.5}
+.curation__sub{margin:0;font-size:12px;line-height:1.5}
+.curation__sub b{font-weight:700}
+.curation__sub .fifa{color:var(--yellow-500);font-weight:700}
+
+.features{display:flex;flex-direction:column;gap:16px;margin:0;padding:0;list-style:none}
+.feature{display:flex;gap:8px}
+.feature .ico{color:var(--yellow-500)}
+.feature h3{margin:0;color:var(--yellow-500);font-weight:700;font-size:14px;line-height:1.5}
+.feature p{margin:8px 0 0;font-size:12px;line-height:1.5}
+.curation__divider{display:none;width:1px;align-self:stretch;background:var(--line)}
+
+/* ==========================================================================
+   COMUNIDADE NO WHATSAPP
+   ========================================================================== */
+.community{display:flex;align-items:center;gap:24px;padding:20px;
+  border:2px solid var(--yellow-500);border-radius:var(--r-lg);
+  background:linear-gradient(90deg,var(--green-700),var(--green-600));color:var(--gray-50);
+  transition:background .15s,border-color .15s}
+.community__icon{width:48px;height:48px;flex:none;display:grid;place-items:center;border-radius:50%;
+  background:var(--green-600);border:2px solid var(--yellow-500);transition:background .15s,border-color .15s}
+.community__text{display:flex;flex-direction:column;gap:4px;flex:1}
+.community__text strong{color:var(--yellow-500);font-weight:700;font-size:14px;line-height:1.5;transition:color .15s}
+.community__text p{margin:0;font-size:14px;line-height:1.5}
+.community__text p b{font-weight:600}
+.community .ico-caret{color:var(--gray-50)}
+/* estado Pressed do card mobile (frame Components) */
+.community:active{background:linear-gradient(90deg,var(--green-press-a),var(--green-press-b));
+  border-color:var(--yellow-700)}
+.community:active .community__icon{background:var(--green-800);border-color:var(--yellow-700)}
+.community:active .community__text strong{color:var(--yellow-700)}
+
+/* CTA secundário (desktop) */
+.cta--secondary{display:none;align-items:center;justify-content:center;gap:8px;flex:none;
+  width:auto;padding:15px 16px;border-radius:var(--r-lg);
+  background:linear-gradient(90deg,var(--lime-a),var(--lime-b));
+  color:var(--green-900);border:2px solid var(--green-50);
+  font-weight:700;font-size:18px;line-height:1.1;transition:border-color .15s,transform .08s,filter .15s}
+.cta--secondary:hover{border-color:transparent;filter:brightness(1.04)}
+.cta--secondary:active{transform:scale(.985)}
+
+/* ==========================================================================
+   RODAPÉ
+   ========================================================================== */
+.site-footer{border-top:1px solid var(--gray-200);margin-top:16px;padding:20px 0 24px}
+.site-footer p{margin:0;text-align:center;font-size:11px;line-height:1.6;color:var(--gray-300)}
+
+/* ==========================================================================
+   STICKY CTA BAR — só no mobile
+   ========================================================================== */
+body{padding-bottom:88px}
+@media (min-width:768px){body{padding-bottom:0}}
+.sticky{position:fixed;inset-inline:0;bottom:0;z-index:40;display:flex;align-items:center;gap:8px;
+  padding:8px 16px;background:linear-gradient(90deg,var(--gray-500),var(--gray-400));
+  transform:translateY(100%);transition:transform .3s ease;will-change:transform}
+.sticky[data-show]{transform:translateY(0)}
+.sticky__price{display:flex;flex-direction:column;gap:3px;flex:none}
+.sticky__price strong{font-weight:700;font-size:20px;line-height:1.1;color:var(--gray-50);
+  font-variant-numeric:tabular-nums}
+.sticky__price span{font-size:12px;line-height:1.5;color:var(--gray-200)}
+.sticky__price span b{color:var(--yellow-500);font-weight:600}
+.sticky .cta{width:auto;flex:1;font-size:16px;padding-inline:12px;white-space:nowrap}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:96px;z-index:50;transform:translate(-50%,8px);
+  background:var(--gray-500);color:var(--gray-50);padding:12px 18px;border-radius:999px;
+  font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;
+  box-shadow:0 10px 30px -10px rgba(0,0,0,.5)}
+.toast[data-show]{opacity:1;transform:translate(-50%,0)}
+
+/* ==========================================================================
+   TABLET — 768px
+   ========================================================================== */
+@media (min-width:768px){
+  :root{--pad-x:24px}
+  .vip-bar p{font-size:16px;font-weight:700}
+  .stage{aspect-ratio:4/3}
+  .thumb-strip{display:flex}
+  .dots{display:none}
+  .buy h1{font-size:32px}
+  .price .now{font-size:44px}
+  .countdown .label{font-size:16px}
+  .countdown .value{font-size:40px}
+  .countdown .value .u{font-size:32px}
+  .coupon{font-size:16px}
+  .cta{font-size:20px}
+  .trust{font-size:14px}
+  .curation{padding:20px}
+  .curation__title{font-size:20px}
+  .curation__sub{font-size:14px}
+  .feature p{font-size:14px}
+  .community__text strong{font-size:18px}
+  .sticky{display:none}
+}
+
+/* ==========================================================================
+   DESKTOP — 1024px+ (duas colunas, 620 + 500)
+   ========================================================================== */
+@media (min-width:1024){}
+@media (min-width:1024px){
+  .vip-bar p{font-size:18px}
+  .site-header .wrap{min-height:96px;padding-block:24px;gap:32px}
+  .lockup{gap:32px}
+  .lockup img{height:48px}
+  .lockup .netshoes{height:25px}
+  .lockup .x{font-size:40px}
+
+  .hero{grid-template-columns:minmax(0,620px) minmax(0,1fr);gap:40px;
+    align-items:start;padding-block:32px}
+  .buy{gap:16px}
+  .buy h1{font-size:36px}
+  .br-desk{display:inline}
+
+  .curation{flex-direction:row;align-items:center;gap:24px;padding:20px}
+  .curation__top{gap:24px}
+  .curation__head{width:290px;flex:none;gap:8px}
+  .curation__divider{display:block}
+  .features{flex-direction:row;gap:20px;flex:1}
+  .feature{flex:1}
+
+  .community{padding:20px}
+  .cta--secondary{display:flex}
+  .community .ico-caret{display:none}
+  .community__icon{width:56px;height:56px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms!important;transition-duration:.001ms!important}
+}
 </style>
 </head>
 
-<body class="bg-mist font-sans text-ink-900 antialiased">
+<body>
+<a href="#buy" class="sr-only">Pular para a oferta</a>
 
-<!-- Link de salto: primeiro alvo de tabulação, some quando não focado -->
-<a href="#buy-box"
-   class="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-3 focus:rounded-lg focus:bg-ink-900 focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white">
-  Pular para a oferta
-</a>
-
-<!-- ==========================================================================
-     WRAPPER DA PÁGINA
-     Mobile: full-bleed. md+: "cartão" branco centralizado com borda e sombra,
-     reproduzindo o enquadramento do mockup de referência.
-     pb-24 no mobile reserva o espaço da sticky bar fixa.
-     ========================================================================== -->
-<div class="mx-auto w-full max-w-[1160px] bg-white pb-24 md:my-6 md:overflow-hidden md:rounded-2xl md:border md:border-line md:pb-0 md:shadow-card">
-
-  <!-- =======================================================================
-       1. HEADER CLEAN (ZERO VAZAMENTO)
-       Sem busca global, sem navegação, sem categorias: apenas o co-branding.
-       ======================================================================= -->
-  <header class="flex items-center gap-3 border-b border-line px-4 py-4 sm:px-6">
-
-    <!-- Marca CT (exibida no mobile, como no painel de referência) -->
-    <span class="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-ink-900 text-[11px] font-extrabold tracking-tight text-white sm:hidden"
-          aria-hidden="true">CT</span>
-
-    <!-- Wordmark mobile -->
-    <span class="text-[15px] font-bold tracking-tight sm:hidden">CT em Campo</span>
-
-    <!-- Wordmark desktop -->
-    <span class="hidden leading-none sm:block">
-      <span class="block text-[19px] font-extrabold tracking-tight text-ink-900">canaltech</span>
-      <span class="mt-1 block text-[10px] font-semibold tracking-[0.42em] text-ink-400">OFERTAS</span>
+<!-- ======================= HEADER CO-BRANDED ======================= -->
+<header class="site-header">
+  <div class="wrap">
+    <span class="lockup">
+      <img src="assets/logo_ct_ofertas.svg" alt="Canaltech Ofertas" />
+      <span class="x" aria-hidden="true">×</span>
+      <img class="netshoes" src="assets/Netshoes_logo.svg" alt="Netshoes" />
     </span>
-
-    <span class="text-sm font-medium text-ink-400" aria-hidden="true">×</span>
-
-    <span class="text-[15px] font-extrabold italic tracking-tight text-ink-600 sm:text-[19px]">NETSHOES</span>
-
-    <span class="sr-only">Parceria Canaltech Ofertas e Netshoes</span>
-  </header>
-
-  <!-- =======================================================================
-       2. FAIXA VIP (COMUNIDADE LIBERADA)
-       ======================================================================= -->
-  <div class="flex items-center justify-center gap-2 bg-ink-900 px-4 py-3 text-center text-white">
-    <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 1 1 8 0v3"></path>
-    </svg>
-    <p class="text-[11px] font-bold uppercase leading-snug tracking-[0.06em] sm:text-[13px]">
-      Oferta VIP da comunidade liberada —
-      <span class="underline decoration-white/40 underline-offset-4">20% OFF</span> exclusivo
-    </p>
   </div>
+</header>
 
-  <!-- =======================================================================
-       3. HERO DO PRODUTO + BUYING BOX
-       Desktop: 2 colunas (galeria fluida | bloco de compra 400px).
-       Mobile/tablet: empilhado.
-       ======================================================================= -->
-  <main>
-    <section class="grid gap-6 p-4 sm:p-6 lg:grid-cols-[minmax(0,620px)_minmax(0,1fr)] lg:gap-10 lg:p-8">
+<!-- ======================= FAIXA VIP ======================= -->
+<div class="vip-bar">
+  <div class="wrap">
+    <i class="ico ico-lock ico-20" aria-hidden="true"></i>
+    <p>OFERTA VIP DA COMUNIDADE LIBERADA <b>20% OFF EXCLUSIVO</b></p>
+  </div>
+</div>
 
-      <!-- ---------- COLUNA ESQUERDA: GALERIA ---------- -->
-      <div>
-        <!-- Palco da imagem principal -->
-        <div id="stage"
-             class="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-line bg-mist sm:aspect-[16/10] lg:aspect-[4/3]"
-             role="group" aria-roledescription="carrossel" aria-label="Galeria de imagens do produto">
+<main>
+  <!-- ======================= HERO ======================= -->
+  <section class="hero wrap">
 
-          <!-- Slides (SVG inline) injetados por renderGallery() -->
-          <div id="slides" class="h-full w-full"></div>
-
-          <!-- Setas sobre a imagem (mobile/tablet) -->
-          <button type="button" data-nav="prev"
-                  class="absolute left-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-line bg-white/90 text-ink-900 shadow-card backdrop-blur transition hover:bg-white lg:hidden">
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
-            <span class="sr-only">Imagem anterior</span>
-          </button>
-          <button type="button" data-nav="next"
-                  class="absolute right-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-line bg-white/90 text-ink-900 shadow-card backdrop-blur transition hover:bg-white lg:hidden">
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
-            <span class="sr-only">Próxima imagem</span>
-          </button>
-
-          <!-- Dots (mobile) -->
-          <div id="dots" class="absolute inset-x-0 bottom-3 flex items-center justify-center gap-1.5 sm:hidden"></div>
+    <!-- galeria -->
+    <div class="gallery">
+      <div class="stage" id="stage" role="group" aria-roledescription="carrossel"
+           aria-label="Imagens do Adidas Trionda Copa do Mundo 2026 Pro">
+        <div class="slide" data-slide="0" data-active>
+          <img src="assets/web/hero-trionda.jpg" width="1600" height="893"
+               alt="Bola Adidas Trionda no gramado, com a bandeira CT em Campo ao fundo" />
         </div>
-
-        <!-- Régua de thumbnails + setas (desktop/tablet) -->
-        <div class="mt-3 hidden items-center gap-2 sm:flex">
-          <button type="button" data-nav="prev"
-                  class="grid h-10 w-8 shrink-0 place-items-center rounded-lg border border-line text-ink-600 transition hover:border-ink-900 hover:text-ink-900">
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
-            <span class="sr-only">Imagem anterior</span>
-          </button>
-
-          <div id="thumbs" class="no-bar flex flex-1 gap-2 overflow-x-auto scroll-smooth" role="tablist" aria-label="Miniaturas do produto"></div>
-
-          <button type="button" data-nav="next"
-                  class="grid h-10 w-8 shrink-0 place-items-center rounded-lg border border-line text-ink-600 transition hover:border-ink-900 hover:text-ink-900">
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
-            <span class="sr-only">Próxima imagem</span>
-          </button>
+        <div class="slide slide--shot" data-slide="1" hidden>
+          <img src="assets/web/slide-2.jpg" width="900" height="900" loading="lazy"
+               alt="Adidas Trionda — vista frontal dos painéis" />
         </div>
+        <div class="slide slide--shot" data-slide="2" hidden>
+          <img src="assets/web/slide-3.jpg" width="900" height="900" loading="lazy"
+               alt="Adidas Trionda — vista lateral" />
+        </div>
+        <div class="slide slide--shot" data-slide="3" hidden>
+          <img src="assets/web/slide-4.jpg" width="900" height="900" loading="lazy"
+               alt="Adidas Trionda — detalhe da textura" />
+        </div>
+        <div class="dots" id="dots"></div>
       </div>
 
-      <!-- ---------- COLUNA DIREITA: BUYING BOX ---------- -->
-      <div id="buy-box" class="flex flex-col gap-4">
-
-        <h1 class="text-[22px] font-bold leading-[1.15] tracking-tight sm:text-[26px] lg:text-[28px]">
-          Adidas Trionda<br class="hidden lg:block" />
-          Copa do Mundo 2026 Pro
-        </h1>
-
-        <!-- Ancoragem de preço -->
-        <div>
-          <p class="text-sm text-ink-600">
-            De <s class="text-ink-400">R$ 664,99</s> por
-          </p>
-          <p class="tnum mt-0.5 text-[40px] font-extrabold leading-none tracking-tight sm:text-[44px]">
-            R$ 531,99
-          </p>
-          <p class="mt-1.5 text-xs font-medium text-ink-600">(Menor Preço do Brasil)</p>
-        </div>
-
-        <!-- Countdown em tempo real -->
-        <div class="rounded-xl border border-line bg-mist p-3 text-center" role="timer" aria-live="off">
-          <p class="flex items-center justify-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-600">
-            <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path>
-            </svg>
-            <span id="cd-label">Esta oferta expira em:</span>
-          </p>
-          <p id="cd-value" class="tnum mt-1.5 whitespace-nowrap text-[24px] font-bold leading-none tracking-tight sm:text-[28px]">
-            <span data-cd="d">02</span><span class="text-[0.6em] text-ink-400">d</span>
-            <span class="px-0.5 text-ink-400 sm:px-1">:</span>
-            <span data-cd="h">14</span><span class="text-[0.6em] text-ink-400">h</span>
-            <span class="px-0.5 text-ink-400 sm:px-1">:</span>
-            <span data-cd="m">30</span><span class="text-[0.6em] text-ink-400">m</span>
-            <span class="px-0.5 text-ink-400 sm:px-1">:</span>
-            <span data-cd="s">00</span><span class="text-[0.6em] text-ink-400">s</span>
-          </p>
-          <!-- Resumo textual para leitores de tela, atualizado a cada minuto -->
-          <p id="cd-sr" class="sr-only" aria-live="polite"></p>
-        </div>
-
-        <!-- Cupom pré-aplicado (clique para copiar) -->
-        <button type="button" id="coupon"
-                class="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-ink-400 px-3 py-3 text-center transition hover:border-ink-900 hover:bg-mist">
-          <svg class="h-4 w-4 shrink-0 text-ink-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0l-7.2-7.2A2 2 0 0 1 2.8 12V4.8A2 2 0 0 1 4.8 2.8H12a2 2 0 0 1 1.4.6l7.2 7.2a2 2 0 0 1 0 2.8Z"></path>
-            <circle cx="7.5" cy="7.5" r="1.2" fill="currentColor" stroke="none"></circle>
-          </svg>
-          <span id="coupon-text" class="text-[13px] font-semibold leading-tight sm:text-sm">
-            Cupom <span class="font-mono">"canaltech20"</span> Pré-Aplicado
-          </span>
-          <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 12.5 5 5L20 6.5"></path></svg>
+      <div class="thumb-strip">
+        <button class="nav prev" type="button" data-nav="-1">
+          <i class="ico ico-caret" aria-hidden="true"></i><span class="sr-only">Imagem anterior</span>
         </button>
-
-        <!-- CTA principal -->
-        <a href="#" id="cta-main"
-           class="flex w-full items-center justify-center gap-2.5 rounded-xl bg-ink-900 px-4 py-4 text-[15px] font-bold uppercase tracking-[0.04em] text-white transition hover:bg-black active:scale-[.99] sm:text-base">
-          <svg class="h-[18px] w-[18px] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 1 1 8 0v3"></path>
-          </svg>
-          Garantir a minha bola
-        </a>
-
-        <!-- Selos de confiança -->
-        <p class="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-xs text-ink-600">
-          <span class="inline-flex items-center gap-1.5">
-            <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M12 3 5 6v5.5c0 4.2 2.9 7.6 7 9.5 4.1-1.9 7-5.3 7-9.5V6l-7-3Z"></path><path d="m9 12 2 2 4-4"></path>
-            </svg>
-            Compra 100% segura
-          </span>
-          <span class="text-line" aria-hidden="true">|</span>
-          <span>Estoque limitado</span>
-        </p>
+        <div class="thumbs" id="thumbs"></div>
+        <button class="nav next" type="button" data-nav="1">
+          <i class="ico ico-caret" aria-hidden="true"></i><span class="sr-only">Próxima imagem</span>
+        </button>
       </div>
-    </section>
+    </div>
 
-    <!-- =====================================================================
-         4. SELO EDITORIAL ESTÁTICO — "SELEÇÃO CT EM CAMPO"
-         ===================================================================== -->
-    <section class="px-4 pb-4 sm:px-6 lg:px-8" aria-labelledby="selecao-title">
-      <div class="rounded-xl border border-line p-4 sm:p-5">
-        <div class="grid gap-5 lg:grid-cols-[auto_minmax(0,290px)_minmax(0,1fr)] lg:items-center lg:gap-6">
+    <!-- bloco de compra -->
+    <div class="buy" id="buy">
+      <h1>Adidas Trionda<br class="br-desk" /> Copa do Mundo 2026 Pro</h1>
 
-          <!-- Escudo de curadoria -->
-          <div class="flex items-center gap-4 lg:block">
-            <div class="shrink-0 text-center">
-              <svg class="h-[62px] w-[52px] sm:h-[70px] sm:w-[59px] lg:h-[80px] lg:w-[67px]" viewBox="0 0 72 86" fill="none" aria-hidden="true">
-                <path d="M36 2 4 12v34c0 17.2 13.2 31.4 32 38 18.8-6.6 32-20.8 32-38V12L36 2Z" fill="#111827"/>
-                <path d="M36 8.5 10 16.6v29.6c0 14.3 10.9 26.2 26 32 15.1-5.8 26-17.7 26-32V16.6L36 8.5Z" fill="none" stroke="#FFFFFF" stroke-opacity=".45" stroke-width="1.5"/>
-                <text x="36" y="40" text-anchor="middle" fill="#FFFFFF" font-family="ui-sans-serif,system-ui,Arial" font-size="23" font-weight="800" letter-spacing="-0.5">CT</text>
-                <rect x="15" y="47" width="42" height="12.5" rx="2.5" fill="#FFFFFF"/>
-                <text x="36" y="56" text-anchor="middle" fill="#111827" font-family="ui-sans-serif,system-ui,Arial" font-size="7.5" font-weight="800" letter-spacing="0.5">SELEÇÃO</text>
-                <path d="M27 66h18" stroke="#FFFFFF" stroke-opacity=".5" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
-              <p class="mt-1 text-[9px] font-extrabold uppercase leading-none tracking-[0.14em] text-ink-600">CT em Campo</p>
-            </div>
+      <div class="price">
+        <p class="from">De <s>R$ 664,99</s> por</p>
+        <p class="now">R$ 531,99</p>
+        <p class="anchor">(Menor Preço do Brasil)</p>
+      </div>
 
-            <!-- No mobile o título acompanha o escudo; no desktop vai na coluna 2 -->
-            <div class="lg:hidden">
-              <h2 class="flex items-center gap-1.5 text-[15px] font-bold tracking-tight sm:text-base">
-                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9L12 2.6Z"/></svg>
-                Seleção CT em Campo
-              </h2>
-              <p class="mt-1 text-[13px] leading-snug text-ink-600">
-                <span class="font-semibold text-ink-900">Curadoria Canaltech:</span>
-                testada e aprovada com padrão <span class="font-semibold text-ink-900">FIFA Quality Pro</span>.
-              </p>
-            </div>
-          </div>
+      <div class="countdown" role="timer">
+        <span class="label">
+          <i class="ico ico-clock ico-20" aria-hidden="true"></i>
+          <span id="cd-label">ESTA OFERTA EXPIRA EM:</span>
+        </span>
+        <p class="value" id="cd-value">
+          <span data-cd="d">02</span><span class="u">d</span><span class="sep"> : </span><span data-cd="h">14</span><span class="u">h</span><span class="sep"> : </span><span data-cd="m">30</span><span class="u">m</span><span class="sep"> : </span><span data-cd="s">00</span><span class="u">s</span>
+        </p>
+        <p class="sr-only" id="cd-sr" aria-live="polite"></p>
+      </div>
 
-          <!-- Título + subtítulo (desktop) -->
-          <div class="hidden lg:block">
-            <h2 id="selecao-title" class="flex items-center gap-2 text-[19px] font-bold uppercase tracking-tight">
-              <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2.6 2.9 5.9 6.5.9-4.7 4.6 1.1 6.4-5.8-3-5.8 3 1.1-6.4L2.6 9.4l6.5-.9L12 2.6Z"/></svg>
-              Seleção CT em Campo
-            </h2>
-            <p class="mt-2 text-[13px] leading-relaxed text-ink-600">
-              <span class="font-semibold text-ink-900">Curadoria Canaltech:</span> testada e aprovada
-              com padrão <span class="font-semibold text-ink-900">FIFA Quality Pro</span>.
-            </p>
-          </div>
+      <button class="coupon" type="button" id="coupon">
+        <i class="ico ico-tag ico-20" aria-hidden="true"></i>
+        <span id="coupon-text">Cupom <span class="code">"<b>CANALTECH20</b>"</span> Pré-Aplicado</span>
+        <i class="ico ico-checks ico-20" aria-hidden="true"></i>
+      </button>
 
-          <!-- 3 colunas de atributos -->
-          <ul class="grid gap-4 sm:grid-cols-3 lg:gap-5 lg:border-l lg:border-line lg:pl-6">
-            <li class="flex gap-2">
-              <svg class="mt-0.5 h-[15px] w-[15px] shrink-0 text-ink-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="1.6"></circle><path d="m7.8 12.4 2.8 2.8 5.6-5.8"></path></svg>
-              <div>
-                <h3 class="text-[11px] font-bold uppercase leading-tight tracking-[0.05em]">Desempenho profissional</h3>
-                <p class="mt-1 text-[12px] leading-snug text-ink-600">Construção termosselada para máxima precisão e controle em campo.</p>
-              </div>
-            </li>
-            <li class="flex gap-2">
-              <svg class="mt-0.5 h-[15px] w-[15px] shrink-0 text-ink-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="1.6"></circle><path d="m7.8 12.4 2.8 2.8 5.6-5.8"></path></svg>
-              <div>
-                <h3 class="text-[11px] font-bold uppercase leading-tight tracking-[0.05em]">Tecnologia de ponta</h3>
-                <p class="mt-1 text-[12px] leading-snug text-ink-600">Painéis com relevo 3D e textura inovadora para melhor aerodinâmica.</p>
-              </div>
-            </li>
-            <li class="flex gap-2">
-              <svg class="mt-0.5 h-[15px] w-[15px] shrink-0 text-ink-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke-width="1.6"></circle><path d="m7.8 12.4 2.8 2.8 5.6-5.8"></path></svg>
-              <div>
-                <h3 class="text-[11px] font-bold uppercase leading-tight tracking-[0.05em]">Padrão FIFA Quality Pro</h3>
-                <p class="mt-1 text-[12px] leading-snug text-ink-600">Aprovada nos mais altos testes de qualidade e desempenho da FIFA.</p>
-              </div>
-            </li>
-          </ul>
+      <a class="cta cta--primary" href="#" id="cta-main">
+        <i class="ico ico-lock ico-20" aria-hidden="true"></i>GARANTIR A MINHA BOLA
+      </a>
+
+      <p class="trust">
+        <i class="ico ico-shield ico-20" aria-hidden="true"></i>
+        Compra 100% segura <span class="div">|</span> Estoque limitado
+      </p>
+    </div>
+  </section>
+
+  <!-- ======================= SELEÇÃO CT OFERTAS ======================= -->
+  <section class="wrap" aria-labelledby="curation-title">
+    <div class="curation">
+      <div class="curation__top">
+        <span class="seal">
+          <img src="assets/badge_curadoria.svg" alt="" />
+          <span>CT OFERTAS</span>
+        </span>
+        <div class="curation__head">
+          <h2 class="curation__title" id="curation-title">
+            <i class="ico ico-star ico-20" aria-hidden="true"></i>SELEÇÃO CT OFERTAS
+          </h2>
+          <p class="curation__sub">
+            <b>Curadoria Canaltech:</b> testada e aprovada com padrão
+            <span class="fifa">FIFA Quality Pro</span>.
+          </p>
         </div>
       </div>
-    </section>
 
-    <!-- =====================================================================
-         5. RETENÇÃO DE LEAD — COMUNIDADE NO WHATSAPP
-         ===================================================================== -->
-    <section class="px-4 pb-6 sm:px-6 lg:px-8">
-      <a href="#" id="cta-whats"
-         class="flex items-center gap-4 rounded-xl border border-line p-4 transition hover:border-ink-900 hover:bg-mist sm:p-5">
-        <span class="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-line bg-mist text-ink-900 sm:h-14 sm:w-14" aria-hidden="true">
-          <svg class="h-6 w-6 sm:h-7 sm:w-7" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.6-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.6-1.2.1-.1 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3c-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.7 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.2-.3-.3-.6-.4Z"/>
-          </svg>
-        </span>
+      <span class="curation__divider" aria-hidden="true"></span>
 
-        <span class="min-w-0 flex-1">
-          <span class="block text-[14px] font-bold leading-tight sm:text-[15px]">Receba mais ofertas VIP no WhatsApp</span>
-          <span class="mt-1 block text-[12px] leading-snug text-ink-600 sm:text-[13px]">
-            Entre para a comunidade CT em Campo e receba ofertas exclusivas antes de todo mundo.
-          </span>
-        </span>
-
-        <!-- Botão no desktop · chevron no mobile -->
-        <span class="hidden shrink-0 items-center gap-2 rounded-xl bg-ink-900 px-4 py-3 text-[13px] font-bold uppercase tracking-[0.04em] text-white sm:inline-flex">
-          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Z"/></svg>
-          Quero receber ofertas
-        </span>
-        <svg class="h-5 w-5 shrink-0 text-ink-400 sm:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
-        <span class="sr-only sm:hidden">Quero receber ofertas</span>
-      </a>
-    </section>
-  </main>
-
-  <footer class="border-t border-line px-4 py-5 text-center text-[11px] leading-relaxed text-ink-400 sm:px-6">
-    Protótipo de layout — wireframe monocromático. Preços, prazos e cupom são fictícios
-    e servem apenas para demonstração da arquitetura de conversão.
-  </footer>
-</div>
-
-<!-- ==========================================================================
-     6. STICKY CTA BAR — SOMENTE MOBILE (<768px)
-     Revelada quando o CTA principal sai do topo da viewport.
-     ========================================================================== -->
-<div id="sticky-bar"
-     class="fixed inset-x-0 bottom-0 z-40 translate-y-full border-t border-white/10 bg-ink-900 px-3 py-2.5 text-white transition-transform duration-300 will-change-transform md:hidden">
-  <div class="flex items-center gap-3">
-    <div class="shrink-0">
-      <p class="tnum text-[19px] font-extrabold leading-none">R$ 531,99</p>
-      <p class="mt-1 text-[10px] leading-none text-white/60">no cupom canaltech20</p>
+      <ul class="features">
+        <li class="feature">
+          <i class="ico ico-seal ico-20" aria-hidden="true"></i>
+          <div>
+            <h3>DESEMPENHO PROFISSIONAL</h3>
+            <p>Construção termosselada para máxima precisão e controle em campo.</p>
+          </div>
+        </li>
+        <li class="feature">
+          <i class="ico ico-seal ico-20" aria-hidden="true"></i>
+          <div>
+            <h3>TECNOLOGIA DE PONTA</h3>
+            <p>Painéis com relevo 3D e textura inovadora para melhor aerodinâmica.</p>
+          </div>
+        </li>
+        <li class="feature">
+          <i class="ico ico-seal ico-20" aria-hidden="true"></i>
+          <div>
+            <h3>PADRÃO FIFA QUALITY PRO</h3>
+            <p>Aprovada nos mais altos testes de qualidade e desempenho da FIFA.</p>
+          </div>
+        </li>
+      </ul>
     </div>
-    <a href="#" id="cta-sticky"
-       class="flex flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-white px-3 py-3.5 text-[12px] font-bold uppercase tracking-[0.02em] text-ink-900 transition active:scale-[.99] min-[400px]:text-[13px]">
-      <svg class="h-4 w-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <rect x="4" y="10" width="16" height="10" rx="2"></rect><path d="M8 10V7a4 4 0 1 1 8 0v3"></path>
-      </svg>
-      Garantir minha bola
+  </section>
+
+  <!-- ======================= COMUNIDADE ======================= -->
+  <section class="wrap">
+    <a class="community" href="#" id="cta-whats">
+      <span class="community__icon"><i class="ico ico-whats" aria-hidden="true"></i></span>
+      <span class="community__text">
+        <strong>Receba mais ofertas VIP no WhatsApp</strong>
+        <p>Entre para a comunidade <b>Canaltech Ofertas</b> e receba ofertas exclusivas antes de todo mundo.</p>
+      </span>
+      <span class="cta--secondary">
+        <i class="ico ico-whats ico-20" aria-hidden="true"></i>QUERO RECEBER OFERTAS
+      </span>
+      <i class="ico ico-caret" aria-hidden="true"></i>
     </a>
-  </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Protótipo de layout. Preços, prazos e cupom são fictícios e servem apenas para
+         demonstração da arquitetura de conversão.</p>
+    </div>
+  </footer>
+</main>
+
+<!-- ======================= STICKY CTA (mobile) ======================= -->
+<div class="sticky" id="sticky">
+  <span class="sticky__price">
+    <strong>R$ 531,99</strong>
+    <span>no cupom: <b>CANALTECH20</b></span>
+  </span>
+  <a class="cta cta--primary" href="#" id="cta-sticky">
+    <i class="ico ico-lock ico-20" aria-hidden="true"></i>COMPRAR AGORA
+  </a>
 </div>
 
-<!-- Toast de feedback (aria-live) -->
-<div id="toast"
-     class="pointer-events-none fixed bottom-24 left-1/2 z-50 -translate-x-1/2 translate-y-2 rounded-full bg-ink-900 px-4 py-2.5 text-[13px] font-semibold text-white opacity-0 shadow-card transition-all duration-200 md:bottom-6"
-     role="status" aria-live="polite"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 (function () {
   'use strict';
 
-  /* ======================================================================
-     GALERIA — key visual 100% SVG (estádio monocromático + bola wireframe)
-     Nenhum arquivo externo: o protótipo abre offline e não quebra sem assets.
-     ====================================================================== */
-
+  /* ====================================================================
+     GALERIA — 4 vistas, thumbnails, setas, dots, teclado e swipe
+     ==================================================================== */
   var SLIDES = [
-    { label: 'Vista frontal',            kind: 'ball', rot: 0   },
-    { label: 'Vista em perspectiva',     kind: 'ball', rot: 34  },
-    { label: 'Vista lateral',            kind: 'ball', rot: 68  },
-    { label: 'Detalhe dos painéis 3D',   kind: 'ball', rot: 112 },
-    { label: 'Embalagem do produto',     kind: 'box',  rot: 0   }
+    { thumb: 'assets/web/thumb-1.jpg', label: 'Bola no gramado com a bandeira CT em Campo' },
+    { thumb: 'assets/web/thumb-2.jpg', label: 'Vista frontal dos painéis' },
+    { thumb: 'assets/web/thumb-3.jpg', label: 'Vista lateral' },
+    { thumb: 'assets/web/thumb-4.jpg', label: 'Detalhe da textura' }
   ];
 
-  /* Cena do estádio: refletores, feixes de luz e gramado — apenas cinzas. */
-  function stadium(uid, w, h) {
-    return ''
-      + '<defs>'
-      +   '<linearGradient id="sky' + uid + '" x1="0" y1="0" x2="0" y2="1">'
-      +     '<stop offset="0" stop-color="#4B5563"/><stop offset="1" stop-color="#111827"/>'
-      +   '</linearGradient>'
-      +   '<linearGradient id="turf' + uid + '" x1="0" y1="0" x2="0" y2="1">'
-      +     '<stop offset="0" stop-color="#9CA3AF" stop-opacity=".55"/>'
-      +     '<stop offset="1" stop-color="#111827" stop-opacity=".9"/>'
-      +   '</linearGradient>'
-      +   '<radialGradient id="ball' + uid + '" cx=".35" cy=".3" r=".85">'
-      +     '<stop offset="0" stop-color="#FFFFFF"/><stop offset=".55" stop-color="#E5E7EB"/>'
-      +     '<stop offset="1" stop-color="#9CA3AF"/>'
-      +   '</radialGradient>'
-      +   '<filter id="glow' + uid + '" x="-70%" y="-70%" width="240%" height="240%">'
-      +     '<feGaussianBlur stdDeviation="9"/>'
-      +   '</filter>'
-      + '</defs>'
-      + '<rect width="' + w + '" height="' + h + '" fill="url(#sky' + uid + ')"/>'
-      /* feixes de luz dos refletores */
-      + '<g fill="#FFFFFF" opacity=".10">'
-      +   '<polygon points="54,14 120,300 -30,300"/>'
-      +   '<polygon points="346,14 430,300 280,300"/>'
-      +   '<polygon points="200,0 300,300 100,300" opacity=".5"/>'
-      + '</g>'
-      /* refletores */
-      + '<g fill="#FFFFFF">'
-      +   '<circle cx="54" cy="16" r="7" filter="url(#glow' + uid + ')" opacity=".8"/>'
-      +   '<circle cx="346" cy="16" r="7" filter="url(#glow' + uid + ')" opacity=".8"/>'
-      +   '<circle cx="54" cy="16" r="3.2"/><circle cx="346" cy="16" r="3.2"/>'
-      + '</g>'
-      /* gramado + linhas do campo */
-      + '<rect y="212" width="' + w + '" height="' + (h - 212) + '" fill="url(#turf' + uid + ')"/>'
-      + '<g fill="none" stroke="#FFFFFF" stroke-opacity=".22" stroke-width="1.5">'
-      +   '<path d="M0 232H400"/>'
-      +   '<ellipse cx="200" cy="268" rx="132" ry="26"/>'
-      + '</g>';
-  }
-
-  /* Bola "Trionda": esfera wireframe + costuras triradiais com relevo 3D. */
-  function ballArt(uid, rot) {
-    return ''
-      /* sombra projetada no gramado */
-      + '<ellipse cx="200" cy="238" rx="86" ry="15" fill="#111827" opacity=".45"/>'
-      + '<g transform="translate(200,150) rotate(' + rot + ')">'
-      +   '<circle r="86" fill="url(#ball' + uid + ')" stroke="#111827" stroke-width="2"/>'
-      /* meridianos/paralelos: leitura imediata de esfera em wireframe */
-      +   '<g fill="none" stroke="#4B5563" stroke-width="1.4" opacity=".65">'
-      +     '<ellipse rx="86" ry="30"/><ellipse rx="30" ry="86"/><ellipse rx="60" ry="86"/>'
-      +   '</g>'
-      /* costuras triradiais (3 painéis) */
-      +   '<g fill="none" stroke="#111827" stroke-width="3.4" stroke-linecap="round">'
-      +     '<path d="M0 0C10 30 6 60 0 86"/>'
-      +     '<path d="M0 0C-28 -8-56 -30-74.5 -43"/>'
-      +     '<path d="M0 0C28 -8 56 -30 74.5 -43"/>'
-      +   '</g>'
-      /* relevo 3D dos painéis (textura) */
-      +   '<g fill="none" stroke="#4B5563" stroke-width="1.6" stroke-linecap="round" opacity=".8">'
-      +     '<path d="M-14 22C-34 30-52 44-64 60"/>'
-      +     '<path d="M14 22C34 30 52 44 64 60"/>'
-      +     '<path d="M-4 -26C-26 -30-48 -40-64 -52"/>'
-      +     '<path d="M4 -26C26 -30 48 -40 64 -52"/>'
-      +     '<path d="M-22 46C-38 52-52 62-62 74"/>'
-      +     '<path d="M22 46C38 52 52 62 62 74"/>'
-      +   '</g>'
-      /* brilho especular */
-      +   '<ellipse cx="-32" cy="-40" rx="19" ry="11" fill="#FFFFFF" opacity=".45" transform="rotate(-28 -32 -40)"/>'
-      + '</g>';
-  }
-
-  /* Embalagem: caixa isométrica em wireframe. */
-  function boxArt(uid) {
-    return ''
-      + '<ellipse cx="200" cy="240" rx="84" ry="14" fill="#111827" opacity=".45"/>'
-      + '<g transform="translate(200,150)">'
-      +   '<polygon points="-74,-52 0,-84 74,-52 0,-20" fill="#FFFFFF" stroke="#111827" stroke-width="2"/>'
-      +   '<polygon points="-74,-52 0,-20 0,74 -74,42" fill="#E5E7EB" stroke="#111827" stroke-width="2"/>'
-      +   '<polygon points="74,-52 0,-20 0,74 74,42" fill="#9CA3AF" stroke="#111827" stroke-width="2"/>'
-      +   '<g fill="none" stroke="#111827" stroke-width="1.6" opacity=".55">'
-      +     '<path d="M-58 -20 -58 46"/><path d="M58 -20 58 46"/><path d="M0 -20 0 74"/>'
-      +   '</g>'
-      +   '<circle cx="-37" cy="8" r="16" fill="#FFFFFF" stroke="#111827" stroke-width="2"/>'
-      +   '<path d="M-37 -8C-31 -1-31 1-37 8M-37 -8C-43 -1-43 1-37 8" fill="none" stroke="#111827" stroke-width="1.6"/>'
-      +   '<rect x="24" y="0" width="26" height="16" rx="2" fill="#FFFFFF" stroke="#111827" stroke-width="1.6" transform="skewY(23)"/>'
-      + '</g>';
-  }
-
-  /* decorative = true nas miniaturas: o nome acessível vem do texto sr-only do
-     botão, evitando que o leitor de tela anuncie o rótulo duas vezes. */
-  function svgFor(i, decorative) {
-    var s = SLIDES[i], uid = (decorative ? 't' : 'u') + i;
-    return '<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" class="h-full w-full" '
-      + (decorative ? 'aria-hidden="true"' : 'role="img" aria-label="' + s.label + ' — Adidas Trionda Copa do Mundo 2026 Pro"')
-      + '>'
-      + stadium(uid, 400, 300)
-      + (s.kind === 'box' ? boxArt(uid) : ballArt(uid, s.rot))
-      + '</svg>';
-  }
-
-  var slidesEl = document.getElementById('slides');
+  var stage = document.getElementById('stage');
+  var slides = [].slice.call(stage.querySelectorAll('[data-slide]'));
   var thumbsEl = document.getElementById('thumbs');
-  var dotsEl   = document.getElementById('dots');
-  var current  = 0;
+  var dotsEl = document.getElementById('dots');
+  var current = 0;
 
-  function renderGallery() {
-    var slidesHtml = '', thumbsHtml = '', dotsHtml = '';
+  SLIDES.forEach(function (s, i) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'thumb';
+    b.setAttribute('data-go', i);
+    b.setAttribute('aria-current', i === 0 ? 'true' : 'false');
+    b.innerHTML = '<img src="' + s.thumb + '" alt="" loading="lazy" width="240" height="240">' +
+                  '<span class="sr-only">' + s.label + '</span>';
+    thumbsEl.appendChild(b);
 
-    for (var i = 0; i < SLIDES.length; i++) {
-      slidesHtml += '<div class="absolute inset-0 transition-opacity duration-300" data-slide="' + i + '" '
-                 +  (i === 0 ? '' : 'hidden ') + '>' + svgFor(i) + '</div>';
+    var d = document.createElement('button');
+    d.type = 'button';
+    d.setAttribute('data-go', i);
+    d.setAttribute('aria-current', i === 0 ? 'true' : 'false');
+    d.innerHTML = '<span class="sr-only">' + s.label + '</span>';
+    dotsEl.appendChild(d);
+  });
 
-      thumbsHtml += '<button type="button" role="tab" data-thumb="' + i + '" '
-                 +  'aria-current="' + (i === 0 ? 'true' : 'false') + '" '
-                 +  'aria-selected="' + (i === 0 ? 'true' : 'false') + '" '
-                 +  'class="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 border-line bg-mist transition hover:border-ink-400 aria-[current=true]:border-ink-900 lg:h-[68px] lg:w-[68px]">'
-                 +  svgFor(i, true)
-                 +  '<span class="sr-only">' + SLIDES[i].label + '</span>'
-                 +  '</button>';
-
-      dotsHtml  += '<button type="button" data-thumb="' + i + '" '
-                 +  'aria-current="' + (i === 0 ? 'true' : 'false') + '" '
-                 +  'class="h-1.5 w-1.5 rounded-full bg-white/50 transition-all aria-[current=true]:w-4 aria-[current=true]:bg-white">'
-                 +  '<span class="sr-only">' + SLIDES[i].label + '</span></button>';
-    }
-
-    slidesEl.className = 'relative h-full w-full';
-    slidesEl.innerHTML = slidesHtml;
-    thumbsEl.innerHTML = thumbsHtml;
-    dotsEl.innerHTML   = dotsHtml;
+  function goTo(i) {
+    var n = slides.length;
+    current = ((i % n) + n) % n;                       /* navegação circular */
+    slides.forEach(function (el, k) {
+      el.hidden = k !== current;
+      if (k === current) el.setAttribute('data-active', ''); else el.removeAttribute('data-active');
+    });
+    [].forEach.call(document.querySelectorAll('[data-go]'), function (el) {
+      el.setAttribute('aria-current', Number(el.getAttribute('data-go')) === current ? 'true' : 'false');
+    });
   }
-
-  function goTo(index) {
-    var n = SLIDES.length;
-    current = ((index % n) + n) % n; /* navegação circular */
-
-    var slides = slidesEl.querySelectorAll('[data-slide]');
-    for (var i = 0; i < slides.length; i++) slides[i].hidden = (i !== current);
-
-    var marks = document.querySelectorAll('[data-thumb]');
-    for (var j = 0; j < marks.length; j++) {
-      var active = Number(marks[j].getAttribute('data-thumb')) === current;
-      marks[j].setAttribute('aria-current', active ? 'true' : 'false');
-      if (marks[j].hasAttribute('aria-selected')) marks[j].setAttribute('aria-selected', active ? 'true' : 'false');
-      if (active && marks[j].parentNode === thumbsEl && marks[j].scrollIntoView) {
-        marks[j].scrollIntoView({ block: 'nearest', inline: 'nearest' });
-      }
-    }
-  }
-
-  renderGallery();
 
   document.addEventListener('click', function (e) {
-    var thumb = e.target.closest ? e.target.closest('[data-thumb]') : null;
-    if (thumb) { goTo(Number(thumb.getAttribute('data-thumb'))); return; }
-
-    var nav = e.target.closest ? e.target.closest('[data-nav]') : null;
-    if (nav) { goTo(current + (nav.getAttribute('data-nav') === 'next' ? 1 : -1)); }
+    var go = e.target.closest && e.target.closest('[data-go]');
+    if (go) { goTo(Number(go.getAttribute('data-go'))); return; }
+    var nav = e.target.closest && e.target.closest('[data-nav]');
+    if (nav) goTo(current + Number(nav.getAttribute('data-nav')));
   });
 
-  /* Setas do teclado sobre o palco da galeria */
-  var stage = document.getElementById('stage');
-  stage.setAttribute('tabindex', '0');
+  stage.tabIndex = 0;
   stage.addEventListener('keydown', function (e) {
     if (e.key === 'ArrowRight') { e.preventDefault(); goTo(current + 1); }
-    if (e.key === 'ArrowLeft')  { e.preventDefault(); goTo(current - 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); goTo(current - 1); }
   });
 
-  /* Swipe horizontal (touch) */
   var tx = 0, ty = 0;
   stage.addEventListener('touchstart', function (e) {
     tx = e.changedTouches[0].clientX; ty = e.changedTouches[0].clientY;
   }, { passive: true });
   stage.addEventListener('touchend', function (e) {
-    var dx = e.changedTouches[0].clientX - tx;
-    var dy = e.changedTouches[0].clientY - ty;
+    var dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
     if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) goTo(current + (dx < 0 ? 1 : -1));
   }, { passive: true });
 
-  /* ======================================================================
-     COUNTDOWN — 02d 14h 30m a partir do carregamento, com tick de 1s
-     ====================================================================== */
+  /* ====================================================================
+     COUNTDOWN — 02d 14h 30m a partir da carga, tick de 1s
+     ==================================================================== */
   var DEADLINE = Date.now() + ((2 * 24 + 14) * 60 + 30) * 60 * 1000;
-
   var cd = {
-    d: document.querySelector('[data-cd="d"]'),
-    h: document.querySelector('[data-cd="h"]'),
-    m: document.querySelector('[data-cd="m"]'),
-    s: document.querySelector('[data-cd="s"]')
+    d: document.querySelector('[data-cd="d"]'), h: document.querySelector('[data-cd="h"]'),
+    m: document.querySelector('[data-cd="m"]'), s: document.querySelector('[data-cd="s"]')
   };
   var cdLabel = document.getElementById('cd-label');
-  var cdSr    = document.getElementById('cd-sr');
-  var lastMin = -1;
+  var cdSr = document.getElementById('cd-sr');
+  var lastMin = -1, timer;
 
   function pad(n) { return (n < 10 ? '0' : '') + n; }
 
   function tick() {
     var left = Math.max(0, DEADLINE - Date.now());
-    var total = Math.floor(left / 1000);
-    var d = Math.floor(total / 86400);
-    var h = Math.floor((total % 86400) / 3600);
-    var m = Math.floor((total % 3600) / 60);
-    var s = total % 60;
+    var t = Math.floor(left / 1000);
+    var d = Math.floor(t / 86400), h = Math.floor((t % 86400) / 3600),
+        m = Math.floor((t % 3600) / 60), s = t % 60;
+    cd.d.textContent = pad(d); cd.h.textContent = pad(h);
+    cd.m.textContent = pad(m); cd.s.textContent = pad(s);
 
-    cd.d.textContent = pad(d);
-    cd.h.textContent = pad(h);
-    cd.m.textContent = pad(m);
-    cd.s.textContent = pad(s);
-
-    /* Leitores de tela: resumo a cada minuto (nunca a cada segundo) */
+    /* leitor de tela: resumo por minuto, nunca a cada segundo */
     if (m !== lastMin) {
       lastMin = m;
-      cdSr.textContent = left === 0
-        ? 'Oferta encerrada.'
+      cdSr.textContent = left === 0 ? 'Oferta encerrada.'
         : 'Oferta expira em ' + d + ' dias, ' + h + ' horas e ' + m + ' minutos.';
     }
-
     if (left === 0) {
-      cdLabel.textContent = 'Esta oferta foi encerrada';
+      cdLabel.textContent = 'ESTA OFERTA FOI ENCERRADA';
+      document.getElementById('cta-main').setAttribute('aria-disabled', 'true');
+      document.getElementById('cta-sticky').setAttribute('aria-disabled', 'true');
       clearInterval(timer);
     }
   }
-
   tick();
-  var timer = setInterval(tick, 1000);
+  timer = setInterval(tick, 1000);
 
-  /* ======================================================================
+  /* ====================================================================
      TOAST
-     ====================================================================== */
-  var toastEl = document.getElementById('toast');
-  var toastTimer;
-
+     ==================================================================== */
+  var toastEl = document.getElementById('toast'), toastTimer;
   function toast(msg) {
     toastEl.textContent = msg;
-    toastEl.classList.remove('opacity-0', 'translate-y-2');
+    toastEl.setAttribute('data-show', '');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () {
-      toastEl.classList.add('opacity-0', 'translate-y-2');
-    }, 2400);
+    toastTimer = setTimeout(function () { toastEl.removeAttribute('data-show'); }, 2400);
   }
 
-  /* ======================================================================
-     CUPOM PRÉ-APLICADO — clique copia o código
-     ====================================================================== */
+  /* ====================================================================
+     CUPOM — clique copia o código
+     ==================================================================== */
   var coupon = document.getElementById('coupon');
   var couponText = document.getElementById('coupon-text');
-  var couponHtml = couponText.innerHTML;
-  var couponTimer;
+  var couponHtml = couponText.innerHTML, couponTimer;
 
   coupon.addEventListener('click', function () {
-    var code = 'canaltech20';
     var done = function () {
-      couponText.textContent = 'Cupom "canaltech20" copiado';
+      couponText.textContent = 'Cupom "CANALTECH20" copiado';
       toast('Cupom copiado — já aplicado no carrinho.');
       clearTimeout(couponTimer);
       couponTimer = setTimeout(function () { couponText.innerHTML = couponHtml; }, 2400);
     };
-
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(code).then(done, done);
+      navigator.clipboard.writeText('CANALTECH20').then(done, done);
     } else {
       var ta = document.createElement('textarea');
-      ta.value = code; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      ta.value = 'CANALTECH20'; ta.style.position = 'fixed'; ta.style.opacity = '0';
       document.body.appendChild(ta); ta.select();
       try { document.execCommand('copy'); } catch (err) {}
-      document.body.removeChild(ta);
-      done();
+      document.body.removeChild(ta); done();
     }
   });
 
-  /* ======================================================================
+  /* ====================================================================
      CTAs — protótipo sem destino real
-     ====================================================================== */
+     ==================================================================== */
   function stub(id, msg) {
     var el = document.getElementById(id);
-    if (el) el.addEventListener('click', function (e) { e.preventDefault(); toast(msg); });
+    if (el) el.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (el.getAttribute('aria-disabled') === 'true') return;
+      toast(msg);
+    });
   }
-  stub('cta-main',   'Redirecionando para o checkout da Netshoes…');
+  stub('cta-main', 'Redirecionando para o checkout da Netshoes…');
   stub('cta-sticky', 'Redirecionando para o checkout da Netshoes…');
-  stub('cta-whats',  'Abrindo a comunidade CT em Campo no WhatsApp…');
+  stub('cta-whats', 'Abrindo a comunidade Canaltech Ofertas no WhatsApp…');
 
-  /* ======================================================================
-     STICKY CTA BAR (<768px) — aparece quando o CTA principal sai da tela
-     ====================================================================== */
-  var bar = document.getElementById('sticky-bar');
+  /* ====================================================================
+     STICKY BAR — aparece quando o CTA principal sai por cima da viewport.
+     Leitura direta do rect: o IntersectionObserver só notifica MUDANÇAS de
+     interseção, então um salto de "abaixo da dobra" direto para "acima da
+     viewport" não dispararia callback e a barra ficaria presa escondida.
+     ==================================================================== */
+  var bar = document.getElementById('sticky');
   var anchor = document.getElementById('cta-main');
+  var shown = null, queued = false;
 
   function setBar(show) {
-    bar.classList.toggle('translate-y-full', !show);
-    /* Fora da tela, os controles saem também da ordem de tabulação */
+    bar.toggleAttribute('data-show', show);
     bar.setAttribute('aria-hidden', show ? 'false' : 'true');
-    var links = bar.querySelectorAll('a');
-    for (var i = 0; i < links.length; i++) links[i].tabIndex = show ? 0 : -1;
+    [].forEach.call(bar.querySelectorAll('a'), function (a) { a.tabIndex = show ? 0 : -1; });
   }
-  var barShown = null;
-  var queued = false;
-
-  function syncBar() {
+  function sync() {
     queued = false;
-    /* Revela assim que o CTA principal sai por cima da viewport.
-       Leitura direta do rect (e não IntersectionObserver): o IO só notifica
-       *mudanças* de estado, então um salto de "abaixo da dobra" para "acima da
-       viewport" — âncora, restauração de scroll, scrollTo — não dispararia
-       callback nenhum e a barra ficaria presa escondida. */
-    var show = anchor.getBoundingClientRect().bottom < 0;
-    if (show !== barShown) { barShown = show; setBar(show); }
+    /* visível sempre que o CTA principal não está na tela — acima OU abaixo.
+       No Figma a barra é fixa no rodapé do frame; aqui ela some só quando o
+       botão real aparece, para não duplicar o mesmo CTA na mesma dobra. */
+    var r = anchor.getBoundingClientRect();
+    /* mede quanto do botão está de fato à vista: se menos de 60% aparece,
+       a barra assume — evita o caso de o CTA ficar espremido na quina */
+    var visivel = Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0);
+    var show = visivel < r.height * 0.6;
+    if (show !== shown) { shown = show; setBar(show); }
   }
+  function onScroll() { if (!queued) { queued = true; requestAnimationFrame(sync); } }
 
-  function onScroll() {
-    if (queued) return;
-    queued = true;
-    window.requestAnimationFrame(syncBar);
-  }
-
-  setBar(false);
-  barShown = false;
+  setBar(false); shown = false;
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
-  syncBar();
+  /* as imagens mudam a altura da página depois do parse: sem reavaliar aqui,
+     a barra fica presa no estado calculado antes do layout final */
+  window.addEventListener('load', onScroll);
+  if (window.ResizeObserver) new ResizeObserver(onScroll).observe(document.body);
+  sync();
 })();
 </script>
 </body>
