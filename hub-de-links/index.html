@@ -31,22 +31,30 @@
   Única requisição externa: a fonte Barlow (Google Fonts).
 
   -------------------------------------------------------------------------
-  ANTES DE PUBLICAR — CONFIRMAR TODOS OS DESTINOS
+  DESTINOS — 1 pendência
   -------------------------------------------------------------------------
-  O Figma não define URLs. Os href abaixo são os destinos oficiais mais
-  prováveis e estão marcados no HTML com data-ct-link="<id>".
-  Confirme cada um com a redação/marketing antes de subir:
+  O Figma não define URLs. Todo link navegável carrega data-ct-link="<id>",
+  então trocar um destino é uma linha, sem caçar no markup.
 
-    data-ct-link="votar-abccom"      -> #   (URL da votação ABCCOM — PENDENTE)
-    data-ct-link="whatsapp"          -> #   (convite do grupo — PENDENTE)
-    data-ct-link="noticias"          -> https://canaltech.com.br/
-    data-ct-link="youtube"           -> https://www.youtube.com/canaltech
-    data-ct-link="podcasts"          -> https://canaltech.com.br/podcast/
-    data-ct-link="ct-eletro"         -> https://www.youtube.com/@CTEletro
-    data-ct-link="ct-ofertas"        -> https://canaltech.com.br/ofertas/
-    data-ct-link="guia-compras"      -> https://canaltech.com.br/guia-de-compras/
-    data-ct-link="social-*"          -> perfis oficiais
-    data-ct-link="legal-*"           -> rodapé
+  [!] PENDENTE — o único href ainda em "#":
+
+    votar-abccom     Faixa de campanha, botão "Votar Agora".
+                     Não foi possível confirmar a URL da votação do Prêmio
+                     ABCCOM. VER TAMBÉM a nota "Faixa de campanha" no README:
+                     confirmar se a votação ainda está aberta antes de
+                     publicar — se estiver encerrada, a faixa inteira sai.
+
+  Demais destinos (conferir com redação/marketing):
+
+    whatsapp         https://ofertas.canaltech.com.br/grupos-de-oferta/
+    ct-ofertas       https://ofertas.canaltech.com.br/
+    noticias         https://canaltech.com.br/
+    youtube          https://www.youtube.com/canaltech
+    podcasts         https://canaltech.com.br/podcast/
+    ct-eletro        https://www.youtube.com/@CTEletro
+    guia-compras     https://canaltech.com.br/guia-de-compras/
+    social-*         perfis oficiais (montados no array SOCIAIS, no script)
+    legal-*          site, privacidade e anuncie, no rodapé
 
   Todos os cliques disparam o CustomEvent "ct:link" no document, com
   detail = { id, href, label } — pluge no GA4/GTM sem tocar no markup.
@@ -220,16 +228,17 @@ ul{margin:0;padding:0;list-style:none}
 }
 .campo-marca::after{               /* Grão — nó 72:889 / 72:994 */
   content:"";position:absolute;inset:0;pointer-events:none;
-  /* Duas camadas: o ladrilho do Figma na frente, e atrás um ruído SVG
-     embutido. O designer marcou o grão como fill a ser trocado; enquanto
-     canaltech-grao-512.png não existir, o ruído embutido segura a textura
-     sem requisição extra. Ao adicionar o PNG, ele passa a valer sozinho. */
+  /* O nó no Figma se chama "Grão — trocar o fill por canaltech-grao-512.png,
+     escala Ladrilho": o cinza chapado de lá é placeholder, não arte final.
+     Duas camadas: o ladrilho na frente e, atrás, partículas geradas por
+     feTurbulence + feColorMatrix (limiar no alfa) — sem arquivo e sem
+     requisição. Ao adicionar o PNG à pasta, ele passa a valer sozinho. */
   background-image:
     url("assets/canaltech-grao-512.png"),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)' opacity='0.5'/%3E%3C/svg%3E");
-  background-size:512px 512px, 160px 160px;
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='1' seed='7' stitchTiles='stitch' result='n'/%3E%3CfeColorMatrix in='n' type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 4 0 0 0 -2.15'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size:512px 512px, 240px 240px;
   background-repeat:repeat, repeat;
-  mix-blend-mode:overlay;opacity:.35;
+  mix-blend-mode:overlay;opacity:.5;
 }
 
 /* --- Avatar -------------------------------------------------------------- */
@@ -615,7 +624,7 @@ function ctFallback(img){
   <main class="conteudo coluna-destinos" id="conteudo">
 
     <!-- CTA primário — WhatsApp · nó 72:891 / 72:1020 -->
-    <a class="cta" href="#" data-ct-link="whatsapp" rel="noopener">
+    <a class="cta" href="https://ofertas.canaltech.com.br/grupos-de-oferta/" data-ct-link="whatsapp" rel="noopener">
       <span class="cta__cabecalho">
         <span class="ico cta__icone" aria-hidden="true">
           <img src="assets/icon-whatsapp.svg" alt="" width="22" height="22" onerror="ctFallback(this)">
@@ -691,7 +700,7 @@ function ctFallback(img){
       <h2 class="secao__rotulo" id="secao-comprar">Comprar melhor</h2>
       <div class="secao__itens">
 
-        <a class="item" href="https://canaltech.com.br/ofertas/" data-ct-link="ct-ofertas" rel="noopener">
+        <a class="item" href="https://ofertas.canaltech.com.br/" data-ct-link="ct-ofertas" rel="noopener">
           <span class="slot item__slot">
             <img src="assets/card_ct_ofertas_desktop.png" alt="" loading="lazy" decoding="async" onerror="ctFallback(this)">
           </span>

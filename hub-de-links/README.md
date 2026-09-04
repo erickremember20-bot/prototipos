@@ -14,6 +14,16 @@ Implementação da página **"Hub de links — prototype"** do Figma
 
 Para publicar: suba `index.html` e a pasta `assets/`. Nada além disso.
 
+## Links rápidos
+
+| | |
+|---|---|
+| **Protótipo navegável** | https://claude.ai/code/artifact/51af3c2f-5d08-43ce-a9cf-7fb4cc9c6c31 |
+| **GitHub Pages** | `https://erickremember20-bot.github.io/Motorola_01/` — branch `gh-pages` já publicada; falta ligar em *Settings › Pages › Deploy from a branch › gh-pages / (root)* |
+
+O protótipo é um arquivo único com os assets embutidos, gerado por
+`build-standalone.py`. Serve para mostrar a página sem depender de deploy.
+
 ---
 
 ## O que a página é
@@ -45,8 +55,9 @@ O que muda de fato na terceira geração, lendo o Figma:
 
 ```
 hub-de-links/
-├── index.html        ← o entregável
-├── assets/           ← imagens e ícones exportados do Figma
+├── index.html            ← o entregável
+├── assets/               ← imagens e ícones exportados do Figma
+├── build-standalone.py   ← gera a versão de arquivo único (assets em data URI)
 └── README.md
 ```
 
@@ -123,17 +134,23 @@ A única exceção é `canaltech-grao-512.png` — ver nota abaixo da tabela.
 | `icon-facebook.svg` ✅ | `72:967` | 24×24 |
 | `icon-threads.svg` ✅ | `72:970` | 24×24 |
 
-### O grão (`canaltech-grao-512.png`)
+### O pattern do cartão de identidade (`canaltech-grao-512.png`)
 
-Único asset não entregue. No Figma a camada se chama literalmente
-*"Grão — trocar o fill por canaltech-grao-512.png, escala Ladrilho"*: o cinza
-chapado ali é placeholder, não arte final.
+Único asset não entregue, e o único ponto do design que não veio pronto do
+arquivo. A camada no Figma se chama literalmente *"Grão — trocar o fill por
+canaltech-grao-512.png, escala Ladrilho"*: o cinza chapado de lá é
+placeholder, não arte final. Confirmado via MCP — `download_assets` no nó
+`72:985` devolve `rawImages: []`, ou seja, não existe fill de imagem no
+arquivo.
 
-Resolvido com um ruído SVG (`feTurbulence`) embutido no CSS como camada de
-fundo — sem requisição extra, sem arquivo. O `background-image` do
-`.campo-marca::after` declara **duas** camadas: o PNG na frente e o ruído
-atrás. Se um dia o PNG for adicionado à pasta, ele passa a valer sozinho,
-sem tocar no código.
+Reproduzido em CSS puro: `feTurbulence` gera o ruído e um `feColorMatrix`
+amplifica o alfa (coeficiente 4, offset −2.15) para transformar o ruído em
+partículas esparsas, no lugar de uma névoa uniforme. Fica sobre o degradê
+`#142ace → #0a1380 (55%) → #050f4a` em `mix-blend-mode: overlay`.
+
+O `background-image` do `.campo-marca::after` declara **duas** camadas: o
+ladrilho na frente e o ruído atrás. Ao adicionar o PNG à pasta, ele passa a
+valer sozinho, sem tocar no código.
 
 ### Se um asset sumir do deploy
 
@@ -144,17 +161,37 @@ no componente *Slot de imagem* do próprio design system, com fundo
 
 ---
 
-## Destinos — confirmar antes de publicar
+## Destinos
 
-O Figma não define URLs. Os `href` no HTML são o palpite mais provável e estão
-marcados com `data-ct-link`. **Dois estão em `#` e precisam de resposta:**
+O Figma não define URLs. Todo link navegável carrega `data-ct-link="<id>"`,
+então trocar um destino é uma linha.
 
-- `votar-abccom` — URL da votação do Prêmio ABCCOM;
-- `whatsapp` — link de convite do grupo de ofertas.
+**Uma pendência.** `votar-abccom`, o botão "Votar Agora" da faixa de campanha,
+segue em `#`: não foi possível confirmar a URL da votação do Prêmio ABCCOM.
 
-Os demais (`noticias`, `youtube`, `podcasts`, `ct-eletro`, `ct-ofertas`,
-`guia-compras`, `social-*`, `legal-*`) apontam para os endereços oficiais e
-devem ser conferidos com a redação.
+| id | destino |
+|---|---|
+| `votar-abccom` | **`#` — pendente** |
+| `whatsapp` | `https://ofertas.canaltech.com.br/grupos-de-oferta/` |
+| `ct-ofertas` | `https://ofertas.canaltech.com.br/` |
+| `noticias` | `https://canaltech.com.br/` |
+| `youtube` | `https://www.youtube.com/canaltech` |
+| `podcasts` | `https://canaltech.com.br/podcast/` |
+| `ct-eletro` | `https://www.youtube.com/@CTEletro` |
+| `guia-compras` | `https://canaltech.com.br/guia-de-compras/` |
+| `social-*` | perfis oficiais, no array `SOCIAIS` do script |
+| `legal-*` | site, privacidade e anuncie |
+
+Confira todos com a redação antes de publicar.
+
+### Faixa de campanha — verificar a validade
+
+A faixa diz "Prêmio ABCCOM · vote no Canaltech". Vale confirmar se a votação
+ainda está aberta: **se já encerrou, a faixa inteira sai antes de publicar.**
+O próprio wireframe registra isso como pendência — *"Não confirmei a data de
+encerramento da votação ABCCOM"*. A faixa é dispensável pelo ✕ e lembra a
+escolha em `localStorage`, mas isso não substitui tirá-la do ar quando a
+campanha acabar.
 
 ---
 
@@ -219,6 +256,9 @@ document.addEventListener('ct:link', function (e) {
 ---
 
 ## Verificação
+
+Rodar a suíte exige Playwright (`npm install playwright`); o Chromium do
+ambiente é apontado por `executablePath`.
 
 Suíte de 91 asserções em Chromium (Playwright), cobrindo os dois frames:
 cores e raios contra os tokens do Figma, geometria (faixa 60px, avatar 72/96,
