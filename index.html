@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Canaltech — Hub de links</title>
+<meta name="description" content="Notícias de tecnologia todo dia e as ofertas que valem a pena. Portal, YouTube, podcasts, CT Ofertas e Guia de Compras do Canaltech.">
+<meta name="theme-color" content="#050f4a">
+<link rel="canonical" href="https://canaltech.com.br/links/">
+
+<!-- Open Graph / Twitter — TODO dev: subir assets/og-canaltech-hub.png (1200x630) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Canaltech">
+<meta property="og:title" content="Canaltech — Hub de links">
+<meta property="og:description" content="Notícias de tecnologia todo dia e as ofertas que valem a pena.">
+<meta property="og:image" content="assets/og-canaltech-hub.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;700&display=swap">
+
+<!--
+===============================================================================
+  CANALTECH — HUB DE LINKS
+  Implementação do Figma "Linktree_Canaltech" › página "Hub de links — prototype"
+  Frames de origem: 72:870 (01 · Mobile 360) e 72:975 (02 · Desktop 1400)
+
+  ARQUIVO ÚNICO. Sem build, sem dependência de JS externo.
+  Única requisição externa: a fonte Barlow (Google Fonts).
+
+  -------------------------------------------------------------------------
+  DESTINOS — 1 pendência
+  -------------------------------------------------------------------------
+  O Figma não define URLs. Todo link navegável carrega data-ct-link="<id>",
+  então trocar um destino é uma linha, sem caçar no markup.
+
+  [!] PENDENTE — o único href ainda em "#":
+
+    votar-abccom     Faixa de campanha, botão "Votar Agora".
+                     Não foi possível confirmar a URL da votação do Prêmio
+                     ABCCOM. VER TAMBÉM a nota "Faixa de campanha" no README:
+                     confirmar se a votação ainda está aberta antes de
+                     publicar — se estiver encerrada, a faixa inteira sai.
+
+  Demais destinos (conferir com redação/marketing):
+
+    whatsapp         https://ofertas.canaltech.com.br/grupos-de-oferta/
+    ct-ofertas       https://ofertas.canaltech.com.br/
+    noticias         https://canaltech.com.br/
+    youtube          https://www.youtube.com/canaltech
+    podcasts         https://canaltech.com.br/podcast/
+    ct-eletro        https://www.youtube.com/@CTEletro
+    guia-compras     https://canaltech.com.br/guia-de-compras/
+    social-*         perfis oficiais (montados no array SOCIAIS, no script)
+    legal-*          site, privacidade e anuncie, no rodapé
+
+  Todos os cliques disparam o CustomEvent "ct:link" no document, com
+  detail = { id, href, label } — pluge no GA4/GTM sem tocar no markup.
+
+  -------------------------------------------------------------------------
+  ASSETS ESPERADOS EM ./assets/  (nomes exatos do Figma)
+  -------------------------------------------------------------------------
+    logo-canaltech.svg            avatar, 72px (mobile) / 96px (desktop)
+    canaltech-grao-512.png        textura de grão, ladrilhada, blend overlay 35%
+    card_noticias.png             340x191 @2x recomendado
+    card_youtube.png
+    card_podcast.png
+    card_ct_eletro.png
+    card_ct_ofertas_desktop.png
+    card_guia_de_compras.png
+    icon-trophy.svg               36x36
+    icon-whatsapp.svg             22x22
+    icon-instagram.svg / icon-tiktok.svg / icon-youtube.svg
+    icon-x.svg / icon-facebook.svg / icon-threads.svg      24x24 (tiktok 21x24)
+
+  TODOS os assets acima já estão em ./assets/, exportados do Figma —
+  exceto canaltech-grao-512.png, que cai num ruído SVG embutido no CSS.
+
+  O fallback continua armado: se um arquivo sumir do deploy, a página NÃO
+  quebra — cai no sprite SVG inline (ícones) ou no componente "Slot de
+  imagem" do Figma, com o rótulo IMAGEM (fotos dos cards).
+===============================================================================
+-->
+
+<style>
+/* ===========================================================================
+   1. TOKENS — variáveis reais da coleção do Figma (Canaltech WF)
+   ========================================================================= */
+:root{
+  /* texto */
+  --texto-primario:#ffffff;
+  --texto-secundario:#a9b2cc;
+  --texto-apagado:#7c87a8;
+  --texto-sobre-marca:#04091a;
+
+  /* marca */
+  --marca-ciano:#27a9e1;
+  --marca-azul-profundo:#0a1fa9;
+
+  /* fundos */
+  --fundo-pagina:#050f4a;
+  --fundo-slot:#141a3c;
+  --fundo-afundado:#03040f;
+  --fundo-cartao:#081985;
+
+  /* bordas */
+  --borda-forte:#2e376a;
+  --borda-sutil:#1c2244;
+  --borda-cartao:#091fa9;
+  --borda-campo:#081d9c;      /* mobile; no desktop o Figma usa #091fa9 */
+
+  /* acentos */
+  --acento-campanha:#e57c13;  /* botão "Votar Agora" */
+  --acento-cta:#c4f84b;       /* bloco do WhatsApp */
+
+  /* raios */
+  --raio-sm:8px;
+  --raio-md:12px;
+  --raio-lg:16px;
+  --raio-pill:999px;
+
+  /* sombras */
+  --sombra-slot:2px 4px 10.2px rgba(0,0,0,.25);
+  --sombra-cartao:2px 4px 5.1px rgba(0,0,0,.25);
+  --sombra-botao:-3px 4px 5.45px rgba(0,0,0,.4);
+
+  /* layout */
+  --gutter:16px;
+  --anel-foco:2px solid var(--marca-ciano);
+}
+
+/* ===========================================================================
+   2. RESET
+   ========================================================================= */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--fundo-pagina);
+  color:var(--texto-primario);
+  font-family:"Barlow","Helvetica Neue",Arial,system-ui,sans-serif;
+  font-size:14px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img,svg{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input{font:inherit}
+a{color:inherit;text-decoration:none}
+p{margin:0}
+ul{margin:0;padding:0;list-style:none}
+:focus-visible{outline:var(--anel-foco);outline-offset:2px;border-radius:4px}
+.sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+}
+
+/* ===========================================================================
+   3. PRIMITIVAS
+   ========================================================================= */
+
+/* --- Botão (componente 72:416) — altura fixa 48px em todos os contextos --- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  height:48px;padding:0 24px;
+  border-radius:var(--raio-pill);
+  font-size:16px;font-weight:700;line-height:1.5;
+  white-space:nowrap;
+  transition:transform .12s ease,background-color .12s ease,border-color .12s ease,opacity .12s ease;
+}
+.btn:active{transform:translateY(1px)}
+.btn--tinta{                       /* sólido escuro sobre o bloco lima */
+  background:var(--texto-sobre-marca);
+  color:var(--texto-primario);
+  filter:drop-shadow(var(--sombra-botao));
+}
+.btn--tinta:hover{background:#0d1533}
+.btn--contorno{                    /* contornado sobre fundo azul */
+  border:1.5px solid var(--borda-cartao);
+  color:var(--texto-primario);
+}
+.btn--contorno:hover{background:rgba(9,31,169,.35)}
+.btn--cookie{
+  flex:1 0 0;min-width:0;
+  border:1.5px solid var(--borda-forte);
+  color:var(--texto-primario);
+}
+.btn--cookie:hover{background:rgba(46,55,106,.35)}
+.btn--campanha{
+  height:44px;
+  background:var(--acento-campanha);
+  color:var(--texto-primario);
+}
+.btn--campanha:hover{background:#f08a1c}
+
+/* --- Ícone com fallback ------------------------------------------------- */
+/* Enquanto o arquivo real não existe em ./assets/, entra o sprite inline. */
+.ico{position:relative;display:block;flex:0 0 auto}
+.ico > img,.ico > svg{position:absolute;inset:0;width:100%;height:100%}
+.ico__fb{display:none}
+.ico.is-fallback > img{display:none}
+.ico.is-fallback .ico__fb{display:block}
+
+/* --- Slot de imagem (componente 72:404) --------------------------------- */
+/* Sem imagem, mostra o placeholder do design system: fundo/slot + IMAGEM. */
+.slot{
+  position:relative;overflow:hidden;
+  background:var(--fundo-slot);
+  display:flex;align-items:center;justify-content:center;
+}
+.slot > img{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.slot::after{
+  content:"IMAGEM";
+  display:none;
+  font-size:12px;line-height:1.5;letter-spacing:.72px;
+  color:var(--texto-apagado);
+}
+.slot.is-fallback::after{display:block}
+.slot.is-fallback > img{display:none}
+
+/* --- Campo de marca (gradiente + grão) ---------------------------------- */
+.campo-marca{
+  position:relative;overflow:hidden;
+  background:linear-gradient(180deg,#142ace 0%,#0a1380 55%,var(--fundo-pagina) 100%);
+}
+.campo-marca::after{               /* Grão — nó 72:889 / 72:994 */
+  content:"";position:absolute;inset:0;pointer-events:none;
+  /* O nó no Figma se chama "Grão — trocar o fill por canaltech-grao-512.png,
+     escala Ladrilho": o cinza chapado de lá é placeholder, não arte final.
+     Duas camadas: o ladrilho na frente e, atrás, partículas geradas por
+     feTurbulence + feColorMatrix (limiar no alfa) — sem arquivo e sem
+     requisição. Ao adicionar o PNG à pasta, ele passa a valer sozinho. */
+  background-image:
+    url("assets/canaltech-grao-512.png"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='1' seed='7' stitchTiles='stitch' result='n'/%3E%3CfeColorMatrix in='n' type='matrix' values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 4 0 0 0 -2.15'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size:512px 512px, 240px 240px;
+  background-repeat:repeat, repeat;
+  mix-blend-mode:overlay;opacity:.5;
+}
+
+/* --- Avatar -------------------------------------------------------------- */
+.avatar{
+  display:flex;align-items:center;justify-content:center;
+  background:var(--marca-ciano);
+  border-radius:50%;overflow:hidden;flex:0 0 auto;
+  position:relative;z-index:1;
+}
+.avatar .ico{width:100%;height:100%}
+.avatar .ico.is-fallback::after{
+  content:"LOGO";
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;letter-spacing:.72px;color:rgba(4,9,26,.55);
+}
+
+/* ===========================================================================
+   4. FAIXA DE CAMPANHA
+   ========================================================================= */
+.faixa{
+  display:flex;align-items:center;gap:12px;
+  padding:8px var(--gutter);
+  background:var(--marca-azul-profundo);
+}
+.faixa[hidden]{display:none}
+.faixa__grupo{display:flex;align-items:center;gap:8px;flex:1 0 0;min-width:0}
+.faixa__trofeu{width:36px;height:36px}
+.faixa__txt{font-size:12px;line-height:1.5}
+.faixa__txt strong{font-weight:700}
+.faixa__sep{display:none}
+.faixa__quebra{display:block}
+.faixa__fechar{
+  display:flex;align-items:center;justify-content:center;
+  width:24px;height:24px;margin:-2px -6px -2px 0;
+  font-size:14px;line-height:1;opacity:.7;
+  border-radius:var(--raio-pill);
+}
+.faixa__fechar:hover{opacity:1}
+
+/* ===========================================================================
+   5. HERO (mobile) — Hero, campo de marca · nó 72:879
+   ========================================================================= */
+.hero{
+  display:flex;flex-direction:column;align-items:flex-start;gap:8px;
+  padding:var(--gutter);
+}
+.hero .avatar{width:72px;height:72px}
+.hero__nome{font-size:20px;font-weight:700;line-height:1.5;position:relative;z-index:1}
+.hero__bio{font-size:14px;color:var(--texto-secundario);position:relative;z-index:1}
+.hero__marca{position:relative;z-index:1;display:flex;flex-direction:column;gap:4px}
+
+/* ===========================================================================
+   6. CONTEÚDO
+   ========================================================================= */
+.conteudo{
+  display:flex;flex-direction:column;gap:16px;
+  padding:var(--gutter);
+}
+
+/* --- CTA primário — WhatsApp · nó 72:891 -------------------------------- */
+.cta{
+  display:flex;flex-direction:column;align-items:flex-start;gap:16px;
+  padding:20px;
+  background:var(--acento-cta);
+  border-radius:var(--raio-lg);
+  color:var(--texto-sobre-marca);
+}
+.cta__cabecalho{display:flex;align-items:flex-start;gap:6px}
+.cta__icone{width:22px;height:22px;margin-top:1px}
+.cta__titulo{font-size:16px;font-weight:700;line-height:1.5}
+.cta__desc{font-size:14px;opacity:.82}
+
+/* --- Seções -------------------------------------------------------------- */
+.secao{display:flex;flex-direction:column;gap:8px}
+.secao__rotulo{font-size:16px;font-weight:700;line-height:1.5}
+.secao__itens{display:flex;flex-direction:column;gap:8px}
+
+/* --- Item (linha, mobile) · nó 72:906 ------------------------------------ */
+.item{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 16px 12px 12px;
+  background:var(--fundo-cartao);
+  border:1px solid var(--borda-cartao);
+  border-radius:var(--raio-md);
+  transition:background-color .15s ease,border-color .15s ease,transform .15s ease;
+}
+.item:hover{background:#0a1fa0;border-color:#1a35c9}
+.item:active{transform:scale(.995)}
+.item__slot{
+  width:123px;height:72px;flex:0 0 auto;
+  border:1px solid var(--borda-cartao);
+  border-radius:var(--raio-sm);
+  box-shadow:var(--sombra-slot);
+}
+.item__txt{display:flex;flex-direction:column;gap:2px;flex:1 0 0;min-width:0}
+.item__titulo{font-size:14px;font-weight:700;line-height:1.5}
+.item__desc{font-size:14px;color:var(--texto-secundario)}
+
+/* --- Captura de e-mail · nó 72:945 --------------------------------------- */
+.email{
+  display:flex;flex-direction:column;gap:8px;
+  padding:20px;
+  background:var(--fundo-cartao);
+  border:1px solid var(--borda-cartao);
+  border-radius:var(--raio-md);
+  box-shadow:var(--sombra-cartao);
+}
+.email__titulo{font-size:14px;font-weight:700;line-height:1.5}
+.email__campo{display:flex;flex-direction:column;gap:8px}
+.email__input{
+  width:100%;height:48px;padding:0 16px;
+  background:var(--fundo-pagina);
+  border:1px solid var(--borda-campo);
+  border-radius:var(--raio-pill);
+  color:var(--texto-primario);
+  font-size:14px;line-height:1.5;
+}
+.email__input::placeholder{color:var(--texto-apagado);opacity:1}
+.email__input:focus-visible{outline:var(--anel-foco);outline-offset:1px}
+.email__aviso{font-size:12px;color:var(--texto-apagado)}
+/* Estados do input — lacuna apontada no Figma, resolvida com os tokens do DS */
+.email__input[aria-invalid="true"]{border-color:#ff6b6b}
+.email__msg{font-size:12px;line-height:1.5;min-height:0}
+.email__msg:empty{display:none}
+.email__msg[data-estado="erro"]{color:#ff9b9b}
+.email__msg[data-estado="sucesso"]{color:var(--acento-cta)}
+
+/* --- Rodapé -------------------------------------------------------------- */
+.rodape{display:flex;flex-direction:column;gap:16px}
+.sociais{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.social{
+  display:flex;align-items:center;justify-content:center;
+  width:44px;height:44px;flex:0 0 auto;
+  border:1px solid var(--borda-campo);
+  border-radius:var(--raio-pill);
+  transition:background-color .15s ease,border-color .15s ease;
+}
+.social:hover{background:rgba(9,31,169,.4);border-color:var(--marca-ciano)}
+.social .ico{width:24px;height:24px}
+.social .ico--tiktok{width:21px;height:24px}
+.legal{font-size:12px;color:var(--texto-apagado);text-align:center}
+.legal a:hover,.legal__cookies:hover{color:var(--texto-secundario);text-decoration:underline}
+.legal__cookies{padding:0;font:inherit;color:inherit;text-align:inherit}
+
+/* --- Divisor / pé da coluna (desktop) ----------------------------------- */
+.divisor{height:1px;background:var(--borda-cartao);border:0;margin:0;width:100%}
+
+/* --- Alternância de densidade (mobile x desktop), sem depender de JS -----
+   Precisa vir depois de .email e .rodape: mesma especificidade, quem está
+   por último ganha. --------------------------------------------------- */
+.email--desktop,.rodape--desktop{display:none}
+
+/* ===========================================================================
+   7. BARRA DE COOKIES · nó 72:496 / 72:502
+   As três ações têm o mesmo peso, a mesma largura e o mesmo componente.
+   ========================================================================= */
+.cookies{
+  position:fixed;left:0;right:0;bottom:0;z-index:50;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  padding:var(--gutter);
+  padding-bottom:calc(var(--gutter) + env(safe-area-inset-bottom));
+  background:var(--fundo-afundado);
+  border-top:1px solid var(--borda-sutil);
+}
+.cookies[hidden]{display:none}
+.cookies__txt{font-size:12px;color:var(--texto-secundario);width:100%}
+.cookies__acoes{display:flex;gap:8px;width:100%}
+body[data-cookies="visivel"]{padding-bottom:calc(130px + env(safe-area-inset-bottom))}
+
+/* ===========================================================================
+   8. DESKTOP >= 1024px — frame 72:975 (1400 = 120 + 360 + 80 + 720 + 120)
+   ========================================================================= */
+@media (min-width:1024px){
+  :root{
+    --gutter:clamp(40px,8.57vw,120px);
+    --borda-campo:#091fa9;
+  }
+  body{font-size:16px}
+
+  .faixa{
+    height:60px;gap:12px;
+    padding-inline:max(var(--gutter),calc((100% - 1400px)/2 + var(--gutter)));
+  }
+  .faixa__grupo{gap:12px}
+  .faixa__txt{font-size:14px}
+  .faixa__sep{display:inline}
+  .faixa__quebra{display:none}
+
+  /* O hero mobile vira o cartão de identidade da coluna esquerda */
+  .pagina{
+    display:flex;align-items:flex-start;gap:clamp(40px,5.7vw,80px);
+    max-width:1400px;margin:0 auto;
+    padding:64px var(--gutter) 80px;
+  }
+  .coluna-identidade{
+    width:360px;flex:0 0 360px;
+    display:flex;flex-direction:column;gap:24px;
+    position:sticky;top:24px;align-self:flex-start;
+  }
+  .coluna-destinos{
+    flex:1 1 720px;min-width:0;
+    display:flex;flex-direction:column;gap:24px;
+  }
+
+  .hero{
+    padding:36px 32px;
+    border-radius:var(--raio-lg);
+    gap:20px;
+  }
+  .hero .avatar{width:96px;height:96px}
+  .hero__marca{gap:8px}
+  .hero__nome{font-size:28px;line-height:1.1}
+  .hero__bio{font-size:18px}
+
+  .conteudo{padding:0;gap:24px}
+
+  .cta{padding:32px;gap:24px}
+  .cta__cabecalho{align-items:center;gap:8px}
+  .cta__icone{margin-top:0}
+  .cta__titulo{font-size:20px}
+  .cta__desc{font-size:16px}
+
+  .secao{gap:20px}
+  .secao__rotulo{font-size:20px}
+  .secao__itens{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px}
+
+  /* Item vira card vertical com thumb 16:9 */
+  .item{
+    flex-direction:column;align-items:stretch;gap:0;
+    padding:0;overflow:hidden;
+    border-radius:var(--raio-lg);
+  }
+  .item__slot{
+    width:100%;height:auto;aspect-ratio:340/191;
+    border:0;border-radius:0;box-shadow:none;
+  }
+  .item__txt{gap:6px;padding:20px}
+  .item__titulo{font-size:18px}
+  .item__desc{font-size:16px}
+
+  .email{padding:24px;gap:12px;box-shadow:none}
+  .email__titulo{font-size:18px}
+  .email__input{font-size:16px}
+  .email__aviso,.email__msg{font-size:14px}
+
+  .email--mobile,.rodape--mobile{display:none}
+  .email--desktop{display:flex}
+  .rodape--desktop{display:flex}
+
+  .rodape{gap:16px;padding-top:8px}
+  .sociais{justify-content:flex-start}
+  .legal{text-align:left;font-size:14px}
+
+  .cookies{
+    flex-direction:row;align-items:center;gap:40px;
+    height:120px;padding-block:16px;
+    padding-inline:max(var(--gutter),calc((100% - 1400px)/2 + var(--gutter)));
+  }
+  .cookies__txt{font-size:14px;flex:1 0 0;min-width:0;width:auto}
+  .cookies__acoes{width:540px;flex:0 0 540px}
+  body[data-cookies="visivel"]{padding-bottom:120px}
+}
+
+/* Tablet: mantém a pilha mobile, apenas centraliza a medida de leitura */
+@media (min-width:600px) and (max-width:1023.98px){
+  .pagina{max-width:560px;margin:0 auto}
+  .faixa{padding-inline:24px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+
+<script>
+/* Fallback de asset. Definido no <head> de propósito: os onerror inline
+   disparam durante o parse do <body>, antes de qualquer script de rodapé. */
+function ctFallback(img){
+  var alvo = img.closest('.ico') || img.closest('.slot');
+  if(alvo) alvo.classList.add('is-fallback');
+}
+</script>
+</head>
+
+<body>
+
+<!-- ===================== SPRITE DE FALLBACK DOS ÍCONES ===================== -->
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
+  <symbol id="i-trofeu" viewBox="0 0 24 24">
+    <path d="M6 3h12v6a6 6 0 0 1-12 0V3Z" fill="#F5C542"/>
+    <path d="M6 4.5H3.75V6A3.25 3.25 0 0 0 7 9.25" stroke="#F5C542" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+    <path d="M18 4.5h2.25V6A3.25 3.25 0 0 1 17 9.25" stroke="#F5C542" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+    <path d="M10.5 15h3v3.2h-3z" fill="#E0A020"/>
+    <path d="M7.6 18.2h8.8a1 1 0 0 1 1 1V21H6.6v-1.8a1 1 0 0 1 1-1Z" fill="#E0A020"/>
+  </symbol>
+  <symbol id="i-whatsapp" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.46 1.33 4.97L2 22l5.25-1.38a9.86 9.86 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.82.83-3.04-.2-.31a8.16 8.16 0 0 1-1.25-4.38c0-4.53 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.82c0 4.53-3.69 8.23-8.25 8.23Z"/>
+    <path fill="currentColor" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.19 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35Z"/>
+  </symbol>
+  <symbol id="i-instagram" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.72-2.12 1.39C1.35 2.68.93 3.35.63 4.14.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.39 2.12.66.67 1.33 1.09 2.12 1.39.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.72 2.12-1.39.67-.66 1.09-1.33 1.39-2.12.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.72-1.46-1.39-2.12C21.32 1.35 20.65.93 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0Z"/>
+    <path fill="currentColor" d="M12 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84Zm0 10.16a4 4 0 1 1 4-4 4 4 0 0 1-4 4Z"/>
+    <circle fill="currentColor" cx="18.41" cy="5.59" r="1.44"/>
+  </symbol>
+  <symbol id="i-tiktok" viewBox="0 0 21 24">
+    <path fill="currentColor" d="M15.4 0h-3.83v15.64a3.24 3.24 0 0 1-3.24 3.16 3.2 3.2 0 0 1 0-6.4c.2 0 .39.02.57.06V8.56a7.44 7.44 0 0 0-.57-.03A7.2 7.2 0 1 0 15.4 15.7V7.62A8.7 8.7 0 0 0 21 9.53V5.7a4.9 4.9 0 0 1-3.9-1.83A4.94 4.94 0 0 1 15.4 0Z"/>
+  </symbol>
+  <symbol id="i-youtube" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M23.5 6.2a3.02 3.02 0 0 0-2.12-2.14C19.5 3.55 12 3.55 12 3.55s-7.5 0-9.38.51A3.02 3.02 0 0 0 .5 6.2 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.8 3.02 3.02 0 0 0 2.12 2.14c1.88.51 9.38.51 9.38.51s7.5 0 9.38-.51a3.02 3.02 0 0 0 2.12-2.14A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.8ZM9.55 15.57V8.43L15.82 12Z"/>
+  </symbol>
+  <symbol id="i-x" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M13.83 10.16 21.7 1h-1.87l-6.83 7.95L7.55 1H1.26l8.25 12.02L1.26 23h1.87l7.22-8.4L16.16 23h6.29l-8.62-12.84Zm-2.43 2.97-.84-1.2L3.8 2.43h2.87l5.37 7.69.84 1.2 6.99 10h-2.87l-5.6-8.19Z"/>
+  </symbol>
+  <symbol id="i-facebook" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.7 4.53-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.96.93-1.96 1.89v2.26h3.33l-.53 3.49h-2.8V24C19.61 23.09 24 18.1 24 12.07Z"/>
+  </symbol>
+  <symbol id="i-threads" viewBox="0 0 24 24">
+    <path fill="currentColor" d="M16.85 11.13a8.4 8.4 0 0 0-.3-.14c-.17-3.24-1.94-5.1-4.91-5.12h-.04c-1.78 0-3.25.76-4.16 2.14l1.63 1.12c.68-1.03 1.75-1.25 2.53-1.25h.03c.97 0 1.7.29 2.17.84.35.4.58.96.69 1.66a12.4 12.4 0 0 0-2.79-.13c-2.81.16-4.62 1.8-4.5 4.08.06 1.16.64 2.15 1.63 2.8.84.55 1.92.82 3.04.76 1.48-.08 2.64-.65 3.45-1.68.61-.79.99-1.81 1.16-3.09.71.43 1.24 1 1.53 1.68.5 1.16.53 3.07-1.02 4.62-1.36 1.36-3 1.95-5.47 1.97-2.75-.02-4.83-.9-6.18-2.62C2.07 17.15 1.42 14.87 1.4 12c.02-2.87.67-5.15 1.94-6.77C4.69 3.51 6.77 2.63 9.52 2.61c2.77.02 4.88.9 6.28 2.63.69.85 1.2 1.91 1.55 3.15l1.9-.51c-.42-1.52-1.08-2.83-1.97-3.92C15.48 1.75 12.85.61 9.53.59h-.01C6.2.61 3.6 1.76 1.9 3.99.39 5.97-.39 8.73-.42 11.99v.02c.03 3.26.81 6.02 2.32 8 1.7 2.23 4.3 3.38 7.62 3.4h.01c2.96-.02 5.04-.79 6.76-2.51 2.25-2.25 2.18-5.07 1.44-6.8-.53-1.24-1.55-2.25-2.95-2.93Zm-4.87 5.86c-1.24.07-2.53-.49-2.6-1.71-.05-.9.64-1.91 2.67-2.03.23-.01.46-.02.68-.02.74 0 1.43.07 2.06.21-.23 2.94-1.61 3.49-2.81 3.55Z"/>
+  </symbol>
+</svg>
+
+<!-- ========================= FAIXA DE CAMPANHA ========================== -->
+<aside class="faixa" id="faixa-campanha" aria-label="Campanha em destaque">
+  <div class="faixa__grupo">
+    <span class="ico faixa__trofeu" aria-hidden="true">
+      <img src="assets/icon-trophy.svg" alt="" width="36" height="36" onerror="ctFallback(this)">
+      <svg class="ico__fb" viewBox="0 0 24 24"><use href="#i-trofeu"/></svg>
+    </span>
+    <p class="faixa__txt">
+      <strong>Prêmio ABCCOM</strong><span class="faixa__sep"> · </span><span class="faixa__quebra"></span>vote no Canaltech
+    </p>
+  </div>
+  <a class="btn btn--campanha" href="#" data-ct-link="votar-abccom" rel="noopener">Votar Agora</a>
+  <button class="faixa__fechar" type="button" id="fechar-faixa" aria-label="Dispensar aviso de campanha">✕</button>
+</aside>
+
+<div class="pagina">
+
+  <!-- ===================== COLUNA DE IDENTIDADE ======================== -->
+  <header class="coluna-identidade">
+
+    <!-- Hero (mobile) / Cartão de identidade (desktop) — nó 72:879 / 72:985 -->
+    <section class="hero campo-marca" aria-labelledby="perfil-nome">
+      <span class="avatar">
+        <span class="ico" aria-hidden="true">
+          <img src="assets/logo-canaltech.svg" alt="" onerror="ctFallback(this)">
+          <span class="ico__fb"></span>
+        </span>
+      </span>
+      <div class="hero__marca">
+        <h1 class="hero__nome" id="perfil-nome">Canaltech</h1>
+        <p class="hero__bio">Notícias de tecnologia todo dia e as ofertas que valem a pena.</p>
+      </div>
+    </section>
+
+    <!-- Captura de e-mail (desktop: fica na coluna esquerda) — nó 72:995 -->
+    <section class="email email--desktop" aria-labelledby="email-titulo-d">
+      <h2 class="email__titulo" id="email-titulo-d">Prefere por e-mail?</h2>
+      <form class="email__campo" novalidate data-form-newsletter>
+        <label class="sr-only" for="email-d">Seu e-mail</label>
+        <input class="email__input" id="email-d" type="email" name="email"
+               placeholder="seu@email.com" autocomplete="email" inputmode="email" required>
+        <button class="btn btn--contorno" type="submit" style="width:100%">Assinar</button>
+        <p class="email__msg" role="status" aria-live="polite"></p>
+      </form>
+      <p class="email__aviso">Um resumo por dia. Cancele quando quiser.</p>
+    </section>
+
+    <!-- Pé da coluna (desktop) / Rodapé (mobile) — nó 72:996 / 72:952 -->
+    <footer class="rodape rodape--desktop">
+      <hr class="divisor">
+      <nav class="sociais" aria-label="Redes sociais do Canaltech"></nav>
+      <p class="legal">
+        <a href="https://canaltech.com.br/" data-ct-link="legal-site">canaltech.com.br</a> ·
+        <a href="https://canaltech.com.br/politica-de-privacidade/" data-ct-link="legal-privacidade">Privacidade</a> ·
+        <button type="button" class="legal__cookies" data-abrir-cookies>Preferências de cookies</button> ·
+        <a href="https://canaltech.com.br/anuncie/" data-ct-link="legal-anuncie">Anuncie no Canaltech</a>
+      </p>
+    </footer>
+  </header>
+
+  <!-- ===================== COLUNA DE DESTINOS ========================== -->
+  <main class="conteudo coluna-destinos" id="conteudo">
+
+    <!-- CTA primário — WhatsApp · nó 72:891 / 72:1020 -->
+    <a class="cta" href="https://ofertas.canaltech.com.br/grupos-de-oferta/" data-ct-link="whatsapp" rel="noopener">
+      <span class="cta__cabecalho">
+        <span class="ico cta__icone" aria-hidden="true">
+          <img src="assets/icon-whatsapp.svg" alt="" width="22" height="22" onerror="ctFallback(this)">
+          <svg class="ico__fb" viewBox="0 0 24 24"><use href="#i-whatsapp"/></svg>
+        </span>
+        <span class="cta__titulo">Ofertas no seu WhatsApp</span>
+      </span>
+      <span class="cta__desc" data-txt-mobile="Cupons e descontos em celulares, notebooks e games. Também no Telegram."
+            data-txt-desktop="Cupons e descontos em celulares, notebooks e games, selecionados pela redação. Também no Telegram.">
+        Cupons e descontos em celulares, notebooks e games. Também no Telegram.
+      </span>
+      <span class="btn btn--tinta">Entrar no grupo</span>
+    </a>
+
+    <!-- Seção — Ler e assistir · nó 72:903 / 72:1032 -->
+    <section class="secao" aria-labelledby="secao-ler">
+      <h2 class="secao__rotulo" id="secao-ler">Ler e assistir</h2>
+      <div class="secao__itens">
+
+        <a class="item" href="https://canaltech.com.br/" data-ct-link="noticias" rel="noopener">
+          <span class="slot item__slot">
+            <img src="assets/card_noticias.png" alt="" loading="lazy" decoding="async" onerror="ctFallback(this)">
+          </span>
+          <span class="item__txt">
+            <span class="item__titulo">Notícias do dia</span>
+            <span class="item__desc"
+                  data-txt-mobile="O portal completo, atualizado o dia inteiro."
+                  data-txt-desktop="O portal completo, atualizado o dia inteiro por uma redação de tecnologia.">O portal completo, atualizado o dia inteiro.</span>
+          </span>
+        </a>
+
+        <a class="item" href="https://www.youtube.com/canaltech" data-ct-link="youtube" rel="noopener">
+          <span class="slot item__slot">
+            <img src="assets/card_youtube.png" alt="" loading="lazy" decoding="async" onerror="ctFallback(this)">
+          </span>
+          <span class="item__txt">
+            <span class="item__titulo">YouTube Canaltech</span>
+            <span class="item__desc"
+                  data-txt-mobile="Análises de produto e o jornal diário em vídeo."
+                  data-txt-desktop="Análises de produto, o jornal diário em vídeo e comparativos de lançamento.">Análises de produto e o jornal diário em vídeo.</span>
+          </span>
+        </a>
+
+        <a class="item" href="https://canaltech.com.br/podcast/" data-ct-link="podcasts" rel="noopener">
+          <span class="slot item__slot">
+            <img src="assets/card_podcast.png" alt="" loading="lazy" decoding="async" onerror="ctFallback(this)">
+          </span>
+          <span class="item__txt">
+            <span class="item__titulo">Podcasts</span>
+            <span class="item__desc"
+                  data-txt-mobile="Canaltech, Porta 101 e Vale o Play?"
+                  data-txt-desktop="Canaltech de terça a sábado, Porta 101 na segunda e Vale o Play? no domingo.">Canaltech, Porta 101 e Vale o Play?</span>
+          </span>
+        </a>
+
+        <a class="item" href="https://www.youtube.com/@CTEletro" data-ct-link="ct-eletro" rel="noopener">
+          <span class="slot item__slot">
+            <img src="assets/card_ct_eletro.png" alt="" loading="lazy" decoding="async" onerror="ctFallback(this)">
+          </span>
+          <span class="item__txt">
+            <span class="item__titulo">CT Eletro no YouTube</span>
+            <span class="item__desc"
+                  data-txt-mobile="Eletrodomésticos e casa conectada."
+                  data-txt-desktop="Eletrodomésticos e casa conectada, com testes de quem usa no dia a dia.">Eletrodomésticos e casa conectada.</span>
+          </span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- Seção — Comprar melhor · nó 72:930 / 72:1063 -->
+    <section class="secao" aria-labelledby="secao-comprar">
+      <h2 class="secao__rotulo" id="secao-comprar">Comprar melhor</h2>
+      <div class="secao__itens">
+
+        <a class="item" href="https://ofertas.canaltech.com.br/" data-ct-link="ct-ofertas" rel="noopener">
+          <span class="slot item__slot">
+            <img src="assets/card_ct_ofertas_desktop.png" alt="" loading="lazy" decoding="async" onerror="ctFallback(this)">
+          </span>
+          <span class="item__txt">
+            <span class="item__titulo">CT Ofertas</span>
+            <span class="item__desc"
+                  data-txt-mobile="Promoções verificadas, atualizadas todo dia."
+                  data-txt-desktop="Promoções verificadas em celulares, TVs, notebooks e games, todo dia.">Promoções verificadas, atualizadas todo dia.</span>
+          </span>
+        </a>
+
+        <a class="item" href="https://canaltech.com.br/guia-de-compras/" data-ct-link="guia-compras" rel="noopener">
+          <span class="slot item__slot">
+            <img src="assets/card_guia_de_compras.png" alt="" loading="lazy" decoding="async" onerror="ctFallback(this)">
+          </span>
+          <span class="item__txt">
+            <span class="item__titulo">Guia de Compras</span>
+            <span class="item__desc"
+                  data-txt-mobile="Qual celular, notebook ou TV comprar agora."
+                  data-txt-desktop="Qual celular, notebook ou TV comprar agora, por faixa de preço.">Qual celular, notebook ou TV comprar agora.</span>
+          </span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- Captura de e-mail (mobile) — nó 72:945 -->
+    <section class="email email--mobile" aria-labelledby="email-titulo-m">
+      <h2 class="email__titulo" id="email-titulo-m">Prefere por e-mail?</h2>
+      <form class="email__campo" novalidate data-form-newsletter>
+        <label class="sr-only" for="email-m">Seu e-mail</label>
+        <input class="email__input" id="email-m" type="email" name="email"
+               placeholder="seu@email.com" autocomplete="email" inputmode="email" required>
+        <button class="btn btn--contorno" type="submit" style="width:100%">Assinar</button>
+        <p class="email__msg" role="status" aria-live="polite"></p>
+      </form>
+      <p class="email__aviso">Um resumo por dia. Cancele quando quiser.</p>
+    </section>
+
+    <!-- Rodapé (mobile) — nó 72:952 -->
+    <footer class="rodape rodape--mobile">
+      <nav class="sociais" aria-label="Redes sociais do Canaltech"></nav>
+      <p class="legal">
+        <a href="https://canaltech.com.br/" data-ct-link="legal-site">canaltech.com.br</a> ·
+        <a href="https://canaltech.com.br/politica-de-privacidade/" data-ct-link="legal-privacidade">Privacidade</a> ·
+        <button type="button" class="legal__cookies" data-abrir-cookies>Preferências de cookies</button> ·
+        <a href="https://canaltech.com.br/anuncie/" data-ct-link="legal-anuncie">Anuncie</a>
+      </p>
+    </footer>
+
+  </main>
+</div>
+
+<!-- ========================= BARRA DE COOKIES ========================== -->
+<section class="cookies" id="barra-cookies" role="region" aria-label="Aviso de cookies" hidden>
+  <p class="cookies__txt">Usamos cookies para medir audiência e personalizar anúncios.</p>
+  <div class="cookies__acoes">
+    <button class="btn btn--cookie" type="button" data-consentimento="recusar">Recusar</button>
+    <button class="btn btn--cookie" type="button" data-consentimento="preferencias">Preferências</button>
+    <button class="btn btn--cookie" type="button" data-consentimento="aceitar">Aceitar</button>
+  </div>
+</section>
+
+<script>
+(function(){
+  'use strict';
+
+  var LS = {
+    faixa:   'ct-hub:faixa-dispensada',
+    cookies: 'ct-hub:consentimento'
+  };
+
+  function guardar(chave, valor){
+    try{ localStorage.setItem(chave, valor); }catch(e){}
+  }
+  function ler(chave){
+    try{ return localStorage.getItem(chave); }catch(e){ return null; }
+  }
+
+  /* ---------------------------------------------------------------------
+     1. Redes sociais — uma fonte só, renderizada nos dois rodapés
+     --------------------------------------------------------------------- */
+  var SOCIAIS = [
+    { id:'instagram', nome:'Instagram', href:'https://www.instagram.com/canaltech/',  arquivo:'icon-instagram.svg' },
+    { id:'tiktok',    nome:'TikTok',    href:'https://www.tiktok.com/@canaltech',     arquivo:'icon-tiktok.svg', estreito:true },
+    { id:'youtube',   nome:'YouTube',   href:'https://www.youtube.com/canaltech',     arquivo:'icon-youtube.svg' },
+    { id:'x',         nome:'X',         href:'https://x.com/canaltech',               arquivo:'icon-x.svg' },
+    { id:'facebook',  nome:'Facebook',  href:'https://www.facebook.com/canaltech',    arquivo:'icon-facebook.svg' },
+    { id:'threads',   nome:'Threads',   href:'https://www.threads.net/@canaltech',    arquivo:'icon-threads.svg' }
+  ];
+
+  function montarSociais(){
+    var marcacao = SOCIAIS.map(function(s){
+      var largura = s.estreito ? 21 : 24;
+      return '<a class="social" href="' + s.href + '" data-ct-link="social-' + s.id + '"' +
+             ' target="_blank" rel="noopener noreferrer" aria-label="' + s.nome + '">' +
+               '<span class="ico' + (s.estreito ? ' ico--tiktok' : '') + '" aria-hidden="true">' +
+                 '<img src="assets/' + s.arquivo + '" alt="" width="' + largura + '" height="24"' +
+                 ' loading="lazy" onerror="ctFallback(this)">' +
+                 '<svg class="ico__fb" viewBox="0 0 ' + largura + ' 24"><use href="#i-' + s.id + '"/></svg>' +
+               '</span>' +
+             '</a>';
+    }).join('');
+
+    Array.prototype.forEach.call(document.querySelectorAll('.sociais'), function(nav){
+      nav.innerHTML = marcacao;
+    });
+  }
+
+  /* ---------------------------------------------------------------------
+     2. Densidade — o Figma escreve textos mais longos no desktop
+     --------------------------------------------------------------------- */
+  var mqDesktop = window.matchMedia('(min-width: 1024px)');
+
+  function aplicarDensidade(){
+    var desktop = mqDesktop.matches;
+
+    Array.prototype.forEach.call(document.querySelectorAll('[data-txt-mobile]'), function(el){
+      var texto = desktop ? el.getAttribute('data-txt-desktop') : el.getAttribute('data-txt-mobile');
+      if(texto && el.textContent.trim() !== texto) el.textContent = texto;
+    });
+
+    /* A captura de e-mail e o rodapé trocam de coluna entre os breakpoints.
+       Quem esconde/mostra é o CSS — assim a página continua correta sem JS. */
+  }
+
+  if(mqDesktop.addEventListener) mqDesktop.addEventListener('change', aplicarDensidade);
+  else if(mqDesktop.addListener) mqDesktop.addListener(aplicarDensidade);
+
+  /* ---------------------------------------------------------------------
+     3. Faixa de campanha
+     --------------------------------------------------------------------- */
+  var faixa = document.getElementById('faixa-campanha');
+
+  if(ler(LS.faixa) === '1'){
+    faixa.hidden = true;
+  }
+  document.getElementById('fechar-faixa').addEventListener('click', function(){
+    faixa.hidden = true;
+    guardar(LS.faixa, '1');
+  });
+
+  /* ---------------------------------------------------------------------
+     4. Barra de cookies — as três ações têm o mesmo peso (nota do Figma)
+     --------------------------------------------------------------------- */
+  var barra = document.getElementById('barra-cookies');
+
+  function mostrarCookies(){
+    barra.hidden = false;
+    document.body.setAttribute('data-cookies', 'visivel');
+  }
+  function esconderCookies(){
+    barra.hidden = true;
+    document.body.removeAttribute('data-cookies');
+  }
+
+  if(!ler(LS.cookies)) mostrarCookies();
+
+  Array.prototype.forEach.call(barra.querySelectorAll('[data-consentimento]'), function(botao){
+    botao.addEventListener('click', function(){
+      var escolha = botao.getAttribute('data-consentimento');
+      /* "Preferências" precisa do painel do CMP. Enquanto ele não existe,
+         a escolha não é gravada e a barra continua aberta.
+         TODO dev: pluge aqui o CMP (OneTrust/Cookiebot/próprio). */
+      if(escolha === 'preferencias'){
+        document.dispatchEvent(new CustomEvent('ct:cookies-preferencias'));
+        return;
+      }
+      guardar(LS.cookies, escolha);
+      esconderCookies();
+      document.dispatchEvent(new CustomEvent('ct:cookies-consentimento', { detail:{ escolha: escolha } }));
+    });
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-abrir-cookies]'), function(botao){
+    botao.addEventListener('click', function(e){
+      e.preventDefault();
+      mostrarCookies();
+      var primeiro = barra.querySelector('[data-consentimento]');
+      if(primeiro) primeiro.focus();
+    });
+  });
+
+  /* ---------------------------------------------------------------------
+     5. Captura de e-mail — estados de erro e sucesso
+        (o Figma marca esses estados como lacuna do design system;
+         resolvidos aqui com os tokens existentes)
+     --------------------------------------------------------------------- */
+  var RE_EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-form-newsletter]'), function(form){
+    var campo = form.querySelector('input[type="email"]');
+    var msg   = form.querySelector('.email__msg');
+
+    function definirMsg(estado, texto){
+      msg.setAttribute('data-estado', estado);
+      msg.textContent = texto;
+      campo.setAttribute('aria-invalid', estado === 'erro' ? 'true' : 'false');
+    }
+
+    campo.addEventListener('input', function(){
+      if(msg.textContent){ definirMsg('', ''); msg.removeAttribute('data-estado'); }
+    });
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var valor = campo.value.trim();
+
+      if(!valor){ definirMsg('erro', 'Informe seu e-mail para assinar.'); campo.focus(); return; }
+      if(!RE_EMAIL.test(valor)){ definirMsg('erro', 'E-mail inválido. Confira e tente de novo.'); campo.focus(); return; }
+
+      /* TODO dev: trocar pelo POST real da newsletter.
+         O evento abaixo entrega o e-mail já validado. */
+      definirMsg('sucesso', 'Pronto! Confirme a inscrição no e-mail que enviamos.');
+      campo.value = '';
+      document.dispatchEvent(new CustomEvent('ct:newsletter', { detail:{ email: valor } }));
+    });
+  });
+
+  /* ---------------------------------------------------------------------
+     6. Telemetria — um evento por clique, para GA4/GTM
+     --------------------------------------------------------------------- */
+  document.addEventListener('click', function(e){
+    var alvo = e.target.closest('[data-ct-link]');
+    if(!alvo) return;
+    document.dispatchEvent(new CustomEvent('ct:link', {
+      detail:{
+        id:    alvo.getAttribute('data-ct-link'),
+        href:  alvo.getAttribute('href'),
+        label: (alvo.textContent || '').trim().slice(0, 80)
+      }
+    }));
+  });
+
+  /* --------------------------------------------------------------------- */
+  montarSociais();
+  aplicarDensidade();
+})();
+</script>
+
+</body>
+</html>
