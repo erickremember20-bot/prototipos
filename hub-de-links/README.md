@@ -100,38 +100,47 @@ e a barra de cookies acompanham o container, em vez de colar nas bordas da tela.
 
 ## Assets
 
-Exportar do Figma para `assets/` com **estes nomes exatos**:
+**Todos os assets já estão em `assets/`**, exportados do Figma e conferidos
+um a um (tipo real do arquivo x extensão, e dimensão x caixa desenhada).
+A única exceção é `canaltech-grao-512.png` — ver nota abaixo da tabela.
 
 | Arquivo | Nó | Caixa desenhada |
 |---|---|---|
-| `logo-canaltech.svg` | `72:882` / `72:987` | 72×72 mobile · 96×96 desktop |
-| `canaltech-grao-512.png` | `72:889` / `72:994` | ladrilho 512×512, overlay 35% |
-| `card_noticias.png` | `72:908` | 123×72 mobile · 340×191 desktop |
-| `card_youtube.png` | `72:914` | idem |
-| `card_podcast.png` | `72:920` | idem |
-| `card_ct_eletro.png` | `72:926` | idem |
-| `card_ct_ofertas_desktop.png` | `72:935` | idem |
-| `card_guia_de_compras.png` | `72:941` | idem |
-| `icon-trophy.svg` | `72:873` | 36×36 |
-| `icon-whatsapp.svg` | `72:894` | 22×22 |
-| `icon-instagram.svg` | `72:955` | 24×24 |
-| `icon-tiktok.svg` | `72:958` | **21×24** |
-| `icon-youtube.svg` | `72:961` | 24×24 |
-| `icon-x.svg` | `72:964` | 24×24 |
-| `icon-facebook.svg` | `72:967` | 24×24 |
-| `icon-threads.svg` | `72:970` | 24×24 |
+| `logo-canaltech.svg` ✅ | `72:882` / `72:987` | 72×72 · traz o próprio círculo `#3FA9F5` |
+| `canaltech-grao-512.png` ⬜ | `72:889` / `72:994` | ladrilho 512×512, overlay 35% |
+| `card_noticias.png` ✅ | `72:908` | 123×72 mobile · 340×191 desktop |
+| `card_youtube.png` ✅ | `72:914` | idem |
+| `card_podcast.png` ✅ | `72:920` | idem |
+| `card_ct_eletro.png` ✅ | `72:926` | idem |
+| `card_ct_ofertas_desktop.png` ✅ | `72:935` | idem |
+| `card_guia_de_compras.png` ✅ | `72:941` | idem |
+| `icon-trophy.svg` ✅ | `72:873` | 36×36 |
+| `icon-whatsapp.svg` ✅ | `72:894` | 22×22 |
+| `icon-instagram.svg` ✅ | `72:955` | 24×24 |
+| `icon-tiktok.svg` ✅ | `72:958` | **21×24** |
+| `icon-youtube.svg` ✅ | `72:961` | 24×24 |
+| `icon-x.svg` ✅ | `72:964` | 24×24 |
+| `icon-facebook.svg` ✅ | `72:967` | 24×24 |
+| `icon-threads.svg` ✅ | `72:970` | 24×24 |
 
-Recomendação: cards em PNG 2× (680×382), ícones em SVG.
+### O grão (`canaltech-grao-512.png`)
 
-**Enquanto um asset não existe, a página não quebra.** Cada `<img>` tem um
-`onerror` que liga o fallback:
+Único asset não entregue. No Figma a camada se chama literalmente
+*"Grão — trocar o fill por canaltech-grao-512.png, escala Ladrilho"*: o cinza
+chapado ali é placeholder, não arte final.
 
-- **ícones** → sprite SVG embutido no topo do arquivo;
-- **fotos dos cards** → componente *Slot de imagem* do próprio design system,
-  com fundo `--fundo-slot` e o rótulo `IMAGEM`;
-- **grão** → a cor cinza chapada que o Figma usa como placeholder do fill.
+Resolvido com um ruído SVG (`feTurbulence`) embutido no CSS como camada de
+fundo — sem requisição extra, sem arquivo. O `background-image` do
+`.campo-marca::after` declara **duas** camadas: o PNG na frente e o ruído
+atrás. Se um dia o PNG for adicionado à pasta, ele passa a valer sozinho,
+sem tocar no código.
 
-Basta soltar os arquivos na pasta. Nenhuma linha de código muda.
+### Se um asset sumir do deploy
+
+A página não quebra. Cada `<img>` tem um `onerror` que liga o fallback:
+ícones caem no sprite SVG embutido no topo do arquivo; fotos dos cards caem
+no componente *Slot de imagem* do próprio design system, com fundo
+`--fundo-slot` e o rótulo `IMAGEM`.
 
 ---
 
@@ -211,10 +220,11 @@ document.addEventListener('ct:link', function (e) {
 
 ## Verificação
 
-Suíte de 82 asserções em Chromium (Playwright), cobrindo os dois frames:
+Suíte de 91 asserções em Chromium (Playwright), cobrindo os dois frames:
 cores e raios contra os tokens do Figma, geometria (faixa 60px, avatar 72/96,
 slot 123×72, card 340, grid 2×340 com gap 40, colunas 360 + 80 + 720),
-alternância de densidade e de texto, fallback dos assets, as quatro interações
+alternância de densidade e de texto, carregamento real dos 15 assets
+(nenhuma imagem quebrada), as quatro interações
 (dispensar faixa, consentimento, validação de e-mail, reabrir preferências),
 persistência em `localStorage` e ausência de overflow horizontal em
 320 / 360 / 375 / 414 / 600 / 768 / 1024 / 1280 / 1400 / 1600 / 1920px.

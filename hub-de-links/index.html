@@ -67,10 +67,12 @@
     icon-instagram.svg / icon-tiktok.svg / icon-youtube.svg
     icon-x.svg / icon-facebook.svg / icon-threads.svg      24x24 (tiktok 21x24)
 
-  Enquanto um asset não existir, a página NÃO quebra: cai no fallback
-  (sprite SVG inline para os ícones; componente "Slot de imagem" do Figma,
-  com o rótulo IMAGEM, para as fotos dos cards). Basta soltar os arquivos
-  na pasta que os reais passam a valer, sem mexer no código.
+  TODOS os assets acima já estão em ./assets/, exportados do Figma —
+  exceto canaltech-grao-512.png, que cai num ruído SVG embutido no CSS.
+
+  O fallback continua armado: se um arquivo sumir do deploy, a página NÃO
+  quebra — cai no sprite SVG inline (ícones) ou no componente "Slot de
+  imagem" do Figma, com o rótulo IMAGEM (fotos dos cards).
 ===============================================================================
 -->
 
@@ -218,8 +220,15 @@ ul{margin:0;padding:0;list-style:none}
 }
 .campo-marca::after{               /* Grão — nó 72:889 / 72:994 */
   content:"";position:absolute;inset:0;pointer-events:none;
-  background:#808080 url("assets/canaltech-grao-512.png") repeat;
-  background-size:512px 512px;
+  /* Duas camadas: o ladrilho do Figma na frente, e atrás um ruído SVG
+     embutido. O designer marcou o grão como fill a ser trocado; enquanto
+     canaltech-grao-512.png não existir, o ruído embutido segura a textura
+     sem requisição extra. Ao adicionar o PNG, ele passa a valer sozinho. */
+  background-image:
+    url("assets/canaltech-grao-512.png"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)' opacity='0.5'/%3E%3C/svg%3E");
+  background-size:512px 512px, 160px 160px;
+  background-repeat:repeat, repeat;
   mix-blend-mode:overlay;opacity:.35;
 }
 
