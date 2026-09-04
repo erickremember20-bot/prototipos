@@ -184,12 +184,13 @@ no componente *Slot de imagem* do próprio design system, com fundo
 O Figma não define URLs. Todo link navegável carrega `data-ct-link="<id>"`,
 então trocar um destino é uma linha.
 
-**Uma pendência.** `votar-abccom`, o botão "Votar Agora" da faixa de campanha,
-segue em `#`: não foi possível confirmar a URL da votação do Prêmio ABCCOM.
+**Uma pendência.** A faixa de campanha está **desligada**: não foi possível
+confirmar a URL da votação do Prêmio ABCCOM, e a página não sobe com um CTA
+que não leva a lugar nenhum.
 
 | id | destino |
 |---|---|
-| `votar-abccom` | **`#` — pendente** |
+| `votar-abccom` | **pendente — faixa desligada** |
 | `whatsapp` | `https://ofertas.canaltech.com.br/grupos-de-oferta/` |
 | `ct-ofertas` | `https://ofertas.canaltech.com.br/` |
 | `noticias` | `https://canaltech.com.br/` |
@@ -202,14 +203,24 @@ segue em `#`: não foi possível confirmar a URL da votação do Prêmio ABCCOM.
 
 Confira todos com a redação antes de publicar.
 
-### Faixa de campanha — verificar a validade
+### Faixa de campanha — ligar e desligar
 
-A faixa diz "Prêmio ABCCOM · vote no Canaltech". Vale confirmar se a votação
-ainda está aberta: **se já encerrou, a faixa inteira sai antes de publicar.**
-O próprio wireframe registra isso como pendência — *"Não confirmei a data de
-encerramento da votação ABCCOM"*. A faixa é dispensável pelo ✕ e lembra a
-escolha em `localStorage`, mas isso não substitui tirá-la do ar quando a
-campanha acabar.
+A faixa do topo é controlada por **uma constante**, no início do `<script>`
+no fim do `index.html`:
+
+```js
+var URL_VOTACAO = '';   // vazia = faixa não é renderizada
+```
+
+- **Vazia** (estado atual): a faixa não entra no DOM. Sem URL confirmada, um
+  CTA laranja que não navega custa mais que a ausência da faixa.
+- **Preenchida**: a faixa volta, o `href` do botão "Votar Agora" recebe a URL,
+  e o ✕ volta a dispensá-la lembrando a escolha em `localStorage`.
+
+**Antes de ligar, confirme se a votação ainda está aberta.** O wireframe
+registra isso como pendência: *"Não confirmei a data de encerramento da
+votação ABCCOM"*. Quando a campanha acabar, esvazie a constante — é o mesmo
+gesto, na direção contrária.
 
 ---
 
@@ -221,8 +232,7 @@ Nenhum SDK embutido. A página emite `CustomEvent` no `document`:
 |---|---|---|
 | `ct:link` | `{ id, href, label }` | clique em qualquer `[data-ct-link]` |
 | `ct:newsletter` | `{ email }` | e-mail validado no submit |
-| `ct:cookies-consentimento` | `{ escolha }` | `aceitar` ou `recusar` |
-| `ct:cookies-preferencias` | — | clique em "Preferências" |
+| `ct:cookies-consentimento` | `{ escolha, audiencia, publicidade, em }` | consentimento salvo |
 
 Plugue o GA4/GTM ouvindo esses eventos, sem tocar no markup:
 
@@ -247,9 +257,20 @@ document.addEventListener('ct:link', function (e) {
    lacuna do DS ("Faltam os estados de vazio, erro e sucesso do input").
    Implementados com os tokens existentes: `aria-invalid`, mensagem em
    `role="status"` e borda vermelha. Troque o `TODO dev:` pelo POST real.
-3. **"Preferências" de cookies não grava escolha.** Sem painel de CMP desenhado,
-   o botão emite o evento e mantém a barra aberta — em vez de fingir um
-   consentimento que ninguém deu. Plugue o CMP no `ct:cookies-preferencias`.
+3. **Painel de preferências de cookies.** O Figma desenha o botão
+   "Preferências" (componente `72:495`) mas não o painel que ele abre — sem
+   isso, das três ações de mesmo peso uma não fazia nada. Construído com os
+   tokens existentes: modal com `role="dialog"`, duas categorias com
+   interruptor (Audiência e Publicidade) mais os Necessários fixos, foco
+   preso enquanto aberto, ESC e clique no fundo fecham. O mesmo painel abre
+   pelo link "Preferências de cookies" do rodapé.
+
+   O consentimento é gravado como JSON —
+   `{ escolha, audiencia, publicidade, em }`, com `escolha` em `aceitar`,
+   `recusar` ou `personalizado` — e leitura compatível com a versão anterior,
+   que gravava só a string. **Dispare GA4/pixel apenas quando a categoria
+   correspondente for `true`**; o `TODO dev:` está marcado em
+   `gravarConsentimento()`.
 4. **Estados de foco e hover.** Outra lacuna apontada no Figma. Foco visível
    em ciano `--marca-ciano` em todos os controles; hover discreto nos cards.
 5. **Data da campanha.** O wireframe deixa a data como placeholder porque o
@@ -278,11 +299,21 @@ document.addEventListener('ct:link', function (e) {
 Rodar a suíte exige Playwright (`npm install playwright`); o Chromium do
 ambiente é apontado por `executablePath`.
 
-Suíte de 91 asserções em Chromium (Playwright), cobrindo os dois frames:
+Duas suítes em Chromium (Playwright), **157 asserções** no total.
+
+A principal (97) cobre os dois frames:
 cores e raios contra os tokens do Figma, geometria (faixa 60px, avatar 72/96,
 slot 123×72, card 340, grid 2×340 com gap 40, colunas 360 + 80 + 720),
 alternância de densidade e de texto, carregamento real dos 15 assets
 (nenhuma imagem quebrada), as quatro interações
 (dispensar faixa, consentimento, validação de e-mail, reabrir preferências),
 persistência em `localStorage` e ausência de overflow horizontal em
-320 / 360 / 375 / 414 / 600 / 768 / 1024 / 1280 / 1400 / 1600 / 1920px.
+320 / 360 / 375 / 414 / 600 / 768 / 1024 / 1280 / 1400 / 1600 / 1920px. Ela
+roda o layout da faixa contra uma cópia com `URL_VOTACAO` preenchida, e checa
+à parte que o arquivo entregue não tem faixa nem link morto.
+
+A segunda (60) cobre só os cookies, nos dois breakpoints: abrir e fechar o
+painel por ESC, pelo fundo e por Cancelar, o foco preso enquanto aberto,
+salvar granular, aceitar tudo, recusar tudo, persistir no reload, reabrir
+pelo rodapé com os interruptores refletindo o gravado, e a leitura do formato
+antigo de consentimento.

@@ -36,13 +36,16 @@
   O Figma não define URLs. Todo link navegável carrega data-ct-link="<id>",
   então trocar um destino é uma linha, sem caçar no markup.
 
-  [!] PENDENTE — o único href ainda em "#":
+  [!] PENDENTE — a faixa de campanha está DESLIGADA:
 
-    votar-abccom     Faixa de campanha, botão "Votar Agora".
-                     Não foi possível confirmar a URL da votação do Prêmio
-                     ABCCOM. VER TAMBÉM a nota "Faixa de campanha" no README:
-                     confirmar se a votação ainda está aberta antes de
-                     publicar — se estiver encerrada, a faixa inteira sai.
+    votar-abccom     Não foi possível confirmar a URL da votação do Prêmio
+                     ABCCOM, então a faixa do topo não é renderizada. Ela
+                     depende da constante URL_VOTACAO, no início do <script>
+                     no fim deste arquivo: preencha a URL e a faixa volta;
+                     apague a URL quando a campanha encerrar.
+                     Confirme antes se a votação ainda está aberta — o
+                     wireframe registra que a data de encerramento nunca foi
+                     confirmada.
 
   Demais destinos (conferir com redação/marketing):
 
@@ -409,6 +412,74 @@ ul{margin:0;padding:0;list-style:none}
 body[data-cookies="visivel"]{padding-bottom:calc(130px + env(safe-area-inset-bottom))}
 
 /* ===========================================================================
+   7b. PAINEL DE PREFERÊNCIAS DE COOKIES
+   O Figma não desenha este painel — o componente 72:495 só traz o botão.
+   Construído com os tokens existentes para que "Preferências" deixe de ser
+   um botão morto: as três ações da barra precisam ter o mesmo peso real.
+   ========================================================================= */
+.pref{
+  position:fixed;inset:0;z-index:60;
+  display:flex;align-items:center;justify-content:center;
+  padding:16px;
+}
+.pref[hidden]{display:none}
+.pref__fundo{position:absolute;inset:0;background:rgba(3,4,15,.72)}
+.pref__caixa{
+  position:relative;
+  display:flex;flex-direction:column;gap:20px;
+  width:min(560px,100%);max-height:min(86vh,720px);overflow-y:auto;
+  padding:24px;
+  background:var(--fundo-cartao);
+  border:1px solid var(--borda-cartao);
+  border-radius:var(--raio-lg);
+  box-shadow:0 24px 60px rgba(0,0,0,.5);
+}
+.pref__titulo{font-size:20px;font-weight:700;line-height:1.3}
+.pref__intro{font-size:14px;color:var(--texto-secundario)}
+.pref__lista{display:flex;flex-direction:column;gap:4px}
+.pref__item{
+  display:flex;align-items:flex-start;gap:16px;
+  padding:16px 0;
+  border-bottom:1px solid var(--borda-campo);
+}
+.pref__item:last-child{border-bottom:0}
+.pref__txt{display:flex;flex-direction:column;gap:4px;flex:1 0 0;min-width:0}
+.pref__nome{font-size:15px;font-weight:700}
+.pref__desc{font-size:13px;color:var(--texto-secundario)}
+.pref__fixo{font-size:13px;color:var(--texto-apagado);white-space:nowrap;padding-top:2px}
+
+/* interruptor */
+.chave{position:relative;flex:0 0 auto;width:52px;height:30px}
+.chave input{position:absolute;inset:0;opacity:0;margin:0;width:100%;height:100%;cursor:pointer}
+.chave__trilho{
+  position:absolute;inset:0;pointer-events:none;
+  background:var(--fundo-pagina);
+  border:1.5px solid var(--borda-forte);
+  border-radius:var(--raio-pill);
+  transition:background-color .15s ease,border-color .15s ease;
+}
+.chave__trilho::after{
+  content:"";position:absolute;top:3px;left:3px;
+  width:21px;height:21px;border-radius:50%;
+  background:var(--texto-apagado);
+  transition:transform .15s ease,background-color .15s ease;
+}
+.chave input:checked + .chave__trilho{background:#0a2f14;border-color:var(--acento-cta)}
+.chave input:checked + .chave__trilho::after{transform:translateX(21px);background:var(--acento-cta)}
+.chave input:focus-visible + .chave__trilho{outline:var(--anel-foco);outline-offset:2px}
+.chave input:disabled{cursor:not-allowed}
+
+.pref__acoes{display:flex;gap:8px;flex-wrap:wrap}
+.pref__acoes .btn{flex:1 0 auto;min-width:140px}
+.btn--salvar{background:var(--acento-cta);color:var(--texto-sobre-marca)}
+.btn--salvar:hover{background:#d3ff64}
+
+@media (max-width:560px){
+  .pref__caixa{padding:20px;gap:16px}
+  .pref__acoes .btn{width:100%;flex:1 1 100%}
+}
+
+/* ===========================================================================
    8. DESKTOP >= 1024px — frame 72:975 (1400 = 120 + 360 + 80 + 720 + 120)
    ========================================================================= */
 @media (min-width:1024px){
@@ -764,9 +835,69 @@ function ctFallback(img){
   </div>
 </section>
 
+<!-- ================== PAINEL DE PREFERÊNCIAS DE COOKIES ================== -->
+<div class="pref" id="pref-cookies" role="dialog" aria-modal="true" aria-labelledby="pref-titulo" hidden>
+  <div class="pref__fundo" data-fechar-pref></div>
+  <div class="pref__caixa">
+    <h2 class="pref__titulo" id="pref-titulo">Preferências de cookies</h2>
+    <p class="pref__intro">Escolha o que o Canaltech pode usar nesta página. Você pode mudar a qualquer momento pelo link no rodapé.</p>
+
+    <div class="pref__lista">
+      <div class="pref__item">
+        <span class="pref__txt">
+          <span class="pref__nome">Necessários</span>
+          <span class="pref__desc">Mantêm a página de pé: segurança, e a memória da sua própria escolha de cookies.</span>
+        </span>
+        <span class="pref__fixo">Sempre ativos</span>
+      </div>
+
+      <div class="pref__item">
+        <label class="pref__txt" for="pref-audiencia">
+          <span class="pref__nome">Audiência</span>
+          <span class="pref__desc">Medem quantas pessoas chegam e quais links são clicados. É o que diz à redação o que vale publicar.</span>
+        </label>
+        <span class="chave">
+          <input type="checkbox" id="pref-audiencia" data-categoria="audiencia">
+          <span class="chave__trilho" aria-hidden="true"></span>
+        </span>
+      </div>
+
+      <div class="pref__item">
+        <label class="pref__txt" for="pref-publicidade">
+          <span class="pref__nome">Publicidade</span>
+          <span class="pref__desc">Personalizam os anúncios exibidos aqui e em outros sites.</span>
+        </label>
+        <span class="chave">
+          <input type="checkbox" id="pref-publicidade" data-categoria="publicidade">
+          <span class="chave__trilho" aria-hidden="true"></span>
+        </span>
+      </div>
+    </div>
+
+    <div class="pref__acoes">
+      <button class="btn btn--contorno" type="button" data-fechar-pref>Cancelar</button>
+      <button class="btn btn--salvar" type="button" id="pref-salvar">Salvar preferências</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   'use strict';
+
+  /* =====================================================================
+     CONFIGURAÇÃO DA CAMPANHA
+     ---------------------------------------------------------------------
+     A faixa do topo ("Prêmio ABCCOM · vote no Canaltech") só entra no ar
+     quando URL_VOTACAO estiver preenchida. Vazia, a faixa não é renderizada:
+     um botão que não leva a lugar nenhum pesa contra a página, e o próprio
+     wireframe registra que a data de encerramento da votação nunca foi
+     confirmada.
+
+     Para colocar a faixa no ar: cole a URL da votação aqui. Para tirá-la
+     quando a campanha acabar: apague a URL.
+     ===================================================================== */
+  var URL_VOTACAO = '';
 
   var LS = {
     faixa:   'ct-hub:faixa-dispensada',
@@ -835,18 +966,58 @@ function ctFallback(img){
      --------------------------------------------------------------------- */
   var faixa = document.getElementById('faixa-campanha');
 
-  if(ler(LS.faixa) === '1'){
-    faixa.hidden = true;
+  if(!URL_VOTACAO){
+    /* sem destino, a faixa nem chega ao DOM */
+    faixa.parentNode.removeChild(faixa);
+    faixa = null;
+  }else{
+    faixa.querySelector('[data-ct-link="votar-abccom"]').href = URL_VOTACAO;
+    if(ler(LS.faixa) === '1') faixa.hidden = true;
+    document.getElementById('fechar-faixa').addEventListener('click', function(){
+      faixa.hidden = true;
+      guardar(LS.faixa, '1');
+    });
   }
-  document.getElementById('fechar-faixa').addEventListener('click', function(){
-    faixa.hidden = true;
-    guardar(LS.faixa, '1');
-  });
 
   /* ---------------------------------------------------------------------
-     4. Barra de cookies — as três ações têm o mesmo peso (nota do Figma)
+     4. Cookies — barra + painel de preferências
+        As três ações da barra têm o mesmo peso (nota do componente 72:495),
+        e "Preferências" abre um painel real: um botão que não faz nada
+        pesa menos que os outros dois na prática.
      --------------------------------------------------------------------- */
-  var barra = document.getElementById('barra-cookies');
+  var barra    = document.getElementById('barra-cookies');
+  var painel   = document.getElementById('pref-cookies');
+  var CATEGORIAS = ['audiencia', 'publicidade'];
+  var focoAnterior = null;
+
+  function lerConsentimento(){
+    var bruto = ler(LS.cookies);
+    if(!bruto) return null;
+    try{
+      var v = JSON.parse(bruto);
+      if(v && typeof v === 'object') return v;
+    }catch(e){
+      /* versões antigas gravavam só "aceitar"/"recusar" */
+      var tudo = bruto === 'aceitar';
+      return { escolha: bruto, audiencia: tudo, publicidade: tudo };
+    }
+    return null;
+  }
+
+  function gravarConsentimento(escolha, categorias){
+    var v = {
+      escolha: escolha,
+      audiencia: !!categorias.audiencia,
+      publicidade: !!categorias.publicidade,
+      em: new Date().toISOString()
+    };
+    guardar(LS.cookies, JSON.stringify(v));
+    esconderCookies();
+    fecharPainel();
+    /* TODO dev: aqui entram as tags. Só dispare GA4/pixel se v.audiencia /
+       v.publicidade forem true, e reavalie a cada novo evento. */
+    document.dispatchEvent(new CustomEvent('ct:cookies-consentimento', { detail: v }));
+  }
 
   function mostrarCookies(){
     barra.hidden = false;
@@ -857,30 +1028,69 @@ function ctFallback(img){
     document.body.removeAttribute('data-cookies');
   }
 
-  if(!ler(LS.cookies)) mostrarCookies();
+  /* --- painel --- */
+  function abrirPainel(){
+    var atual = lerConsentimento() || {};
+    CATEGORIAS.forEach(function(cat){
+      painel.querySelector('[data-categoria="' + cat + '"]').checked = !!atual[cat];
+    });
+    focoAnterior = document.activeElement;
+    painel.hidden = false;
+    document.body.style.overflow = 'hidden';
+    var primeiro = painel.querySelector('input:not(:disabled), button');
+    if(primeiro) primeiro.focus();
+  }
+
+  function fecharPainel(){
+    if(painel.hidden) return;
+    painel.hidden = true;
+    document.body.style.overflow = '';
+    if(focoAnterior && focoAnterior.focus) focoAnterior.focus();
+    focoAnterior = null;
+  }
+
+  /* o foco não escapa do painel enquanto ele está aberto */
+  painel.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){ e.preventDefault(); fecharPainel(); return; }
+    if(e.key !== 'Tab') return;
+    var focaveis = painel.querySelectorAll('input:not(:disabled), button');
+    if(!focaveis.length) return;
+    var primeiro = focaveis[0], ultimo = focaveis[focaveis.length - 1];
+    if(e.shiftKey && document.activeElement === primeiro){ e.preventDefault(); ultimo.focus(); }
+    else if(!e.shiftKey && document.activeElement === ultimo){ e.preventDefault(); primeiro.focus(); }
+  });
+
+  Array.prototype.forEach.call(painel.querySelectorAll('[data-fechar-pref]'), function(el){
+    el.addEventListener('click', fecharPainel);
+  });
+
+  document.getElementById('pref-salvar').addEventListener('click', function(){
+    var escolhidas = {};
+    CATEGORIAS.forEach(function(cat){
+      escolhidas[cat] = painel.querySelector('[data-categoria="' + cat + '"]').checked;
+    });
+    var todas = CATEGORIAS.every(function(c){ return escolhidas[c]; });
+    var nenhuma = CATEGORIAS.every(function(c){ return !escolhidas[c]; });
+    gravarConsentimento(todas ? 'aceitar' : (nenhuma ? 'recusar' : 'personalizado'), escolhidas);
+  });
+
+  /* --- barra --- */
+  if(!lerConsentimento()) mostrarCookies();
 
   Array.prototype.forEach.call(barra.querySelectorAll('[data-consentimento]'), function(botao){
     botao.addEventListener('click', function(){
       var escolha = botao.getAttribute('data-consentimento');
-      /* "Preferências" precisa do painel do CMP. Enquanto ele não existe,
-         a escolha não é gravada e a barra continua aberta.
-         TODO dev: pluge aqui o CMP (OneTrust/Cookiebot/próprio). */
-      if(escolha === 'preferencias'){
-        document.dispatchEvent(new CustomEvent('ct:cookies-preferencias'));
-        return;
-      }
-      guardar(LS.cookies, escolha);
-      esconderCookies();
-      document.dispatchEvent(new CustomEvent('ct:cookies-consentimento', { detail:{ escolha: escolha } }));
+      if(escolha === 'preferencias'){ abrirPainel(); return; }
+      var tudo = escolha === 'aceitar';
+      gravarConsentimento(escolha, { audiencia: tudo, publicidade: tudo });
     });
   });
 
+  /* "Preferências de cookies" no rodapé abre o painel direto */
   Array.prototype.forEach.call(document.querySelectorAll('[data-abrir-cookies]'), function(botao){
     botao.addEventListener('click', function(e){
       e.preventDefault();
-      mostrarCookies();
-      var primeiro = barra.querySelector('[data-consentimento]');
-      if(primeiro) primeiro.focus();
+      abrirPainel();
     });
   });
 
