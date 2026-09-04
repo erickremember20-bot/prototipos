@@ -19,10 +19,26 @@ Para publicar: suba `index.html` e a pasta `assets/`. Nada além disso.
 | | |
 |---|---|
 | **Protótipo navegável** | https://claude.ai/code/artifact/51af3c2f-5d08-43ce-a9cf-7fb4cc9c6c31 |
-| **GitHub Pages** | `https://erickremember20-bot.github.io/Motorola_01/` — branch `gh-pages` já publicada; falta ligar em *Settings › Pages › Deploy from a branch › gh-pages / (root)* |
+| **GitHub Pages** | `https://<usuário>.github.io/<repo>/` — branch `gh-pages` já publicada; falta ligar (ver abaixo) |
 
 O protótipo é um arquivo único com os assets embutidos, gerado por
-`build-standalone.py`. Serve para mostrar a página sem depender de deploy.
+`build-standalone.py`. Serve para mostrar a página sem depender de deploy, e
+a URL não expõe o nome do repositório.
+
+### Ligar o GitHub Pages
+
+1. **Settings › Pages › Source: "Deploy from a branch" › branch `gh-pages` ›
+   pasta `/ (root)` › Save.** Em cerca de um minuto o site sobe.
+
+2. A URL do Pages carrega o **nome do repositório**
+   (`https://<usuário>.github.io/<repo>/`). Se esse nome não servir para
+   mostrar à equipe, renomeie o repositório antes de divulgar o link:
+   **Settings › General › Repository name › Rename**. O GitHub mantém
+   redirecionamento do nome antigo, então nada quebra — nem os remotes já
+   configurados, nem as branches já publicadas.
+
+   Sugestões: um nome neutro, se o repositório abrigar mais de um projeto,
+   ou `canaltech-hub-de-links`, se ele passar a ser só deste.
 
 ---
 
