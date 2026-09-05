@@ -12,7 +12,12 @@ Implementação da página **"Hub de links — prototype"** do Figma
 | **Dependência externa** | apenas a fonte Barlow (Google Fonts) |
 | **Responsivo** | 320px → 1920px, quebra em 1024px |
 
-Para publicar: suba `index.html` e a pasta `assets/`. Nada além disso.
+Para publicar: suba `index.html` e a pasta `assets/`, e **troque `MODO_DEMO`
+para `false`** (ver abaixo). Nada além disso.
+
+> ⚠️ **`MODO_DEMO` está em `true`.** O arquivo está configurado como vitrine,
+> para a equipe ver o desenho completo. Antes de ir para produção, abra o
+> `<script>` no fim do `index.html` e troque para `false`.
 
 ## Links rápidos
 
@@ -203,6 +208,33 @@ que não leva a lugar nenhum.
 
 Confira todos com a redação antes de publicar.
 
+### Modo demonstração
+
+Duas coisas do desenho só aparecem uma vez para cada pessoa: a **barra de
+cookies** (some depois que o visitante escolhe, e fica guardado no navegador
+dele) e a **faixa de campanha** (dispensável pelo ✕). Isso está certo em
+produção e é péssimo para mostrar a página a alguém — quem já clicou uma vez
+nunca mais vê.
+
+Por isso existe a constante `MODO_DEMO`, logo no início do `<script>`:
+
+```js
+var MODO_DEMO = true;   // vitrine
+```
+
+| | `true` (vitrine) | `false` (produção) |
+|---|---|---|
+| Barra de cookies | aparece sempre, a cada carga | só para quem ainda não escolheu |
+| Faixa de campanha | aparece mesmo sem `URL_VOTACAO` | só com `URL_VOTACAO` preenchida |
+| Botão "Votar Agora" sem URL | inerte: sem `href`, `aria-disabled`, não navega | a faixa nem é renderizada |
+| Escolha de cookies | continua sendo gravada normalmente | idem |
+
+O modo também aceita a URL: **`?demo=1`** força a vitrine e **`?demo=0`**
+força o comportamento de produção, sem editar o arquivo. Útil para conferir
+os dois lados no mesmo link.
+
+**Trocar para `false` antes de publicar em produção.**
+
 ### Faixa de campanha — ligar e desligar
 
 A faixa do topo é controlada por **uma constante**, no início do `<script>`
@@ -212,8 +244,9 @@ no fim do `index.html`:
 var URL_VOTACAO = '';   // vazia = faixa não é renderizada
 ```
 
-- **Vazia** (estado atual): a faixa não entra no DOM. Sem URL confirmada, um
-  CTA laranja que não navega custa mais que a ausência da faixa.
+- **Vazia** (estado atual) com `MODO_DEMO = false`: a faixa não entra no DOM.
+  Sem URL confirmada, um CTA laranja que não navega custa mais que a ausência
+  da faixa. Com `MODO_DEMO = true`, a faixa aparece e o botão fica inerte.
 - **Preenchida**: a faixa volta, o `href` do botão "Votar Agora" recebe a URL,
   e o ✕ volta a dispensá-la lembrando a escolha em `localStorage`.
 
@@ -299,9 +332,9 @@ document.addEventListener('ct:link', function (e) {
 Rodar a suíte exige Playwright (`npm install playwright`); o Chromium do
 ambiente é apontado por `executablePath`.
 
-Duas suítes em Chromium (Playwright), **157 asserções** no total.
+Duas suítes em Chromium (Playwright), **170 asserções** no total.
 
-A principal (97) cobre os dois frames:
+A principal (110) cobre os dois frames:
 cores e raios contra os tokens do Figma, geometria (faixa 60px, avatar 72/96,
 slot 123×72, card 340, grid 2×340 com gap 40, colunas 360 + 80 + 720),
 alternância de densidade e de texto, carregamento real dos 15 assets
@@ -309,8 +342,11 @@ alternância de densidade e de texto, carregamento real dos 15 assets
 (dispensar faixa, consentimento, validação de e-mail, reabrir preferências),
 persistência em `localStorage` e ausência de overflow horizontal em
 320 / 360 / 375 / 414 / 600 / 768 / 1024 / 1280 / 1400 / 1600 / 1920px. Ela
-roda o layout da faixa contra uma cópia com `URL_VOTACAO` preenchida, e checa
-à parte que o arquivo entregue não tem faixa nem link morto.
+roda o layout da faixa contra uma cópia com `URL_VOTACAO` preenchida e
+`MODO_DEMO` em `false`, e checa à parte os dois modos: em produção a faixa
+não é renderizada e não sobra nenhum link morto; na vitrine a faixa aparece,
+o botão fica sem `href` e marcado `aria-disabled` (a ponto de o próprio
+Playwright recusar o clique), e barra e faixa voltam depois de recarregar.
 
 A segunda (60) cobre só os cookies, nos dois breakpoints: abrir e fechar o
 painel por ESC, pelo fundo e por Cancelar, o foco preso enquanto aberto,
