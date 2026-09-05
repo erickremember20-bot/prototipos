@@ -40,19 +40,13 @@
       Nesse estado a barra de cookies aparece sempre e a faixa de campanha
       entra no ar mesmo sem destino. TROQUE PARA false ANTES DE PRODUÇÃO.
 
-  [!] PENDENTE — destino da faixa de campanha:
+  Destinos (conferir com redação/marketing):
 
-    votar-abccom     Não foi possível confirmar a URL da votação do Prêmio
-                     ABCCOM. Preencha a constante URL_VOTACAO, no início do
-                     <script> no fim deste arquivo, e o botão passa a
-                     navegar; apague a URL quando a campanha encerrar.
-                     Com MODO_DEMO em false e sem URL, a faixa não é
-                     renderizada — a página não sobe com link morto.
-                     Confirme antes se a votação ainda está aberta — o
-                     wireframe registra que a data de encerramento nunca foi
-                     confirmada.
-
-  Demais destinos (conferir com redação/marketing):
+    votar-abccom     https://app.abccom.com.br/#/award-voting
+                     Vem da constante URL_VOTACAO, no início do <script> no
+                     fim deste arquivo. Apague a URL quando a campanha
+                     encerrar: sem ela, e com MODO_DEMO em false, a faixa
+                     inteira deixa de ser renderizada.
 
     whatsapp         https://ofertas.canaltech.com.br/grupos-de-oferta/
     ct-ofertas       https://ofertas.canaltech.com.br/
@@ -899,10 +893,9 @@ function ctFallback(img){
      wireframe registra que a data de encerramento da votação nunca foi
      confirmada.
 
-     Para colocar a faixa no ar: cole a URL da votação aqui. Para tirá-la
-     quando a campanha acabar: apague a URL.
+     Para tirar a faixa do ar quando a campanha encerrar: apague a URL.
      ===================================================================== */
-  var URL_VOTACAO = '';
+  var URL_VOTACAO = 'https://app.abccom.com.br/#/award-voting';
 
   /* =====================================================================
      MODO DEMONSTRAÇÃO
