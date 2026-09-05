@@ -25,6 +25,7 @@ para `false`** (ver abaixo). Nada além disso.
 |---|---|
 | **Protótipo navegável** | https://claude.ai/code/artifact/51af3c2f-5d08-43ce-a9cf-7fb4cc9c6c31 |
 | **GitHub Pages** | https://erickremember20-bot.github.io/prototipos/ — servido pela branch `gh-pages` |
+| **Design system** | https://www.figma.com/design/r0hcxZ0GPY2HSCSrK20puy/Linktree_Canaltech?node-id=88-2 — página "Design system — 16:9" |
 
 O protótipo é um arquivo único com os assets embutidos, gerado por
 `build-standalone.py`. Serve para mostrar a página sem depender de deploy.
@@ -103,6 +104,7 @@ Valores das variáveis reais da coleção do Figma, declarados em `:root`.
 | `--borda-cartao` | `#091fa9` | borda dos cards |
 | `--borda-forte` | `#2e376a` | botões de cookie |
 | `--borda-sutil` | `#1c2244` | topo da barra de cookies |
+| `--borda-campo` | `#081d9c` | campo de e-mail, botões sociais (mobile) |
 | `--marca-ciano` | `#27a9e1` | fundo do avatar |
 | `--marca-azul-profundo` | `#0a1fa9` | faixa de campanha |
 | `--acento-cta` | `#c4f84b` | bloco do WhatsApp |
@@ -112,6 +114,11 @@ Valores das variáveis reais da coleção do Figma, declarados em `:root`.
 | `--texto-apagado` | `#7c87a8` | legal, placeholder |
 | `--texto-sobre-marca` | `#04091a` | tinta sobre o bloco lima |
 | `--raio-sm/md/lg/pill` | `8 / 12 / 16 / 999px` | |
+| `--sombra-slot` | `2px 4px 10.2px rgba(0,0,0,.25)` | slot de imagem |
+| `--sombra-cartao` | `2px 4px 5.1px rgba(0,0,0,.25)` | cards |
+| `--sombra-botao` | `-3px 4px 5.45px rgba(0,0,0,.4)` | botão sobre o bloco lima |
+| `--gutter` | `16px` | respiro lateral da página |
+| `--anel-foco` | `2px solid var(--marca-ciano)` | `:focus-visible` |
 
 **Tipografia:** Barlow 400/700, entrelinha 1.5 (1.1 no nome em desktop).
 
@@ -125,6 +132,32 @@ Valores das variáveis reais da coleção do Figma, declarados em `:root`.
 | Corpo | 14 | 16 |
 | Botão | 16 Bold | 16 Bold |
 | Legal | 12 | 14 |
+
+### Estados
+
+Não estão no frame estático: foram derivados dos tokens acima para que todo
+alvo clicável responda a hover, press e foco. Estão desenhados um a um no board
+do design system no Figma.
+
+| Componente | Estado | Valor |
+|---|---|---|
+| `.item` (linha da lista) | hover | fundo `#0a1fa0`, borda `#1a35c9` |
+| `.item` | press | `scale(.995)`, sem mudança de cor |
+| `.btn--tinta` | hover | `#0d1533` |
+| `.btn--contorno` | hover | `rgba(9,31,169,.35)` |
+| `.btn--cookie` | hover | `rgba(46,55,106,.35)` |
+| `.btn--campanha` | hover | `#f08a1c` |
+| `.btn--campanha` | disabled | opacidade .5, `aria-disabled="true"`, sem `href` |
+| `.btn--salvar` | hover | `#d3ff64` |
+| `.btn` (todos) | press | `translateY(1px)` |
+| `.social` | hover | fundo `rgba(9,31,169,.4)`, borda `var(--marca-ciano)` |
+| `.email__input` | inválido | borda `#ff6b6b`, mensagem `#ff9b9b` |
+| `.email__input` | aceito | mensagem `var(--acento-cta)` |
+| `.chave` (toggle) | ligado | trilho `#0a2f14`, borda e botão `var(--acento-cta)` |
+| qualquer | `:focus-visible` | `2px solid var(--marca-ciano)`, offset 2 |
+
+**Espaçamento:** base de 4pt — `4 · 8 · 12 · 16 · 20 · 24 · 32 · 40`. O 16 é o
+gutter da página, o 24 separa seções e o 40 separa blocos.
 
 **Grid desktop (1400):** `120 + 360 + 80 + 720 + 120`. A coluna de identidade é
 `position: sticky`. Acima de 1400px o conteúdo centraliza e a faixa de campanha
