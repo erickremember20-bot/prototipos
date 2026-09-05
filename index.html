@@ -36,13 +36,18 @@
   O Figma não define URLs. Todo link navegável carrega data-ct-link="<id>",
   então trocar um destino é uma linha, sem caçar no markup.
 
-  [!] PENDENTE — a faixa de campanha está DESLIGADA:
+  [!] MODO_DEMO está em true (ver constante no <script> no fim do arquivo).
+      Nesse estado a barra de cookies aparece sempre e a faixa de campanha
+      entra no ar mesmo sem destino. TROQUE PARA false ANTES DE PRODUÇÃO.
+
+  [!] PENDENTE — destino da faixa de campanha:
 
     votar-abccom     Não foi possível confirmar a URL da votação do Prêmio
-                     ABCCOM, então a faixa do topo não é renderizada. Ela
-                     depende da constante URL_VOTACAO, no início do <script>
-                     no fim deste arquivo: preencha a URL e a faixa volta;
-                     apague a URL quando a campanha encerrar.
+                     ABCCOM. Preencha a constante URL_VOTACAO, no início do
+                     <script> no fim deste arquivo, e o botão passa a
+                     navegar; apague a URL quando a campanha encerrar.
+                     Com MODO_DEMO em false e sem URL, a faixa não é
+                     renderizada — a página não sobe com link morto.
                      Confirme antes se a votação ainda está aberta — o
                      wireframe registra que a data de encerramento nunca foi
                      confirmada.
@@ -899,6 +904,31 @@ function ctFallback(img){
      ===================================================================== */
   var URL_VOTACAO = '';
 
+  /* =====================================================================
+     MODO DEMONSTRAÇÃO
+     ---------------------------------------------------------------------
+     true  — a página vira vitrine: a barra de cookies aparece SEMPRE, mesmo
+             para quem já escolheu, e a faixa de campanha entra no ar mesmo
+             sem URL_VOTACAO. Serve para mostrar o desenho completo à equipe
+             sem depender do estado guardado no navegador de cada pessoa.
+             Sem URL, "Votar Agora" fica inerte de propósito: existe para o
+             desenho, mas não navega — não é link morto.
+
+     false — comportamento de produção: a barra respeita a escolha guardada
+             e a faixa só entra com URL_VOTACAO preenchida.
+
+     >>> TROQUE PARA false ANTES DE PUBLICAR EM PRODUÇÃO. <<<
+
+     Dá para testar os dois sem editar o arquivo: ?demo=1 força a vitrine,
+     ?demo=0 força o comportamento de produção.
+     ===================================================================== */
+  var MODO_DEMO = true;
+
+  (function(){
+    var m = /[?&]demo=([01])/.exec(location.search);
+    if(m) MODO_DEMO = m[1] === '1';
+  })();
+
   var LS = {
     faixa:   'ct-hub:faixa-dispensada',
     cookies: 'ct-hub:consentimento'
@@ -966,13 +996,24 @@ function ctFallback(img){
      --------------------------------------------------------------------- */
   var faixa = document.getElementById('faixa-campanha');
 
-  if(!URL_VOTACAO){
-    /* sem destino, a faixa nem chega ao DOM */
+  if(!URL_VOTACAO && !MODO_DEMO){
+    /* produção sem destino: a faixa nem chega ao DOM */
     faixa.parentNode.removeChild(faixa);
     faixa = null;
   }else{
-    faixa.querySelector('[data-ct-link="votar-abccom"]').href = URL_VOTACAO;
-    if(ler(LS.faixa) === '1') faixa.hidden = true;
+    var botaoVotar = faixa.querySelector('[data-ct-link="votar-abccom"]');
+    if(URL_VOTACAO){
+      botaoVotar.href = URL_VOTACAO;
+    }else{
+      /* vitrine sem destino: o botão fica inerte em vez de virar link morto */
+      botaoVotar.removeAttribute('href');
+      botaoVotar.setAttribute('role', 'button');
+      botaoVotar.setAttribute('aria-disabled', 'true');
+      botaoVotar.title = 'Destino ainda não configurado — preencha URL_VOTACAO';
+      botaoVotar.addEventListener('click', function(e){ e.preventDefault(); });
+    }
+    /* na vitrine a faixa volta a cada carga, mesmo se dispensada antes */
+    if(ler(LS.faixa) === '1' && !MODO_DEMO) faixa.hidden = true;
     document.getElementById('fechar-faixa').addEventListener('click', function(){
       faixa.hidden = true;
       guardar(LS.faixa, '1');
@@ -1075,7 +1116,8 @@ function ctFallback(img){
   });
 
   /* --- barra --- */
-  if(!lerConsentimento()) mostrarCookies();
+  /* na vitrine a barra aparece sempre; em produção, só para quem não escolheu */
+  if(MODO_DEMO || !lerConsentimento()) mostrarCookies();
 
   Array.prototype.forEach.call(barra.querySelectorAll('[data-consentimento]'), function(botao){
     botao.addEventListener('click', function(){
