@@ -189,13 +189,12 @@ no componente *Slot de imagem* do próprio design system, com fundo
 O Figma não define URLs. Todo link navegável carrega `data-ct-link="<id>"`,
 então trocar um destino é uma linha.
 
-**Uma pendência.** A faixa de campanha está **desligada**: não foi possível
-confirmar a URL da votação do Prêmio ABCCOM, e a página não sobe com um CTA
-que não leva a lugar nenhum.
+Todos os destinos estão preenchidos. Confira cada um com a redação antes de
+publicar.
 
 | id | destino |
 |---|---|
-| `votar-abccom` | **pendente — faixa desligada** |
+| `votar-abccom` | `https://app.abccom.com.br/#/award-voting` |
 | `whatsapp` | `https://ofertas.canaltech.com.br/grupos-de-oferta/` |
 | `ct-ofertas` | `https://ofertas.canaltech.com.br/` |
 | `noticias` | `https://canaltech.com.br/` |
@@ -241,19 +240,21 @@ A faixa do topo é controlada por **uma constante**, no início do `<script>`
 no fim do `index.html`:
 
 ```js
-var URL_VOTACAO = '';   // vazia = faixa não é renderizada
+var URL_VOTACAO = 'https://app.abccom.com.br/#/award-voting';
 ```
 
-- **Vazia** (estado atual) com `MODO_DEMO = false`: a faixa não entra no DOM.
-  Sem URL confirmada, um CTA laranja que não navega custa mais que a ausência
-  da faixa. Com `MODO_DEMO = true`, a faixa aparece e o botão fica inerte.
-- **Preenchida**: a faixa volta, o `href` do botão "Votar Agora" recebe a URL,
-  e o ✕ volta a dispensá-la lembrando a escolha em `localStorage`.
+- **Preenchida** (estado atual): a faixa entra no ar e o `href` do botão
+  "Votar Agora" recebe a URL. O ✕ dispensa a faixa e a escolha fica em
+  `localStorage` — a menos que `MODO_DEMO` esteja em `true`, quando ela volta
+  a cada carga.
+- **Vazia** com `MODO_DEMO = false`: a faixa não entra no DOM. Um CTA laranja
+  que não navega custa mais que a ausência da faixa. Com `MODO_DEMO = true`,
+  a faixa aparece e o botão fica inerte (sem `href`, `aria-disabled`).
 
-**Antes de ligar, confirme se a votação ainda está aberta.** O wireframe
-registra isso como pendência: *"Não confirmei a data de encerramento da
-votação ABCCOM"*. Quando a campanha acabar, esvazie a constante — é o mesmo
-gesto, na direção contrária.
+**Quando a campanha encerrar, esvazie a constante** — é o mesmo gesto, na
+direção contrária, e tira a faixa do ar sem tocar no markup. Vale confirmar a
+data de encerramento com quem cuida da campanha: o wireframe registra que ela
+nunca foi confirmada.
 
 ---
 
@@ -332,9 +333,9 @@ document.addEventListener('ct:link', function (e) {
 Rodar a suíte exige Playwright (`npm install playwright`); o Chromium do
 ambiente é apontado por `executablePath`.
 
-Duas suítes em Chromium (Playwright), **170 asserções** no total.
+Duas suítes em Chromium (Playwright), **176 asserções** no total.
 
-A principal (110) cobre os dois frames:
+A principal (116) cobre os dois frames:
 cores e raios contra os tokens do Figma, geometria (faixa 60px, avatar 72/96,
 slot 123×72, card 340, grid 2×340 com gap 40, colunas 360 + 80 + 720),
 alternância de densidade e de texto, carregamento real dos 15 assets
@@ -342,11 +343,12 @@ alternância de densidade e de texto, carregamento real dos 15 assets
 (dispensar faixa, consentimento, validação de e-mail, reabrir preferências),
 persistência em `localStorage` e ausência de overflow horizontal em
 320 / 360 / 375 / 414 / 600 / 768 / 1024 / 1280 / 1400 / 1600 / 1920px. Ela
-roda o layout da faixa contra uma cópia com `URL_VOTACAO` preenchida e
-`MODO_DEMO` em `false`, e checa à parte os dois modos: em produção a faixa
-não é renderizada e não sobra nenhum link morto; na vitrine a faixa aparece,
-o botão fica sem `href` e marcado `aria-disabled` (a ponto de o próprio
-Playwright recusar o clique), e barra e faixa voltam depois de recarregar.
+gera cópias do arquivo entregue para cobrir as **quatro combinações** de
+`MODO_DEMO` × `URL_VOTACAO`: produção com URL (faixa no ar, `href` correto),
+produção sem URL (faixa não renderizada, nenhum link morto), vitrine com URL
+(o arquivo como publicado: faixa e barra voltam a cada carga) e vitrine sem
+URL (botão sem `href` e `aria-disabled`, a ponto de o próprio Playwright
+recusar o clique).
 
 A segunda (60) cobre só os cookies, nos dois breakpoints: abrir e fechar o
 painel por ESC, pelo fundo e por Cancelar, o foco preso enquanto aberto,
